@@ -1,0 +1,6 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../w5500StateMachine.ip_user_files/ipstatic/hdl" \
+"top_time_impl.v" \
+
+# Do not sort compile order
+nosort
