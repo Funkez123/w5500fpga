@@ -1,0 +1,6 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../w5500StateMachine.ip_user_files/ipstatic/hdl" \
+"spi_master_time_synth.v" \
+
+# Do not sort compile order
+nosort
