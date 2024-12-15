@@ -49,12 +49,12 @@ set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports mosi]
 
 ##Pmod Header JB
 
-#set_property -dict { PACKAGE_PIN W14   IOSTANDARD LVCMOS33 } [get_ports { jb[0] }]; #IO_L8P_T1_34 Sch=jb_p[1]
-#set_property -dict { PACKAGE_PIN Y14   IOSTANDARD LVCMOS33 } [get_ports { jb[1] }]; #IO_L8N_T1_34 Sch=jb_n[1]
-#set_property -dict { PACKAGE_PIN T11   IOSTANDARD LVCMOS33 } [get_ports { jb[2] }]; #IO_L1P_T0_34 Sch=jb_p[2]
-#set_property -dict { PACKAGE_PIN T10   IOSTANDARD LVCMOS33 } [get_ports { jb[3] }]; #IO_L1N_T0_34 Sch=jb_n[2]
-#set_property -dict { PACKAGE_PIN V16   IOSTANDARD LVCMOS33 } [get_ports { jb[4] }]; #IO_L18P_T2_34 Sch=jb_p[3]
-#set_property -dict { PACKAGE_PIN W16   IOSTANDARD LVCMOS33 } [get_ports { jb[5] }]; #IO_L18N_T2_34 Sch=jb_n[3]
+set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[0]}]
+set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[1]}]
+set_property -dict {PACKAGE_PIN T11 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[2]}]
+set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[3]}]
+set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[4]}]
+set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports {state_debug_out[5]}]
 #set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { jb[6] }]; #IO_L4P_T0_34 Sch=jb_p[4]
 #set_property -dict { PACKAGE_PIN W13   IOSTANDARD LVCMOS33 } [get_ports { jb[7] }]; #IO_L4N_T0_34 Sch=jb_n[4]
 
@@ -222,6 +222,24 @@ connect_debug_port u_ila_0/probe3 [get_nets [list {spi_m/rx_shift_payload_buffer
 connect_debug_port u_ila_0/probe4 [get_nets [list {spi_m/rx_pldata[0]} {spi_m/rx_pldata[1]} {spi_m/rx_pldata[2]} {spi_m/rx_pldata[3]} {spi_m/rx_pldata[4]} {spi_m/rx_pldata[5]} {spi_m/rx_pldata[6]} {spi_m/rx_pldata[7]}]]
 connect_debug_port u_ila_0/probe15 [get_nets [list spi_m/u_w5500_axi_data_streamer/rx_plvalid]]
 
+connect_debug_port u_ila_0/probe3 [get_nets [list {spi_m/million_package_counter[0]} {spi_m/million_package_counter[1]} {spi_m/million_package_counter[2]} {spi_m/million_package_counter[3]} {spi_m/million_package_counter[4]} {spi_m/million_package_counter[5]} {spi_m/million_package_counter[6]} {spi_m/million_package_counter[7]} {spi_m/million_package_counter[8]} {spi_m/million_package_counter[9]} {spi_m/million_package_counter[10]} {spi_m/million_package_counter[11]}]]
+
+
+
+
+
+
+
+
+
+
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {spi_m/u_w5500_axi_data_streamer/w5500state_reg[3][0]}]]
+
+
+
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 2 [get_debug_cores u_ila_0]
@@ -235,31 +253,31 @@ set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list clk_IBUF_BUFG]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
 set_property port_width 8 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {txrx_unit/s_axis_tdata[0]} {txrx_unit/s_axis_tdata[1]} {txrx_unit/s_axis_tdata[2]} {txrx_unit/s_axis_tdata[3]} {txrx_unit/s_axis_tdata[4]} {txrx_unit/s_axis_tdata[5]} {txrx_unit/s_axis_tdata[6]} {txrx_unit/s_axis_tdata[7]}]]
+connect_debug_port u_ila_0/probe0 [get_nets [list {spi_m/payload_data[0]} {spi_m/payload_data[1]} {spi_m/payload_data[2]} {spi_m/payload_data[3]} {spi_m/payload_data[4]} {spi_m/payload_data[5]} {spi_m/payload_data[6]} {spi_m/payload_data[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 30 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[2]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[3]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[4]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[5]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[6]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[7]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[8]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[9]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[10]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[11]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[12]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[13]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[14]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[15]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[16]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[17]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[18]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[19]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[20]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[21]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[22]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[23]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[24]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[25]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[26]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[27]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[28]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[29]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[30]} {spi_m/u_w5500_axi_data_streamer/bytes_received_reg[31]}]]
+set_property port_width 1 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/u_w5500_axi_data_streamer/w5500state_reg[5][0]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 8 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[0]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[1]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[2]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[3]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[4]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[5]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[6]} {spi_m/u_w5500_axi_data_streamer/rdata_buffer_reg[7]_0[7]}]]
+set_property port_width 6 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list {state_debug_out_OBUF[0]} {state_debug_out_OBUF[1]} {state_debug_out_OBUF[2]} {state_debug_out_OBUF[3]} {state_debug_out_OBUF[4]} {state_debug_out_OBUF[5]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 12 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list {spi_m/million_package_counter[0]} {spi_m/million_package_counter[1]} {spi_m/million_package_counter[2]} {spi_m/million_package_counter[3]} {spi_m/million_package_counter[4]} {spi_m/million_package_counter[5]} {spi_m/million_package_counter[6]} {spi_m/million_package_counter[7]} {spi_m/million_package_counter[8]} {spi_m/million_package_counter[9]} {spi_m/million_package_counter[10]} {spi_m/million_package_counter[11]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe3]
+connect_debug_port u_ila_0/probe3 [get_nets [list {tdata[0]} {tdata[1]} {tdata[2]} {tdata[3]} {tdata[4]} {tdata[5]} {tdata[6]} {tdata[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
-set_property port_width 6 [get_debug_ports u_ila_0/probe4]
-connect_debug_port u_ila_0/probe4 [get_nets [list {spi_m/w5500state[0]} {spi_m/w5500state[1]} {spi_m/w5500state[2]} {spi_m/w5500state[3]} {spi_m/w5500state[4]} {spi_m/w5500state[5]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe4]
+connect_debug_port u_ila_0/probe4 [get_nets [list {rdata[0]} {rdata[1]} {rdata[2]} {rdata[3]} {rdata[4]} {rdata[5]} {rdata[6]} {rdata[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
 set_property port_width 8 [get_debug_ports u_ila_0/probe5]
-connect_debug_port u_ila_0/probe5 [get_nets [list {tdata[0]} {tdata[1]} {tdata[2]} {tdata[3]} {tdata[4]} {tdata[5]} {tdata[6]} {tdata[7]}]]
+connect_debug_port u_ila_0/probe5 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe6]
 set_property port_width 8 [get_debug_ports u_ila_0/probe6]
-connect_debug_port u_ila_0/probe6 [get_nets [list {rdata[0]} {rdata[1]} {rdata[2]} {rdata[3]} {rdata[4]} {rdata[5]} {rdata[6]} {rdata[7]}]]
+connect_debug_port u_ila_0/probe6 [get_nets [list {spi_m/payload_data_reg[7]_0[0]} {spi_m/payload_data_reg[7]_0[1]} {spi_m/payload_data_reg[7]_0[2]} {spi_m/payload_data_reg[7]_0[3]} {spi_m/payload_data_reg[7]_0[4]} {spi_m/payload_data_reg[7]_0[5]} {spi_m/payload_data_reg[7]_0[6]} {spi_m/payload_data_reg[7]_0[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
 set_property port_width 1 [get_debug_ports u_ila_0/probe7]
@@ -267,35 +285,11 @@ connect_debug_port u_ila_0/probe7 [get_nets [list cs_OBUF]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe8]
 set_property port_width 1 [get_debug_ports u_ila_0/probe8]
-connect_debug_port u_ila_0/probe8 [get_nets [list miso_IBUF]]
+connect_debug_port u_ila_0/probe8 [get_nets [list ext_pl_tvalid]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
 set_property port_width 1 [get_debug_ports u_ila_0/probe9]
-connect_debug_port u_ila_0/probe9 [get_nets [list mosi_OBUF]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe10]
-set_property port_width 1 [get_debug_ports u_ila_0/probe10]
-connect_debug_port u_ila_0/probe10 [get_nets [list spi_m/u_w5500_axi_data_streamer/rready_buffer]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe11]
-set_property port_width 1 [get_debug_ports u_ila_0/probe11]
-connect_debug_port u_ila_0/probe11 [get_nets [list RVALID]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe12]
-set_property port_width 1 [get_debug_ports u_ila_0/probe12]
-connect_debug_port u_ila_0/probe12 [get_nets [list spi_m/u_w5500_axi_data_streamer/rvalid_buffer_i_1_n_0]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe13]
-set_property port_width 1 [get_debug_ports u_ila_0/probe13]
-connect_debug_port u_ila_0/probe13 [get_nets [list txrx_unit/rx_buffer_last_reg_n_0]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe14]
-set_property port_width 1 [get_debug_ports u_ila_0/probe14]
-connect_debug_port u_ila_0/probe14 [get_nets [list txrx_unit/s_axis_tvalid_2]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe15]
-set_property port_width 1 [get_debug_ports u_ila_0/probe15]
-connect_debug_port u_ila_0/probe15 [get_nets [list sclk_OBUF]]
+connect_debug_port u_ila_0/probe9 [get_nets [list sclk_OBUF]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]

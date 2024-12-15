@@ -98,6 +98,7 @@ read_vhdl -library xil_defaultlib {
   C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd
   C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd
   C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/pwm.vhd
+  C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd
 }
 read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
 set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit_ooc.xdc]

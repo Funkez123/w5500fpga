@@ -43,6 +43,9 @@ entity top is
 		sclk: out std_logic;
 		cs:   out std_logic;
 		
+		--debug signals
+		state_debug_out : out std_logic_vector(5 downto 0);
+		
 	    ------- ext payload data input 
 	    --ext_pl_tdata : in std_logic_vector(7 downto 0);
 	    --ext_pl_tvalid : in std_logic;
@@ -89,6 +92,7 @@ architecture Behavioral of top is
 		reset:  in std_logic;
 		idle_mode: in std_logic := '1';
         spi_busy: in std_logic := '0';
+        state_debug_out : out std_logic_vector(5 downto 0);
         
         tdata:   out std_logic_vector (7 downto 0); -- data to send
 		tvalid:    out std_logic; -- axi stream from statemachine to spi master
@@ -112,6 +116,16 @@ architecture Behavioral of top is
         );                       
     end component;
     
+    component ext_data_handler
+        port(
+            clk         : in  STD_LOGIC;
+            rst         : in  STD_LOGIC;
+            tdata       : out STD_LOGIC_VECTOR(7 downto 0);
+            tvalid      : out STD_LOGIC;
+            tlast       : out STD_LOGIC;
+            tready      : in  STD_LOGIC
+        );
+    end component;
 --Inputs
 
     signal rwb: std_logic := '0';
@@ -134,15 +148,15 @@ architecture Behavioral of top is
     
     -- these here are actually physical hardware IO signals, but since they can't be propery used yet they're just default internal signals
     signal ext_pl_tdata : std_logic_vector(7 downto 0);
-	signal ext_pl_tvalid : std_logic;
+	signal ext_pl_tvalid : std_logic := '1';
 	signal ext_pl_tready : std_logic;
-	signal ext_pl_tlast : std_logic;
+	signal ext_pl_tlast : std_logic:='0';
     
     signal ext_pl_rdata : std_logic_vector(7 downto 0);
 	signal ext_pl_rvalid : std_logic;
-	signal ext_pl_rready : std_logic;
+	signal ext_pl_rready : std_logic := '1';
 	signal ext_pl_rlast : std_logic;
-	
+		
 begin
 
     led <= idle_mode;
@@ -154,6 +168,7 @@ begin
         reset => reset,
         idle_mode => idle_mode,
         spi_busy => spi_busy,
+        state_debug_out => state_debug_out,
         
         tdata => tdata,  
         tvalid => tvalid,
@@ -196,5 +211,15 @@ begin
 		    RREADY => RREADY,
 		    rlast => rlast
 		    );
+
+    extdatahandler : ext_data_handler
+        port map(
+            clk => clk,
+            rst => reset,
+            tdata => ext_pl_tdata,
+            tvalid => ext_pl_tvalid,
+            tlast => ext_pl_tlast,
+            tready => ext_pl_tready
+        );
 
 end Behavioral;
