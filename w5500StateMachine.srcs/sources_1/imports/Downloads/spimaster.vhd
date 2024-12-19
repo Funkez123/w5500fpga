@@ -36,7 +36,8 @@ end entity w5500_state_machine;
 architecture behavioral of w5500_state_machine is
 
     --spi master states
-	type W5500_state_type is (RESET_STATE,
+	type W5500_state_type is (
+	    RESET_STATE,
         RESET_W5500_CHIP_STATE,
         SET_GATEWAY_STATE,
         SET_SUBNET_STATE,
@@ -75,6 +76,7 @@ architecture behavioral of w5500_state_machine is
         WAIT_FOR_RX_READ_POINTER_TO_BE_RECEIVED,
         RECEIVE_DATA_STATE
         );
+        
 	signal w5500state, w5500state_next: W5500_state_type;
     attribute fsm_encoding : string;
     attribute fsm_encoding of w5500state : signal is "sequential";
