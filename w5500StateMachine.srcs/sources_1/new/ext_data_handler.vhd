@@ -45,8 +45,8 @@ end ext_data_handler;
 
 architecture Behavioral of ext_data_handler is
 
-    constant DATA_SIZE : integer := 256;  -- 512 bytes of data
-    constant INTERVAL  : integer := 10000; -- 4000 thousand clock cycles
+    constant DATA_SIZE : integer := 2;  -- 512 bytes of data
+    constant INTERVAL  : integer := 1000000; -- 4000 thousand clock cycles
 
     signal counter     : integer := 0;
     signal byte_index  : integer := 0;
@@ -71,14 +71,15 @@ begin
                     tvalid <= '1';
                     tlast  <= '0';
 
-                    if byte_index = DATA_SIZE - 1 then
-                        tlast      <= '1';
-                        sending    <= false;
-                        byte_index <= 0;
-                    else
-                        if(tready = '1') then
-                            byte_index <= byte_index + 1;
-                        end if;
+                    
+                        if byte_index = DATA_SIZE - 1 then
+                            tlast      <= '1';
+                            sending    <= false;
+                            byte_index <= 0;
+                        else
+                            if(tready = '1') then
+                                byte_index <= byte_index + 1;   
+                            end if;
                     end if;
                 else
                     -- Wait for the interval to pass

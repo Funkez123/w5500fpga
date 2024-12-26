@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date                      : Mon Dec 16 14:09:12 2024
+| Date                      : Thu Dec 26 13:29:07 2024
 | Host                      : DESKTOP-FEDBMRF running 64-bit major release  (build 9200)
 | Command                   : report_io -file top_io_placed.rpt
 | Design                    : top
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            14 |
+|            12 |
 +---------------+
 
 
@@ -274,7 +274,7 @@ Table of Contents
 | M17        |                    | High Range | IO_L8P_T1_AD10P_35      | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | M18        |                    | High Range | IO_L8N_T1_AD10N_35      | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | M19        |                    | High Range | IO_L7P_T1_AD2P_35       | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| M20        | idle_mode          | High Range | IO_L7N_T1_AD2N_35       | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| M20        |                    | High Range | IO_L7N_T1_AD2N_35       | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N1         |                    |            | PS_DDR_CS_B_502         | PSS IO      |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N2         |                    |            | PS_DDR_A0_502           | PSS IO      |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N3         |                    |            | PS_DDR_CKE_502          | PSS IO      |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -328,7 +328,7 @@ Table of Contents
 | R11        |                    | Dedicated  | DONE_0                  | Config      |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | R12        |                    |            | GND                     | GND         |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | R13        |                    |            | VCCINT                  | VCCINT      |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| R14        | led                | High Range | IO_L6N_T0_VREF_34       | OUTPUT      | LVCMOS33    |      34 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| R14        |                    | High Range | IO_L6N_T0_VREF_34       | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | R15        |                    | High Range | VCCO_34                 | VCCO        |             |      34 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
 | R16        |                    | High Range | IO_L19P_T3_34           | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | R17        |                    | High Range | IO_L19N_T3_VREF_34      | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |

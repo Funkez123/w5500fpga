@@ -35,7 +35,6 @@ entity top is
     	port (
 		clk:  in  std_logic;
 		reset: in  std_logic := '0';
-		idle_mode : in std_logic := '1';
 		
 		-- SPI Interface
 		mosi: out std_logic;
@@ -44,21 +43,7 @@ entity top is
 		cs:   out std_logic;
 		
 		--debug signals
-		state_debug_out : out std_logic_vector(5 downto 0);
-		
-	    ------- ext payload data input 
-	    --ext_pl_tdata : in std_logic_vector(7 downto 0);
-	    --ext_pl_tvalid : in std_logic;
-	    --ext_pl_tready : out std_logic;
-	    --ext_pl_tlast : in std_logic;
-	    
-	    -- ext payload data output that has been read from w5500 registers
-	    --ext_pl_rdata : out std_logic_vector(7 downto 0);
-	    --ext_pl_rvalid : out std_logic;
-	    --ext_pl_rready : in std_logic := '1';
-	    --ext_pl_rlast : out std_logic;
-	
-		led : out std_logic
+		state_debug_out : out std_logic_vector(5 downto 0)	
 	);
 
 end top;
@@ -90,7 +75,6 @@ architecture Behavioral of top is
 	   port(
         clk:    in std_logic;
 		reset:  in std_logic;
-		idle_mode: in std_logic := '1';
         spi_busy: in std_logic := '0';
         state_debug_out : out std_logic_vector(5 downto 0);
         
@@ -158,15 +142,12 @@ architecture Behavioral of top is
 	signal ext_pl_rlast : std_logic;
 		
 begin
-
-    led <= idle_mode;
     
     -- instantiate the w5500_state_machine
     spi_m : w5500_state_machine
         port map(
         clk => clk,
         reset => reset,
-        idle_mode => idle_mode,
         spi_busy => spi_busy,
         state_debug_out => state_debug_out,
         

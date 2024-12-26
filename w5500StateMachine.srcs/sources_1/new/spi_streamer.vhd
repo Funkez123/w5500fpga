@@ -44,8 +44,6 @@ architecture Behavioral of w5500_axi_data_streamer is
     signal state : state_type := FIFO_INIT_STATE;
 
     -- Internal signals
-    signal byte_index : integer range 0 to 3 := 0;
-    signal tx_active  : std_logic := '0';               -- Transfer active signal
 
     signal payload_fifo_output_buffer : std_logic_vector(7 downto 0);
     signal payload_fifo_ready : std_logic := '0';
@@ -118,7 +116,6 @@ begin
             state <= FIFO_INIT_STATE;
             tvalid <= '0';
             tdata <= (others => '0');
-            tx_active <= '0';
         elsif rising_edge(clk) then
             case state is
                 when FIFO_INIT_STATE =>
@@ -131,8 +128,6 @@ begin
                     tlast <= '0';
                     payload_fifo_ready <= '0';
                     if conf_header_valid = '1' and tx_plvalid = '1' and tx_plready_buffer = '1' then
-                        byte_index <= 0;
-                        tx_active <= '1';  -- Start the transfer
                         state <= CONF_BYTE_0;
                     end if;
 
@@ -179,7 +174,6 @@ begin
                 -- Transmission done
                 when DONE_STATE =>
                     tvalid <= '0';
-                    tx_active <= '0';
                     tlast <= '0';
                     state <= IDLE;
 

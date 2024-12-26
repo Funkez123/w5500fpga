@@ -35,32 +35,32 @@
                                 "portIndex": 0,
                                 "nets": [
                                     {
-                                        "name": "spi_m/payload_data",
+                                        "name": "txrx_unit/m_axis_tdata",
                                         "isBus": true,
                                         "subnets": [
                                             {
-                                                "name": "spi_m/payload_data[7]"
+                                                "name": "txrx_unit/m_axis_tdata[7]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[6]"
+                                                "name": "txrx_unit/m_axis_tdata[6]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[5]"
+                                                "name": "txrx_unit/m_axis_tdata[5]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[4]"
+                                                "name": "txrx_unit/m_axis_tdata[4]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[3]"
+                                                "name": "txrx_unit/m_axis_tdata[3]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[2]"
+                                                "name": "txrx_unit/m_axis_tdata[2]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[1]"
+                                                "name": "txrx_unit/m_axis_tdata[1]"
                                             },
                                             {
-                                                "name": "spi_m/payload_data[0]"
+                                                "name": "txrx_unit/m_axis_tdata[0]"
                                             }
                                         ]
                                     }
@@ -71,17 +71,38 @@
                                 "id": 1,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
-                                "isVector": false,
+                                "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 0,
+                                "rightIndex": 7,
                                 "portIndex": 1,
                                 "nets": [
                                     {
-                                        "name": "spi_m/u_w5500_axi_data_streamer/w5500state_reg[5]",
+                                        "name": "txrx_unit/m_axis_tdata_0",
                                         "isBus": true,
                                         "subnets": [
                                             {
-                                                "name": "spi_m/u_w5500_axi_data_streamer/w5500state_reg[5][0]"
+                                                "name": "txrx_unit/m_axis_tdata_0[7]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[6]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[5]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[4]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[3]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[2]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[1]"
+                                            },
+                                            {
+                                                "name": "txrx_unit/m_axis_tdata_0[0]"
                                             }
                                         ]
                                     }
@@ -94,128 +115,8 @@
                                 "direction": "IN",
                                 "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 5,
+                                "rightIndex": 7,
                                 "portIndex": 2,
-                                "nets": [
-                                    {
-                                        "name": "state_debug_out_OBUF",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "state_debug_out_OBUF[5]"
-                                            },
-                                            {
-                                                "name": "state_debug_out_OBUF[4]"
-                                            },
-                                            {
-                                                "name": "state_debug_out_OBUF[3]"
-                                            },
-                                            {
-                                                "name": "state_debug_out_OBUF[2]"
-                                            },
-                                            {
-                                                "name": "state_debug_out_OBUF[1]"
-                                            },
-                                            {
-                                                "name": "state_debug_out_OBUF[0]"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe3",
-                                "id": 3,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": true,
-                                "leftIndex": 0,
-                                "rightIndex": 7,
-                                "portIndex": 3,
-                                "nets": [
-                                    {
-                                        "name": "tdata",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "tdata[7]"
-                                            },
-                                            {
-                                                "name": "tdata[6]"
-                                            },
-                                            {
-                                                "name": "tdata[5]"
-                                            },
-                                            {
-                                                "name": "tdata[4]"
-                                            },
-                                            {
-                                                "name": "tdata[3]"
-                                            },
-                                            {
-                                                "name": "tdata[2]"
-                                            },
-                                            {
-                                                "name": "tdata[1]"
-                                            },
-                                            {
-                                                "name": "tdata[0]"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe4",
-                                "id": 4,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": true,
-                                "leftIndex": 0,
-                                "rightIndex": 7,
-                                "portIndex": 4,
-                                "nets": [
-                                    {
-                                        "name": "rdata",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "rdata[7]"
-                                            },
-                                            {
-                                                "name": "rdata[6]"
-                                            },
-                                            {
-                                                "name": "rdata[5]"
-                                            },
-                                            {
-                                                "name": "rdata[4]"
-                                            },
-                                            {
-                                                "name": "rdata[3]"
-                                            },
-                                            {
-                                                "name": "rdata[2]"
-                                            },
-                                            {
-                                                "name": "rdata[1]"
-                                            },
-                                            {
-                                                "name": "rdata[0]"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe5",
-                                "id": 5,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": true,
-                                "leftIndex": 0,
-                                "rightIndex": 7,
-                                "portIndex": 5,
                                 "nets": [
                                     {
                                         "name": "tdata__0",
@@ -250,44 +151,66 @@
                                 ]
                             },
                             {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "cs_OBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "ext_pl_tlast",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "ext_pl_tready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
                                 "name": "probe6",
                                 "id": 6,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
-                                "isVector": true,
+                                "isVector": false,
                                 "leftIndex": 0,
-                                "rightIndex": 7,
+                                "rightIndex": 0,
                                 "portIndex": 6,
                                 "nets": [
                                     {
-                                        "name": "spi_m/payload_data_reg[7]_0",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[7]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[6]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[5]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[4]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[3]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[2]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[1]"
-                                            },
-                                            {
-                                                "name": "spi_m/payload_data_reg[7]_0[0]"
-                                            }
-                                        ]
+                                        "name": "ext_pl_tvalid",
+                                        "isBus": false
                                     }
                                 ]
                             },
@@ -302,7 +225,7 @@
                                 "portIndex": 7,
                                 "nets": [
                                     {
-                                        "name": "cs_OBUF",
+                                        "name": "txrx_unit/m_axis_tready_3",
                                         "isBus": false
                                     }
                                 ]
@@ -318,7 +241,7 @@
                                 "portIndex": 8,
                                 "nets": [
                                     {
-                                        "name": "ext_pl_tvalid",
+                                        "name": "txrx_unit/m_axis_tvalid",
                                         "isBus": false
                                     }
                                 ]
@@ -332,6 +255,54 @@
                                 "leftIndex": 0,
                                 "rightIndex": 0,
                                 "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "txrx_unit/m_axis_tvalid_1",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "miso_IBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "mosi_OBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 12,
                                 "nets": [
                                     {
                                         "name": "sclk_OBUF",
