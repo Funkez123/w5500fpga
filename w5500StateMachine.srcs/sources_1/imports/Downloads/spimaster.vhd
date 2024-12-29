@@ -77,7 +77,7 @@ architecture behavioral of w5500_state_machine is
     
     -- spi streamer axi streamer state
     type fifo_data_stream_handler_state_type is (CONTROLLER_PHASE, TX_FIFO_PASSTHROUGH_MODE, RX_FIFO_PASSTHROUGH_MODE);
-	signal streamhandler_state, streamhandler_state_next: fifo_data_stream_handler_state_type;
+	signal streammanager_state, streammanager_next_state: fifo_data_stream_handler_state_type;
 
     signal prev_spi_busy: std_logic := '0';
     
@@ -427,7 +427,7 @@ begin
                 if(rx_payload_last = '1') then
                     rx_pointer_reg <= rx_shift_payload_buffer(15 downto 0);
                     w5500state_next <= READ_HEADER_AND_PAYLOAD_FROM_RX_BUFFER_STATE; -- if no data is received, then check again
-                    streamhandler_state_next <= RX_FIFO_PASSTHROUGH_MODE;
+                    streammanager_next_state <= RX_FIFO_PASSTHROUGH_MODE;
                 end if;
             
             when READ_HEADER_AND_PAYLOAD_FROM_RX_BUFFER_STATE =>   
@@ -436,7 +436,7 @@ begin
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_RX_READ_POINTER_AFTER_READ_STATE;
                     payload_data_has_been_set <= '0';
-                    streamhandler_state_next <= CONTROLLER_PHASE;
+                    streammanager_next_state <= CONTROLLER_PHASE;
                 else
                    if(w5500state_next /= UPDATE_RX_READ_POINTER_AFTER_READ_STATE) then
                         if(payload_data_has_been_set = '0') then   
@@ -558,7 +558,7 @@ begin
                 if(rx_payload_last = '1') then
                     w5500state_next <= WRITE_TX_DATA_STATE; -- if no data is received, then check again
                     tx_write_pointer <= rx_shift_payload_buffer(15 downto 0);
-                    streamhandler_state_next <= TX_FIFO_PASSTHROUGH_MODE;
+                    streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
                 end if;
             
             -- now we need to set the conf_header and write into the 
@@ -568,7 +568,7 @@ begin
             -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the conf header and the PASSTHROUGH MODE      
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_TX_WRITE_POINTER_STATE;
-                    streamhandler_state_next <= CONTROLLER_PHASE;
+                    streammanager_next_state <= CONTROLLER_PHASE;
                     payload_data_has_been_set <= '0';
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_STATE) then
@@ -581,7 +581,7 @@ begin
                             end if;
                 
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
-                            streamhandler_state_next <= TX_FIFO_PASSTHROUGH_MODE;
+                            streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
 
                     end if; 
                 end if;
@@ -696,9 +696,9 @@ begin
         end if;
     
         if(clk'event and clk = '1') then
-            streamhandler_state <= streamhandler_state_next;
+            streammanager_state <= streammanager_next_state;
             prev_payload_data_has_been_set <= payload_data_has_been_set; 
-            case streamhandler_state is                     
+            case streammanager_state is                     
                 when CONTROLLER_PHASE => -- SPI Master takes care of writing to Payload FIFO
                     -- The SPI Master controlls the streamer by having the valid Signals high as long as data should be transmitted. 
                     -- The "meaningful" data is the payload, as long as there are payload bytes to transmit, the all valid signals should be high.
