@@ -29,8 +29,6 @@ end entity transceive_unit;
 
 architecture behavioral of transceive_unit is
 
-	signal delay_counter: integer range 0 to 128;
-
 	type spi_state is (wait_for_fifo_ready, spi_idle, spi_execute, spi_done);
 	signal spistate, spistate_next: spi_state;
 
@@ -129,14 +127,10 @@ architecture behavioral of transceive_unit is
 	process (clk, reset, spistate)
 	begin
 		if reset = '1' then
-
-			
 		elsif clk'event and clk = '1' then
 			-- Zustandsabfrage
 			case spistate is
-			
-			    when wait_for_fifo_ready => -- buffer state, to ensure we can only handle data when the fifo is ready
-			    
+			    when wait_for_fifo_ready => -- buffer state, to ensure we can only handle data when the fifo is ready  
 			        cs_buffer <= '1';
 			        spi_busy <= '0';
 			        sclk_buffer <= '0';
@@ -147,8 +141,6 @@ architecture behavioral of transceive_unit is
 				else 
 				    spistate_next <= wait_for_fifo_ready;				
 				end if;
-			
-			
 				-- Idle state
 				when spi_idle => -- here the data gets configured for the transmission
 			        cs_buffer <= '1';
@@ -169,7 +161,6 @@ architecture behavioral of transceive_unit is
 				end if;
 					
 			when spi_execute =>
-			
 			    tx_payload_ready <= '0';
                 cs_buffer <= '0';
                 spi_busy <= '1';

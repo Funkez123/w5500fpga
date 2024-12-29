@@ -65,7 +65,7 @@ architecture behavioral of w5500_state_machine is
         REQUEST_INTERRUPT_REG_AFTER_SOCKET_CHECK_STATE,
         WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED,
         WAIT_FOR_TX_READ_POINTER_TO_BE_RECEIVED,
-        SEND_DATA_STATE,
+        ISSUE_SEND_COMMAND,
         WAIT_FOR_INTERRUPT_REGISTER_TO_BE_RECEIVED,
         CLEAR_INTERRUPT_FLAGS_FROM_IR_STATE,
         CHECK_IF_EXT_TX_AXIS_HAS_DATA,
@@ -76,7 +76,7 @@ architecture behavioral of w5500_state_machine is
 	signal w5500state, w5500state_next: W5500_state_type;
     
     -- spi streamer axi streamer state
-    type fifo_data_stream_handler_state_type is (INIT_STATE, TX_FIFO_PASSTHROUGH_MODE, RX_FIFO_PASSTHROUGH_MODE);
+    type fifo_data_stream_handler_state_type is (CONTROLLER_PHASE, TX_FIFO_PASSTHROUGH_MODE, RX_FIFO_PASSTHROUGH_MODE);
 	signal streamhandler_state, streamhandler_state_next: fifo_data_stream_handler_state_type;
 
     signal prev_spi_busy: std_logic := '0';
@@ -436,7 +436,7 @@ begin
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_RX_READ_POINTER_AFTER_READ_STATE;
                     payload_data_has_been_set <= '0';
-                    streamhandler_state_next <= INIT_STATE;
+                    streamhandler_state_next <= CONTROLLER_PHASE;
                 else
                    if(w5500state_next /= UPDATE_RX_READ_POINTER_AFTER_READ_STATE) then
                         if(payload_data_has_been_set = '0') then   
@@ -568,7 +568,7 @@ begin
             -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the conf header and the PASSTHROUGH MODE      
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_TX_WRITE_POINTER_STATE;
-                    streamhandler_state_next <= INIT_STATE;
+                    streamhandler_state_next <= CONTROLLER_PHASE;
                     payload_data_has_been_set <= '0';
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_STATE) then
@@ -590,10 +590,10 @@ begin
             state_debug_out <= "001110";   
             -- writes the new tx_pointer to the socket 0 bsb            
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= SEND_DATA_STATE;
+                    w5500state_next <= ISSUE_SEND_COMMAND;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= SEND_DATA_STATE) then
+                   if(w5500state_next /= ISSUE_SEND_COMMAND) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
@@ -604,7 +604,7 @@ begin
                     end if; 
                 end if;
             
-            when SEND_DATA_STATE =>   
+            when ISSUE_SEND_COMMAND =>   
             state_debug_out <= "001111";
             -- allow transmission of that data             
                 if(spi_busy = '0' and prev_spi_busy = '1') then
@@ -622,49 +622,7 @@ begin
                         end if;
                     end if; 
                 end if;
-                
-                
-            when REQUEST_UPDATED_TX_WRITE_POINTER => 
-            state_debug_out <= "010000";
-            -- reads the current value of the socket 0 tx buffer pointer             
-                if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= CHECK_TX_READ_POINTER;
-                    payload_data_has_been_set <= '0';
-                else
-                   if(w5500state_next /= CHECK_TX_READ_POINTER) then
-                        if(payload_data_has_been_set = '0') then
-                            payload_data_has_been_set <= '1';
-                            payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0024" & "00001" & '0' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, read command with '0' as rwb bit
-                            raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
-                        end if;
-                    end if; 
-                end if;
-                       
-                       
-            when CHECK_TX_READ_POINTER => 
-            state_debug_out <= "010001";
-            -- reads the current value of the socket 0 tx read pointer             
-                if(spi_busy = '0' and prev_spi_busy = '1') then    
-                    w5500state_next <= WAIT_FOR_TX_READ_POINTER_TO_BE_RECEIVED;
-                    payload_data_has_been_set <= '0';
-                else
-                   if(w5500state_next /= WAIT_FOR_TX_READ_POINTER_TO_BE_RECEIVED) then
-                        if(payload_data_has_been_set = '0') then
-                            payload_data_has_been_set <= '1';
-                            payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0022" & "00001" & '0' & "00"; --  0x0022 and 23 are the TX Pointer Registers + "00001" BSB for Socket 0, read command with '0' as rwb bit
-                            raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
-                        end if;
-                    end if; 
-                end if;
-
-            when WAIT_FOR_TX_READ_POINTER_TO_BE_RECEIVED =>     
-            state_debug_out <= "010010";    
-                if(rx_payload_last = '1') then
-                    w5500state_next <= REQUEST_INTERRUPT_REG_AFTER_SOCKET_CHECK_STATE; -- if no data is received, then check again
-                end if;
-                
+                                
             when REQUEST_INTERRUPT_REG_AFTER_SOCKET_CHECK_STATE => 
             state_debug_out <= "010011"; 
             -- page 46      
@@ -690,8 +648,7 @@ begin
                 
             when CHECK_INTERRUPT_REG_RETURNED_VALUE =>    
             state_debug_out <= "010101";     
-            --page 48 
-            
+            --page 48 of W5500 Datasheet
                 if(rx_shift_payload_buffer(4) = '0') then -- check for the SEND_OK Bit in the Interrupt Register
                     if(rx_shift_payload_buffer(3) = '1') then -- if the TIMEOUT Bit is set, then
                         w5500state_next <= CLEAR_INTERRUPT_FLAGS_FROM_IR_STATE;   
@@ -719,19 +676,17 @@ begin
                     end if; 
                 end if;
                               
-            when others => -- this is the same as the idle state
-               
+            when others => -- this is the same as the idle state               
         end case;
        
-       prev_spi_busy <= spi_busy;
+        prev_spi_busy <= spi_busy;
        
-        --- end of the state machine ----
+        --- end of the W5500 finite state machine ----
     end if;
     end process;
     
-            --- SPI Streamer AXI stream handler ---
-   -- This logic serves the purpose of writing data to the SPI-Streamer FIFO and chopping up multi-byte payloads into 8Bit data packages one at a time
-   -- it also switches between initialization mode and external data throughput mode.        
+            --- SPI DATA Streamer AXI stream manager ---
+ --switches who has controll of the PAYLOAD FIFO in the W5500 Data streamer. TX/RX Passthrough phase or controller phase
             
     process (clk, reset)
     begin 
@@ -744,7 +699,7 @@ begin
             streamhandler_state <= streamhandler_state_next;
             prev_payload_data_has_been_set <= payload_data_has_been_set; 
             case streamhandler_state is                     
-                when INIT_STATE => -- SPI Master takes care of writing to Payload FIFO
+                when CONTROLLER_PHASE => -- SPI Master takes care of writing to Payload FIFO
                     -- The SPI Master controlls the streamer by having the valid Signals high as long as data should be transmitted. 
                     -- The "meaningful" data is the payload, as long as there are payload bytes to transmit, the all valid signals should be high.
                 
