@@ -53,18 +53,14 @@ architecture behavioral of w5500_state_machine is
         READ_TX_POINTER_STATE,
         UPDATE_TX_WRITE_POINTER_STATE,
         UPDATE_RX_READ_POINTER_AFTER_READ_STATE,
-        REQUEST_UPDATED_TX_WRITE_POINTER,
-        CHECK_TX_READ_POINTER,
         REQUEST_RECEIVED_DATA_SIZE,
         WAIT_FOR_REQUESTED_DATA_SIZE,
         CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE,
-        CHECK_IF_SOCKET_HAS_COMPLETED_TRANSMISSION_STATE,
         GET_RX_READ_POINTER_STATE,
         ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER_STATE,
         CHECK_INTERRUPT_REG_RETURNED_VALUE,
         REQUEST_INTERRUPT_REG_AFTER_SOCKET_CHECK_STATE,
         WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED,
-        WAIT_FOR_TX_READ_POINTER_TO_BE_RECEIVED,
         ISSUE_SEND_COMMAND,
         WAIT_FOR_INTERRUPT_REGISTER_TO_BE_RECEIVED,
         CLEAR_INTERRUPT_FLAGS_FROM_IR_STATE,
@@ -572,10 +568,8 @@ begin
                     payload_data_has_been_set <= '0';
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_STATE) then
-
                             payload_data_has_been_set <= '1';
                             conf_header <= rx_shift_payload_buffer(15 downto 0) & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            
                             if(payload_ready='1' and ext_pl_tvalid = '1' and ptm_transmitted_byte_counter < 512) then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;
                             end if;
@@ -726,7 +720,6 @@ begin
                         byte_length_buffer <= payload_byte_length;
                         shift_payload_buffer <= raw_payload_buffer;
                     end if;
-                
                 
                     -- receiving part of the state machine
                     -- it basically immediately reads the RXFIFO from the W5500 data streamer into rx_shift_payload_buffer, so that it's data can be accessed in the next state. This is useful to handle pointers read from the W5500 registers
