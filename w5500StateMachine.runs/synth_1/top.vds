@@ -3,8 +3,8 @@
 # SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Sun Dec 29 12:23:22 2024
-# Process ID: 1512
+# Start of session at: Mon Dec 30 10:28:23 2024
+# Process ID: 11960
 # Current directory: C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1
 # Command line: vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
 # Log file: C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.vds
@@ -12,7 +12,6 @@
 # Running On: DESKTOP-FEDBMRF, OS: Windows, CPU Frequency: 3793 MHz, CPU Physical cores: 16, Host memory: 16231 MB
 #-----------------------------------------------------------
 source top.tcl -notrace
-create_project: Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 470.289 ; gain = 188.156
 Command: read_checkpoint -auto_incremental -incremental C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/utils_1/imports/synth_1/spi_master.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/utils_1/imports/synth_1/spi_master.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
@@ -25,67 +24,70 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 13536
+INFO: [Synth 8-7075] Helper process launched with PID 20028
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1344.328 ; gain = 438.230
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1344.617 ; gain = 439.695
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'top' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:51]
 INFO: [Synth 8-3491] module 'w5500_state_machine' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:5' bound to instance 'spi_m' of component 'w5500_state_machine' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:147]
 INFO: [Synth 8-638] synthesizing module 'w5500_state_machine' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:35]
-INFO: [Synth 8-3491] module 'w5500_axi_data_streamer' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:5' bound to instance 'u_w5500_axi_data_streamer' of component 'w5500_axi_data_streamer' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:159]
+INFO: [Synth 8-3491] module 'w5500_axi_data_streamer' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:5' bound to instance 'u_w5500_axi_data_streamer' of component 'w5500_axi_data_streamer' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:155]
 INFO: [Synth 8-638] synthesizing module 'w5500_axi_data_streamer' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:41]
-INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-1512-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_payload_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:84]
-INFO: [Synth 8-638] synthesizing module 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-1512-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:22]
-INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-1512-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_rx_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:98]
+INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_payload_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:84]
+INFO: [Synth 8-638] synthesizing module 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:22]
+INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_rx_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:98]
 INFO: [Synth 8-256] done synthesizing module 'w5500_axi_data_streamer' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:41]
 INFO: [Synth 8-256] done synthesizing module 'w5500_state_machine' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:35]
 INFO: [Synth 8-3491] module 'transceive_unit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:5' bound to instance 'txrx_unit' of component 'transceive_unit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:177]
 INFO: [Synth 8-638] synthesizing module 'transceive_unit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:30]
-INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-1512-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_tx_payload_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:78]
-INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-1512-DESKTOP-FEDBMRF/realtime/axis_data_fifo_8bit_stub.vhdl:6' bound to instance 'u_rx_payload_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:92]
+INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_16_times_8bit_stub.vhdl:6' bound to instance 'u_tx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:78]
+INFO: [Synth 8-638] synthesizing module 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_16_times_8bit_stub.vhdl:22]
+INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-11960-DESKTOP-FEDBMRF/realtime/axis_data_fifo_16_times_8bit_stub.vhdl:6' bound to instance 'u_rx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:92]
 INFO: [Synth 8-226] default block is never used [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:132]
 INFO: [Synth 8-256] done synthesizing module 'transceive_unit' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:30]
 INFO: [Synth 8-3491] module 'ext_data_handler' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:35' bound to instance 'extdatahandler' of component 'ext_data_handler' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:196]
 INFO: [Synth 8-638] synthesizing module 'ext_data_handler' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:46]
 INFO: [Synth 8-256] done synthesizing module 'ext_data_handler' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:46]
 INFO: [Synth 8-256] done synthesizing module 'top' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:51]
-WARNING: [Synth 8-6014] Unused sequential element ptm_received_byte_counter_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:210]
+WARNING: [Synth 8-6014] Unused sequential element ptm_received_byte_counter_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:206]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1473.543 ; gain = 567.445
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1472.609 ; gain = 567.688
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1473.543 ; gain = 567.445
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1472.609 ; gain = 567.688
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1473.543 ; gain = 567.445
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1472.609 ; gain = 567.688
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 1473.543 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 1472.609 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
+Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_tx_payload_fifo'
+Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_tx_payload_fifo'
+Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_rx_payload_fifo'
+Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_rx_payload_fifo'
 Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'spi_m/u_w5500_axi_data_streamer/u_payload_fifo'
 Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'spi_m/u_w5500_axi_data_streamer/u_payload_fifo'
 Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'spi_m/u_w5500_axi_data_streamer/u_rx_fifo'
 Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'spi_m/u_w5500_axi_data_streamer/u_rx_fifo'
-Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_tx_payload_fifo'
-Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_tx_payload_fifo'
-Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_rx_payload_fifo'
-Finished Parsing XDC File [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit/axis_data_fifo_8bit_in_context.xdc] for cell 'txrx_unit/u_rx_payload_fifo'
 Parsing XDC File [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc]
 Finished Parsing XDC File [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc]
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/dont_touch.xdc]
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1562.625 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1559.473 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1562.625 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1559.473 ; gain = 0.000
 WARNING: [Timing 38-316] Clock period '10.000' specified during out-of-context synthesis of instance 'spi_m/u_w5500_axi_data_streamer/u_payload_fifo' at clock pin 's_axis_aclk' is different from the actual clock period '8.000', this can lead to different synthesis results.
 WARNING: [Timing 38-316] Clock period '10.000' specified during out-of-context synthesis of instance 'spi_m/u_w5500_axi_data_streamer/u_rx_fifo' at clock pin 's_axis_aclk' is different from the actual clock period '8.000', this can lead to different synthesis results.
 WARNING: [Timing 38-316] Clock period '10.000' specified during out-of-context synthesis of instance 'txrx_unit/u_rx_payload_fifo' at clock pin 's_axis_aclk' is different from the actual clock period '8.000', this can lead to different synthesis results.
@@ -93,27 +95,27 @@ WARNING: [Timing 38-316] Clock period '10.000' specified during out-of-context s
 INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Constraint Validation : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg400-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
-Applied set_property KEEP_HIERARCHY = SOFT for spi_m/u_w5500_axi_data_streamer/u_payload_fifo. (constraint file  auto generated constraint).
-Applied set_property KEEP_HIERARCHY = SOFT for spi_m/u_w5500_axi_data_streamer/u_rx_fifo. (constraint file  auto generated constraint).
 Applied set_property KEEP_HIERARCHY = SOFT for txrx_unit/u_rx_payload_fifo. (constraint file  auto generated constraint).
 Applied set_property KEEP_HIERARCHY = SOFT for txrx_unit/u_tx_payload_fifo. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for spi_m/u_w5500_axi_data_streamer/u_payload_fifo. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for spi_m/u_w5500_axi_data_streamer/u_rx_fifo. (constraint file  auto generated constraint).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'w5500_axi_data_streamer'
-WARNING: [Synth 8-3936] Found unconnected internal register 'rx_shift_payload_buffer_reg' and it is trimmed from '32' to '24' bits. [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:397]
+WARNING: [Synth 8-3936] Found unconnected internal register 'rx_shift_payload_buffer_reg' and it is trimmed from '32' to '24' bits. [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:393]
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
@@ -127,7 +129,7 @@ WARNING: [Synth 8-3936] Found unconnected internal register 'rx_shift_payload_bu
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'w5500_axi_data_streamer'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -144,30 +146,27 @@ Detailed RTL Component Info :
 	               16 Bit    Registers := 3     
 	               10 Bit    Registers := 1     
 	                8 Bit    Registers := 7     
-	                6 Bit    Registers := 3     
-	                5 Bit    Registers := 1     
+	                6 Bit    Registers := 1     
+	                5 Bit    Registers := 3     
 	                2 Bit    Registers := 4     
 	                1 Bit    Registers := 27    
 +---Muxes : 
-	  32 Input   32 Bit        Muxes := 2     
+	  32 Input   32 Bit        Muxes := 1     
 	   2 Input   32 Bit        Muxes := 3     
-	  32 Input   24 Bit        Muxes := 1     
 	   7 Input    8 Bit        Muxes := 1     
 	   4 Input    8 Bit        Muxes := 2     
 	   2 Input    8 Bit        Muxes := 1     
-	  32 Input    6 Bit        Muxes := 2     
-	   2 Input    5 Bit        Muxes := 2     
+	   2 Input    5 Bit        Muxes := 3     
 	   3 Input    5 Bit        Muxes := 1     
 	   4 Input    5 Bit        Muxes := 1     
 	   7 Input    3 Bit        Muxes := 1     
 	   2 Input    3 Bit        Muxes := 1     
-	  32 Input    3 Bit        Muxes := 1     
+	  32 Input    2 Bit        Muxes := 1     
 	   4 Input    2 Bit        Muxes := 1     
 	   2 Input    2 Bit        Muxes := 3     
 	   7 Input    1 Bit        Muxes := 8     
-	   2 Input    1 Bit        Muxes := 65    
-	   5 Input    1 Bit        Muxes := 1     
-	  32 Input    1 Bit        Muxes := 8     
+	   2 Input    1 Bit        Muxes := 64    
+	  32 Input    1 Bit        Muxes := 6     
 	   4 Input    1 Bit        Muxes := 26    
 	   3 Input    1 Bit        Muxes := 3     
 ---------------------------------------------------------------------------------
@@ -186,9 +185,9 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
-WARNING: [Synth 8-3936] Found unconnected internal register 'spi_m/rx_shift_payload_buffer_reg' and it is trimmed from '24' to '16' bits. [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:397]
+WARNING: [Synth 8-3936] Found unconnected internal register 'spi_m/rx_shift_payload_buffer_reg' and it is trimmed from '24' to '16' bits. [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:393]
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -198,8 +197,10 @@ ROM: Preliminary Mapping Report
 +--------------------+-----------------------+---------------+----------------+
 |Module Name         | RTL Object            | Depth x Width | Implemented As | 
 +--------------------+-----------------------+---------------+----------------+
-|w5500_state_machine | state_debug_out       | 64x1          | LUT            | 
-|top                 | spi_m/state_debug_out | 64x1          | LUT            | 
+|w5500_state_machine | state_debug_out       | 32x1          | LUT            | 
+|w5500_state_machine | state_debug_out       | 32x6          | LUT            | 
+|top                 | spi_m/state_debug_out | 32x1          | LUT            | 
+|top                 | spi_m/state_debug_out | 32x6          | LUT            | 
 +--------------------+-----------------------+---------------+----------------+
 
 ---------------------------------------------------------------------------------
@@ -209,19 +210,19 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:16 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:16 ; elapsed = 00:00:18 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Timing Optimization : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:16 ; elapsed = 00:00:18 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Technology Mapping : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -239,92 +240,94 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished IO Insertion : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
 ---------------------------------------------------------------------------------
 
 Report BlackBoxes: 
-+------+--------------------+----------+
-|      |BlackBox name       |Instances |
-+------+--------------------+----------+
-|1     |axis_data_fifo_8bit |         4|
-+------+--------------------+----------+
++------+-----------------------------+----------+
+|      |BlackBox name                |Instances |
++------+-----------------------------+----------+
+|1     |axis_data_fifo_8bit          |         2|
+|2     |axis_data_fifo_16_times_8bit |         2|
++------+-----------------------------+----------+
 
 Report Cell Usage: 
-+------+-------------------------+------+
-|      |Cell                     |Count |
-+------+-------------------------+------+
-|1     |axis_data_fifo_8bit_bbox |     4|
-|5     |BUFG                     |     1|
-|6     |CARRY4                   |    47|
-|7     |LUT1                     |     5|
-|8     |LUT2                     |   193|
-|9     |LUT3                     |    52|
-|10    |LUT4                     |   140|
-|11    |LUT5                     |    73|
-|12    |LUT6                     |   203|
-|13    |FDCE                     |    19|
-|14    |FDPE                     |     1|
-|15    |FDRE                     |   340|
-|16    |FDSE                     |    36|
-|17    |IBUF                     |     3|
-|18    |OBUF                     |     8|
-|19    |OBUFT                    |     1|
-+------+-------------------------+------+
++------+----------------------------------+------+
+|      |Cell                              |Count |
++------+----------------------------------+------+
+|1     |axis_data_fifo_16_times_8bit_bbox |     2|
+|3     |axis_data_fifo_8bit_bbox          |     2|
+|5     |BUFG                              |     1|
+|6     |CARRY4                            |    47|
+|7     |LUT1                              |     5|
+|8     |LUT2                              |   185|
+|9     |LUT3                              |    53|
+|10    |LUT4                              |   142|
+|11    |LUT5                              |    87|
+|12    |LUT6                              |   131|
+|13    |FDCE                              |    18|
+|14    |FDPE                              |     1|
+|15    |FDRE                              |   310|
+|16    |FDSE                              |    65|
+|17    |IBUF                              |     3|
+|18    |OBUF                              |     8|
+|19    |OBUFT                             |     1|
++------+----------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 3 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:14 ; elapsed = 00:00:19 . Memory (MB): peak = 1562.625 ; gain = 567.445
-Synthesis Optimization Complete : Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 1562.625 ; gain = 656.527
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:12 ; elapsed = 00:00:17 . Memory (MB): peak = 1559.473 ; gain = 567.688
+Synthesis Optimization Complete : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 1559.473 ; gain = 654.551
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1562.625 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1559.473 ; gain = 0.000
 INFO: [Netlist 29-17] Analyzing 47 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1562.625 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1559.473 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Synth Design complete | Checksum: fed0c41
+Synth Design complete | Checksum: e2b3718d
 INFO: [Common 17-83] Releasing license: Synthesis
-43 Infos, 8 Warnings, 0 Critical Warnings and 0 Errors encountered.
+44 Infos, 8 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:28 . Memory (MB): peak = 1562.625 ; gain = 1074.070
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1562.625 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 1559.473 ; gain = 1073.348
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1559.473 ; gain = 0.000
 INFO: [Common 17-1381] The checkpoint 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Sun Dec 29 12:24:00 2024...
+INFO: [Common 17-206] Exiting Vivado at Mon Dec 30 10:28:50 2024...

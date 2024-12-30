@@ -113,40 +113,14 @@
                                 "id": 2,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
-                                "isVector": true,
+                                "isVector": false,
                                 "leftIndex": 0,
-                                "rightIndex": 7,
+                                "rightIndex": 0,
                                 "portIndex": 2,
                                 "nets": [
                                     {
-                                        "name": "tdata__0",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "tdata__0[7]"
-                                            },
-                                            {
-                                                "name": "tdata__0[6]"
-                                            },
-                                            {
-                                                "name": "tdata__0[5]"
-                                            },
-                                            {
-                                                "name": "tdata__0[4]"
-                                            },
-                                            {
-                                                "name": "tdata__0[3]"
-                                            },
-                                            {
-                                                "name": "tdata__0[2]"
-                                            },
-                                            {
-                                                "name": "tdata__0[1]"
-                                            },
-                                            {
-                                                "name": "tdata__0[0]"
-                                            }
-                                        ]
+                                        "name": "cs_OBUF",
+                                        "isBus": false
                                     }
                                 ]
                             },
@@ -161,7 +135,7 @@
                                 "portIndex": 3,
                                 "nets": [
                                     {
-                                        "name": "cs_OBUF",
+                                        "name": "ext_pl_tvalid",
                                         "isBus": false
                                     }
                                 ]
@@ -177,7 +151,7 @@
                                 "portIndex": 4,
                                 "nets": [
                                     {
-                                        "name": "ext_pl_tlast",
+                                        "name": "txrx_unit/m_axis_tready_3",
                                         "isBus": false
                                     }
                                 ]
@@ -193,7 +167,7 @@
                                 "portIndex": 5,
                                 "nets": [
                                     {
-                                        "name": "ext_pl_tready",
+                                        "name": "txrx_unit/m_axis_tvalid",
                                         "isBus": false
                                     }
                                 ]
@@ -209,7 +183,7 @@
                                 "portIndex": 6,
                                 "nets": [
                                     {
-                                        "name": "ext_pl_tvalid",
+                                        "name": "txrx_unit/m_axis_tvalid_1",
                                         "isBus": false
                                     }
                                 ]
@@ -225,7 +199,7 @@
                                 "portIndex": 7,
                                 "nets": [
                                     {
-                                        "name": "txrx_unit/m_axis_tready_3",
+                                        "name": "miso_IBUF",
                                         "isBus": false
                                     }
                                 ]
@@ -241,7 +215,7 @@
                                 "portIndex": 8,
                                 "nets": [
                                     {
-                                        "name": "txrx_unit/m_axis_tvalid",
+                                        "name": "mosi_OBUF",
                                         "isBus": false
                                     }
                                 ]
@@ -255,54 +229,6 @@
                                 "leftIndex": 0,
                                 "rightIndex": 0,
                                 "portIndex": 9,
-                                "nets": [
-                                    {
-                                        "name": "txrx_unit/m_axis_tvalid_1",
-                                        "isBus": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe10",
-                                "id": 10,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": false,
-                                "leftIndex": 0,
-                                "rightIndex": 0,
-                                "portIndex": 10,
-                                "nets": [
-                                    {
-                                        "name": "miso_IBUF",
-                                        "isBus": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe11",
-                                "id": 11,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": false,
-                                "leftIndex": 0,
-                                "rightIndex": 0,
-                                "portIndex": 11,
-                                "nets": [
-                                    {
-                                        "name": "mosi_OBUF",
-                                        "isBus": false
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "probe12",
-                                "id": 12,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": false,
-                                "leftIndex": 0,
-                                "rightIndex": 0,
-                                "portIndex": 12,
                                 "nets": [
                                     {
                                         "name": "sclk_OBUF",

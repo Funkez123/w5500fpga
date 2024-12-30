@@ -57,7 +57,7 @@ architecture behavioral of transceive_unit is
     
     signal first_execute : std_logic := '1';
     
-    component axis_data_fifo_8bit is 
+    component axis_data_fifo_16_times_8bit is 
         Port(
             s_axis_tdata : in std_logic_vector(7 downto 0);
             s_axis_tready: out std_logic;
@@ -75,7 +75,7 @@ architecture behavioral of transceive_unit is
     
     begin
     
-    u_tx_payload_fifo : axis_data_fifo_8bit -- fifo that stores the data that needs to be sent
+    u_tx_payload_fifo : axis_data_fifo_16_times_8bit -- fifo that stores the data that needs to be sent
         port map (
             s_axis_tdata => tdata,
             s_axis_tready => tready_int_buffer,
@@ -89,7 +89,7 @@ architecture behavioral of transceive_unit is
             m_axis_tlast => tx_payload_last
         );
     
-        u_rx_payload_fifo : axis_data_fifo_8bit -- data that has been read while the execution state
+        u_rx_payload_fifo : axis_data_fifo_16_times_8bit -- data that has been read while the execution state
         port map (
             s_axis_tdata => rx_buffer,
             s_axis_tready => rx_buffer_ready, 
