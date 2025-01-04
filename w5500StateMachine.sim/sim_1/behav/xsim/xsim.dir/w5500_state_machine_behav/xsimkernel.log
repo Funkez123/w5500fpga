@@ -1,7 +1,0 @@
-Running: xsim.dir/w5500_state_machine_behav/xsimk.exe -simmode gui -wdb w5500_state_machine_behav.wdb -simrunnum 0 -socket 61844
-Design successfully loaded
-Design Loading Memory Usage: 9100 KB (Peak: 9100 KB)
-Design Loading CPU Usage: 15 ms
-Simulation completed
-Simulation Memory Usage: 10100 KB (Peak: 10100 KB)
-Simulation CPU Usage: 31 ms

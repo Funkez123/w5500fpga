@@ -1,1 +1,0 @@
---incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "axis_infrastructure_v1_1_1" -L "axis_data_fifo_v2_0_11" -L "axis_register_slice_v1_1_29" -L "axis_dwidth_converter_v1_1_28" -L "unisims_ver" -L "unimacro_ver" -L "secureip" -L "xpm" --snapshot "spi_streamer_behav" "xil_defaultlib.spi_streamer" "xil_defaultlib.glbl" -log "elaborate.log" 

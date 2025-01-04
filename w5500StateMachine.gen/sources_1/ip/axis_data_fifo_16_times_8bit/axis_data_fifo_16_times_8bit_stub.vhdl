@@ -2,7 +2,7 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
--- Date        : Sun Nov 17 09:33:28 2024
+-- Date        : Fri Dec 20 16:33:03 2024
 -- Host        : DESKTOP-FEDBMRF running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub -rename_top axis_data_fifo_16_times_8bit -prefix
 --               axis_data_fifo_16_times_8bit_ axis_data_fifo_8bit_stub.vhdl

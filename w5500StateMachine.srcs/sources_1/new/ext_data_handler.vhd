@@ -45,16 +45,16 @@ end ext_data_handler;
 
 architecture Behavioral of ext_data_handler is
 
-    constant DATA_SIZE : integer := 6;  -- 512 bytes of data
+    constant DATA_SIZE : integer := 2;  -- 6 bytes of data
     constant INTERVAL  : integer := 125000; -- 4000 thousand clock cycles
 
     signal counter     : integer := 0;
     signal byte_index  : integer := 0;
     signal sending     : boolean := false;
-    
+
 begin
 
-    process(clk)
+    process(clk, rst, sending)
     begin
         if rising_edge(clk) then
             if rst = '1' then
@@ -67,19 +67,18 @@ begin
             else
                 if sending then
                     -- Transmit the test data
-                    tdata  <= std_logic_vector(to_unsigned(byte_index, 8));
+                    tdata  <= std_logic_vector(to_unsigned(byte_index,8));
                     tvalid <= '1';
-                    tlast  <= '0';
 
-                    
-                        if byte_index = DATA_SIZE - 1 then
-                            tlast      <= '1';
-                            sending    <= false;
-                            byte_index <= 0;
-                        else
-                            if(tready = '1') then
-                                byte_index <= byte_index + 1;   
-                            end if;
+                    if byte_index = DATA_SIZE - 1 then
+                        tlast      <= '1';
+                        sending    <= false; -- End of transmission
+                        byte_index <= 0;     -- Reset index
+                    else
+                        tlast <= '0';
+                        if tready = '1' then
+                            byte_index <= byte_index + 1;   
+                        end if;
                     end if;
                 else
                     -- Wait for the interval to pass
@@ -88,7 +87,8 @@ begin
 
                     if counter = INTERVAL - 1 then
                         counter  <= 0;
-                        sending  <= true;
+                        sending  <= true;    -- Start sending
+                        byte_index <= 0;     -- Ensure reset to 0 only here
                     else
                         counter <= counter + 1;
                     end if;

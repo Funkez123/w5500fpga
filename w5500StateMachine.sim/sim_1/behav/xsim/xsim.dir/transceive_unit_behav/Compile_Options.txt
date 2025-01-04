@@ -1,1 +1,0 @@
---incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "axis_infrastructure_v1_1_1" -L "axis_data_fifo_v2_0_11" -L "unisims_ver" -L "unimacro_ver" -L "secureip" -L "xpm" --snapshot "transceive_unit_behav" "xil_defaultlib.transceive_unit" "xil_defaultlib.glbl" -log "elaborate.log" 
