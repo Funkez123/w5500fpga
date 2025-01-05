@@ -56,15 +56,19 @@ architecture behavioral of w5500_state_machine is
         UPDATE_TX_WRITE_POINTER_STATE,
         UPDATE_RX_READ_POINTER_AFTER_READ_STATE,
         REQUEST_RECEIVED_DATA_SIZE,
+        CHECK_IF_TX_WR_POINTER_HAS_BEEN_UPDATED,
         WAIT_FOR_REQUESTED_DATA_SIZE,
         CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE,
         GET_RX_READ_POINTER_STATE,
+        GET_UPDATED_TX_WR_POINTER_BEFORE_SEND,
         CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION,
         ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER_STATE,
         CHECK_INTERRUPT_REG_RETURNED_VALUE,
+        CHECK_IF_UDP_SOCKET_IS_INITIALIZED,
         REQUEST_INTERRUPT_REG_AFTER_SOCKET_CHECK_STATE,
         WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED,
         ISSUE_SEND_COMMAND,
+        GET_SOCKET_STATUS_THROUGH_SN_SR,
         CHECK_IF_FREE_SIZE_IS_AVAILABLE,
         WAIT_FOR_INTERRUPT_REGISTER_TO_BE_RECEIVED,
         CLEAR_INTERRUPT_FLAGS_FROM_IR_STATE,
@@ -112,16 +116,13 @@ architecture behavioral of w5500_state_machine is
     signal rx_received_size_reg : std_logic_vector(15 downto 0);
     signal rx_pointer_reg : std_logic_vector(15 downto 0);
     
-    signal tx_write_pointer : std_logic_vector(10 downto 0); -- is of size 11 Bits, because 2^11 = 2048 = 2kb
+    --signal tx_write_pointer : std_logic_vector(13 downto 0); -- 14 Bits in size, w^14 = 16kb
+    signal tx_write_pointer : std_logic_vector(15 downto 0); -- 14 Bits in size, w^14 = 16kb
    
    
     -- PASSTHROUGH MODE COUNTERS
     signal ptm_transmitted_byte_counter : integer range 0 to 512;
     signal ptm_received_byte_counter : integer range 0 to 1024;
-      
-      
-    
-    
       
     component w5500_axi_data_streamer is
         Port (
@@ -148,8 +149,7 @@ architecture behavioral of w5500_state_machine is
             rready     : out std_logic;                      -- To SPI Master (AXI Stream RREADY)
             rvalid     : in std_logic;                       -- From SPI Master (AXI Stream RVALID)
             rdata      : in std_logic_vector(7 downto 0);    -- From SPI Master (AXI Stream RREADY)
-            rlast      : in std_logic  
-                                 
+            rlast      : in std_logic                    
         );
     end component;
     
@@ -158,7 +158,7 @@ begin
     
     u_w5500_axi_data_streamer: w5500_axi_data_streamer
         port map (
-            clk        => clk,
+            clk          => clk,
             reset        => reset,
             conf_header => conf_header,   -- the first 24 bits to transmit before continuing with the payload
             conf_header_valid => conf_header_valid,
@@ -210,7 +210,7 @@ begin
                     ptm_received_byte_counter <= 0;
                     rx_received_size_reg <= x"0000";
                     rx_pointer_reg <= x"0000";
-                    tx_write_pointer <= "00000000000";
+                    tx_write_pointer <= "0000000000000000";
                 end if;
             
             when RESET_W5500_CHIP_STATE =>
@@ -240,11 +240,11 @@ begin
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1;
                             conf_header <= x"001F" & "00001" & '1' & "00"; 
-                            raw_payload_buffer <= x"02000000"; -- 2Kb = 2*1024       
+                            raw_payload_buffer <= x"02000000"; -- 16*1024 =    
                         end if;
                     end if;
                 end if;
-            
+                
             when SET_GATEWAY_STATE =>
                  -- set the gateway
                 if(spi_busy = '0' and prev_spi_busy = '1') then
@@ -380,6 +380,30 @@ begin
             ---^ here the INIT PIPELINE is finished
             
             --- now do the default routine:
+            when GET_SOCKET_STATUS_THROUGH_SN_SR =>
+                if(spi_busy = '0' and prev_spi_busy = '1') then -- if spi is done and the last packa   
+                    w5500state_next <= CHECK_IF_UDP_SOCKET_IS_INITIALIZED;
+                    payload_data_has_been_set <= '0';
+                else
+                   if(w5500state_next /= CHECK_IF_UDP_SOCKET_IS_INITIALIZED) then
+                        if(payload_data_has_been_set = '0') then
+                            payload_data_has_been_set <= '1';
+                            payload_byte_length <= 1; -- Status is one byte in size
+                            conf_header <= x"0003" & "00001" & '0' & "00"; --  
+                            raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
+                        end if;
+                    end if; 
+                end if;
+                
+            when CHECK_IF_UDP_SOCKET_IS_INITIALIZED =>    
+                if(rx_payload_last = '1') then
+                    if(rx_shift_payload_buffer(7 downto 0) = x"00") then --  if socket is closed, then just reopen it
+                        w5500state_next <= OPEN_SOCKET_STATE;
+                    else 
+                        w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA; -- if socket is open, then continue
+                    end if;
+                end if;
+            
             
             when CHECK_IF_EXT_TX_AXIS_HAS_DATA =>    
                 state_debug_out <= "000001";   
@@ -481,10 +505,10 @@ begin
             when ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER_STATE =>   
             state_debug_out <= "001001";
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA;
+                    w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= CHECK_IF_EXT_TX_AXIS_HAS_DATA) then
+                   if(w5500state_next /= GET_SOCKET_STATUS_THROUGH_SN_SR) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Command is only one byte
@@ -500,7 +524,7 @@ begin
             --^-- end of the RX Pipeline
             
             
-            -- start of the TX Pipeline:
+            -- start of the TX Pipeline
             
             when READ_TX_FREE_BUFFER_SIZE =>  
             state_debug_out <= "001010"; 
@@ -522,7 +546,7 @@ begin
             when CHECK_IF_FREE_SIZE_IS_AVAILABLE =>
                 if(rx_payload_last = '1') then
                     --if(to_integer(unsigned(rx_shift_payload_buffer(15 downto 0))) > 4) then
-                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2000) then
+                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2044) then
                         w5500state_next <= DEST_IP_STATE;
                     else 
                         w5500state_next <= READ_TX_FREE_BUFFER_SIZE;
@@ -572,7 +596,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0022" & "00001" & '0' & "00"; --  0x22 and 23 are the TX read pointers for socket 0
+                            conf_header <= x"0024" & "00001" & '0' & "00"; --  0x24 and 25 are the TX Write pointers for socket 0
                             raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
                         end if;
                     end if; 
@@ -582,7 +606,7 @@ begin
              state_debug_out <= "001100";        
                 if(rx_payload_last = '1') then
                     w5500state_next <= WRITE_TX_DATA_STATE; -- if no data is received, then check again
-                    tx_write_pointer <= rx_shift_payload_buffer(10 downto 0);
+                    tx_write_pointer <= rx_shift_payload_buffer(15 downto 0);
                     streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
                 end if;
             
@@ -598,7 +622,7 @@ begin
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_STATE) then
                             streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
-                            conf_header <= "00000" & tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
+                            conf_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
                             if(payload_ready='1' and ext_pl_tvalid = '1' and ptm_transmitted_byte_counter < 512) then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;
                             end if;
@@ -619,7 +643,7 @@ begin
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
                             conf_header <= x"0024" & "00001" & '1' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, write command with '1' as rwb bit
-                            raw_payload_buffer <= "00000" & std_logic_vector((unsigned(tx_write_pointer)+4)) & x"0000";   
+                            raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+ptm_transmitted_byte_counter)) & x"0000";   
                             
                         end if;
                     end if; 
@@ -639,7 +663,7 @@ begin
                             conf_header <= x"0001" & "00001" & '1' & "00"; --  0x0001 for Socket Command Register + "00001" BSB for Socket 0, write command
                             raw_payload_buffer <= x"20000000"; -- 0x20, send command
                             ptm_transmitted_byte_counter <= 0;
-                            tx_write_pointer <= "00000000000";
+                            tx_write_pointer <= "0000000000000000";
                         end if;
                     end if; 
                 end if;
@@ -699,10 +723,10 @@ begin
             
             when CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION =>   
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA;
+                    w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= CHECK_IF_EXT_TX_AXIS_HAS_DATA) then
+                   if(w5500state_next /= GET_SOCKET_STATUS_THROUGH_SN_SR) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in size
