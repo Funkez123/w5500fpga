@@ -38,6 +38,7 @@ architecture behavioral of w5500_state_machine is
 	type W5500_state_type is (
 	    RESET_STATE,
         RESET_W5500_CHIP_STATE,
+        SET_TX_BUFFER_SIZE_TO_2KB,
         SET_GATEWAY_STATE,
         SET_SUBNET_STATE,
         SET_MAC_STATE_1,
@@ -215,6 +216,22 @@ begin
             when RESET_W5500_CHIP_STATE =>
                  -- set the reset bit for the w5500
                 if(spi_busy = '0' and prev_spi_busy = '1') then -- only change states when the spi transmission is done.
+                    w5500state_next <= SET_TX_BUFFER_SIZE_TO_2KB;
+                    payload_data_has_been_set <= '0';
+                else
+                    if(w5500state_next /= SET_TX_BUFFER_SIZE_TO_2KB) then -- this prevents setting data again when changing states
+                        if(payload_data_has_been_set = '0') then
+                            payload_data_has_been_set <= '1';
+                            payload_byte_length <= 1;
+                            conf_header <= x"0000" & "00000" & '1' & "00";  -- Mode Register 0x0000 -- + "00000" (BSB for common register) + '1' (write) + "00" for vdm
+                            raw_payload_buffer <= x"80000000"; -- first byte is "10000000" which means the software reset bit is high          
+                        end if;
+                    end if;
+                end if;
+            
+            when SET_TX_BUFFER_SIZE_TO_2KB =>
+                 -- sets the TX Buffer size to 2 kilobytes in size
+                if(spi_busy = '0' and prev_spi_busy = '1') then -- only change states when the spi transmission is done.
                     w5500state_next <= SET_GATEWAY_STATE;
                     payload_data_has_been_set <= '0';
                 else
@@ -222,8 +239,8 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1;
-                            conf_header <= x"0000" & "00000" & '1' & "00";  -- Mode Register 0x0000 -- + "00000" (BSB for common register) + '1' (write) + "00" for vdm
-                            raw_payload_buffer <= x"80000000"; -- first byte is "10000000" which means the software reset bit is high          
+                            conf_header <= x"001F" & "00001" & '1' & "00"; 
+                            raw_payload_buffer <= x"02000000"; -- 2Kb = 2*1024       
                         end if;
                     end if;
                 end if;
@@ -555,7 +572,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0024" & "00001" & '0' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, read command with '0' as rwb bit
+                            conf_header <= x"0022" & "00001" & '0' & "00"; --  0x22 and 23 are the TX read pointers for socket 0
                             raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
                         end if;
                     end if; 
