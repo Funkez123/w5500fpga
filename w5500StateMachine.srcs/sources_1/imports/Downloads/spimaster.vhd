@@ -505,17 +505,16 @@ begin
             when ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER_STATE =>   
             state_debug_out <= "001001";
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
+                    w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= GET_SOCKET_STATUS_THROUGH_SN_SR) then
+                   if(w5500state_next /= CHECK_IF_EXT_TX_AXIS_HAS_DATA) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Command is only one byte
                             conf_header <= x"0001" & "00001" & '1' & "00"; -- Command register 0x0001, Socket 0 BSB and write
                             raw_payload_buffer <= x"40000000"; -- See Sn_CR , 0x40 completes the read process
                             ptm_received_byte_counter <= 0;
-                            
                             rx_pointer_reg <= x"0000"; -- reset temporal variables
                             rx_received_size_reg <= x"0000";
                         end if;
@@ -530,10 +529,10 @@ begin
             state_debug_out <= "001010"; 
             -- reads the value from the free buffer size register     
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= DEST_IP_STATE;
+                    w5500state_next <= CHECK_IF_FREE_SIZE_IS_AVAILABLE;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= DEST_IP_STATE) then
+                   if(w5500state_next /= CHECK_IF_FREE_SIZE_IS_AVAILABLE) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- 2 Bytes to read
@@ -546,7 +545,7 @@ begin
             when CHECK_IF_FREE_SIZE_IS_AVAILABLE =>
                 if(rx_payload_last = '1') then
                     --if(to_integer(unsigned(rx_shift_payload_buffer(15 downto 0))) > 4) then
-                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2044) then
+                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 1536) then
                         w5500state_next <= DEST_IP_STATE;
                     else 
                         w5500state_next <= READ_TX_FREE_BUFFER_SIZE;
@@ -564,7 +563,7 @@ begin
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4; -- 4 Bytes to set Dest IP
                             conf_header <= x"000C" & "00001" & '1' & "00"; --DEST IP register : 0x000C + "00001" Socket 0 BSB + Write Command
-                            raw_payload_buffer <= x"C0A8026B"; -- 192 168 2 107 
+                            raw_payload_buffer <= x"C0A8026A"; -- 192 168 2 107 
                         end if;
                     end if; 
                 end if;
@@ -708,10 +707,10 @@ begin
             when CLEAR_INTERRUPT_FLAGS_FROM_IR_STATE =>   
             state_debug_out <= "010110"; 
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION;
+                    w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION) then
+                   if(w5500state_next /= CHECK_IF_EXT_TX_AXIS_HAS_DATA) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to read status
@@ -723,10 +722,10 @@ begin
             
             when CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION =>   
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
+                    w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA;
                     payload_data_has_been_set <= '0';
                 else
-                   if(w5500state_next /= GET_SOCKET_STATUS_THROUGH_SN_SR) then
+                   if(w5500state_next /= CHECK_IF_EXT_TX_AXIS_HAS_DATA) then
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in size
