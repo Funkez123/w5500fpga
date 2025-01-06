@@ -46,7 +46,7 @@ end ext_data_handler;
 architecture Behavioral of ext_data_handler is
 
     constant DATA_SIZE : integer := 254;  -- 6 bytes of data
-    constant INTERVAL  : integer := 8000; -- 4000 thousand clock cycles
+    constant INTERVAL  : integer := 4000; -- 1250 clk cycles = every 100 microseconds
 
     signal counter     : integer := 0;
     signal byte_index  : integer := 0;
