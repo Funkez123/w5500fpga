@@ -127,10 +127,10 @@ architecture behavioral of w5500_state_machine is
     
     
     -- "generics"
-    signal source_ip_address : std_logic_vector(31 downto 0) := x"C0A80264"; --local ip address
-    signal dest_ip_address : std_logic_vector(31 downto 0) := x"C0A8026B"; --destination ip address
-    signal source_udp_port : std_logic_vector(15 downto 0) := x"00D9"; -- local udp port
-    signal dest_udp_port : std_logic_vector(15 downto 0) := x"00D9"; --destination udp port
+    constant source_ip_address : std_logic_vector(31 downto 0) := x"C0A80264"; --local ip address   192 168 2 100
+    constant dest_ip_address : std_logic_vector(31 downto 0) := x"C0A8026B"; --destination ip address  192 168 2 XXX
+    constant source_udp_port : std_logic_vector(15 downto 0) := x"00D9"; -- local udp port   217
+    constant dest_udp_port : std_logic_vector(15 downto 0) := x"00D9"; --destination udp port   217
    
    
     component w5500_axi_data_streamer is
@@ -215,7 +215,6 @@ begin
             when RESET_STATE =>
                 if(payload_ready = '1') then --when the FIFOs in the W5500 Streamer are ready, then we can continue
                     w5500state_next <= RESET_W5500_CHIP_STATE;
-                    ptm_transmitted_byte_counter <= 0;
                     rx_received_size_reg <= x"0000";
                     rx_pointer_reg <= x"0000";
                     tx_write_pointer <= "0000000000000000";
@@ -552,7 +551,7 @@ begin
             when CHECK_IF_FREE_SIZE_IS_AVAILABLE =>
                 if(rx_payload_last = '1') then
                     --if(to_integer(unsigned(rx_shift_payload_buffer(15 downto 0))) > 4) then
-                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 1536) then
+                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2000) then
                         w5500state_next <= SET_DEST_IP;
                     else 
                         w5500state_next <= READ_TX_FREE_BUFFER_SIZE;
@@ -629,11 +628,11 @@ begin
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
                             streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
                             conf_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            if(payload_ready='1' and ext_pl_tvalid = '1' and ptm_transmitted_byte_counter < 512) then
-                                ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;
+                            if(ext_pl_tvalid = '1') then
+                                ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
                             end if;
-                
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
+                            payload_data_has_been_set <= '1';
                     end if; 
                 end if;
             
@@ -649,8 +648,7 @@ begin
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
                             conf_header <= x"0024" & "00001" & '1' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, write command with '1' as rwb bit
-                            raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+ptm_transmitted_byte_counter)) & x"0000";   
-                            
+                            raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+1)) & x"0000";   
                         end if;
                     end if; 
                 end if;
@@ -668,8 +666,8 @@ begin
                             payload_byte_length <= 1; -- Just one Byte to read status
                             conf_header <= x"0001" & "00001" & '1' & "00"; --  0x0001 for Socket Command Register + "00001" BSB for Socket 0, write command
                             raw_payload_buffer <= x"20000000"; -- 0x20, send command
-                            ptm_transmitted_byte_counter <= 0;
                             tx_write_pointer <= "0000000000000000";
+                            ptm_transmitted_byte_counter <= 0;
                         end if;
                     end if; 
                 end if;
@@ -789,16 +787,30 @@ begin
                     ext_pl_tready <= '0';
                     ext_pl_rvalid <= '0';
                     
+                    
+                    
                 when TX_FIFO_PASSTHROUGH_MODE => -- external source takes care of writing to TX Payload FIFO
             
-                    conf_header_valid <= '1';
-            
                     -- transmitting part of the Passthrough MODE 
+                    
+                    if(ext_pl_tvalid = '1' and payload_ready = '1') then
+                        payload_valid <= ext_pl_tvalid;
+                          
+                    else
+                        payload_valid <= '0';
+                    end if;
+                    
+                    if(payload_data_has_been_set = '1') then
+                        conf_header_valid <= '0';
+                    else
+                        conf_header_valid <= '1';
+                    end if;
+                    
                     payload_data <= ext_pl_tdata;
-                    ext_pl_tready <= payload_ready;
                     payload_last <= ext_pl_tlast;
-                    payload_valid <= ext_pl_tvalid;
-                        
+                    ext_pl_tready <= payload_ready;
+                    
+                    ext_pl_rvalid <= '0';
                         
                  when RX_FIFO_PASSTHROUGH_MODE =>
                         
@@ -830,6 +842,7 @@ begin
                     ext_pl_rvalid <= rx_payload_valid;
                     rx_payload_ready <= ext_pl_rready;        
                             
+                    ext_pl_tready <= '0';        
                 when others =>     
             end case;
         end if;

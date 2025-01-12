@@ -13,7 +13,7 @@ entity w5500_axi_data_streamer is
         -- from w5500 state machine (The payload data that the statemachine wants to send via SPI)
         tx_plready    : out std_logic; -- payload ready AXIStream ready
         tx_plvalid    : in std_logic;  --payload valid AXISTream valid
-        tx_pldata : in  std_logic_vector(7 downto 0);  -- 32-bit payload to be sent (doesn't matter if from state machine or external)
+        tx_pldata : in  std_logic_vector(7 downto 0);  -- 8-bit payload to be sent (from state machine or external)
         tx_pllast     : in std_logic; -- payload last bit for AXIStream
         
         -- to w5500 state machine (The payload data that has been received from the W5500 Chip after the header transmission)

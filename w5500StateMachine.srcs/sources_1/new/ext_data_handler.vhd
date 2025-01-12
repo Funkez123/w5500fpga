@@ -45,56 +45,50 @@ end ext_data_handler;
 
 architecture Behavioral of ext_data_handler is
 
-    constant DATA_SIZE : integer := 254;  -- 6 bytes of data
-    constant INTERVAL  : integer := 4000; -- 1250 clk cycles = every 100 microseconds
+    constant INTERVAL   : integer := 20000; -- Interval between transmissions
 
-    signal counter     : integer := 0;
-    signal byte_index  : integer := 0;
-    signal sending     : boolean := false;
+    signal counter      : integer := 0;
+    signal byte_index   : integer := 0;
+    signal packet_count : integer := 0;  -- Track the number of packets sent
+    signal sending      : boolean := false;
 
 begin
 
-    process(clk, rst, sending)
-    begin
-        if rising_edge(clk) then
-            if rst = '1' then
-                counter     <= 0;
-                byte_index  <= 0;
-                sending     <= false;
-                tdata       <= (others => '0');
-                tvalid      <= '0';
-                tlast       <= '0';
+    process(clk, rst)
+begin
+    if rising_edge(clk) then
+        if rst = '1' then
+            counter      <= 0;
+            byte_index   <= 0;
+            packet_count <= 0;
+            sending      <= false;
+            tdata        <= (others => '0');
+            tvalid       <= '0';
+            tlast        <= '0';
+        else
+            if(sending = true) then
+            -- this just send's the byte index
+            tvalid <= '1';
+            tlast <= '1';
+            tdata <= std_logic_vector(to_unsigned(byte_index,8));
+                        
+            if(tready = '1') then
+                byte_index <= byte_index + 1;
+                sending <= false;
+            end if;            
+        
+        else --if sending = false
+            tlast <= '0';
+            tvalid <= '0';
+            if(counter = INTERVAL - 1) then
+                counter <= 0;
+                sending <= true;
             else
-                if sending then
-                    -- Transmit the test data
-                    tdata  <= std_logic_vector(to_unsigned(byte_index,8));
-                    tvalid <= '1';
-
-                    if byte_index = DATA_SIZE - 1 then
-                        tlast      <= '1';
-                        sending    <= false; -- End of transmission
-                        byte_index <= 0;     -- Reset index
-                    else
-                        tlast <= '0';
-                        if tready = '1' then
-                            byte_index <= byte_index + 1;   
-                        end if;
-                    end if;
-                else
-                    -- Wait for the interval to pass
-                    tvalid <= '0';
-                    tlast  <= '0';
-
-                    if counter = INTERVAL - 1 then
-                        counter  <= 0;
-                        sending  <= true;    -- Start sending
-                        byte_index <= 0;     -- Ensure reset to 0 only here
-                    else
-                        counter <= counter + 1;
-                    end if;
-                end if;
+                counter <= counter + 1; 
             end if;
         end if;
-    end process;
+    end if;
+    end if;
+end process;
 
 end Behavioral;
