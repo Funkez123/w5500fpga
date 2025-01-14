@@ -2,10 +2,10 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-// Date        : Sat Jan  4 08:30:58 2025
+// Date        : Fri Dec 20 16:33:03 2024
 // Host        : DESKTOP-FEDBMRF running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub
-//               c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top axis_data_fifo_8bit -prefix
+//               axis_data_fifo_8bit_ axis_data_fifo_8bit_stub.v
 // Design      : axis_data_fifo_8bit
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z020clg400-1

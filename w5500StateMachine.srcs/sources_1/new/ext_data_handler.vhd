@@ -45,10 +45,10 @@ end ext_data_handler;
 
 architecture Behavioral of ext_data_handler is
 
-    constant INTERVAL   : integer := 20000; -- Interval between transmissions
+    constant INTERVAL   : integer := 10000; -- Interval between transmissions
 
     signal counter      : integer := 0;
-    signal byte_index   : integer := 0;
+    signal byte_index   : integer range 0 to 255 := 0;
     signal packet_count : integer := 0;  -- Track the number of packets sent
     signal sending      : boolean := false;
 

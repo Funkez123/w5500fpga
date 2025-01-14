@@ -253,56 +253,17 @@ set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports {state_debug
 
 
 
-connect_debug_port u_ila_0/probe8 [get_nets [list spi_m/u_w5500_axi_data_streamer/payload_ready]]
-
-
-connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/tx_write_pointer[0]} {spi_m/tx_write_pointer[1]} {spi_m/tx_write_pointer[2]} {spi_m/tx_write_pointer[3]} {spi_m/tx_write_pointer[4]} {spi_m/tx_write_pointer[5]} {spi_m/tx_write_pointer[6]} {spi_m/tx_write_pointer[7]} {spi_m/tx_write_pointer[8]} {spi_m/tx_write_pointer[9]} {spi_m/tx_write_pointer[10]}]]
 
 
 
 
 
 
-connect_debug_port u_ila_0/probe7 [get_nets [list u_w5500_axi_data_streamer/s_axis_tlast]]
-
-connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_tvalid]]
 
 
-create_debug_core u_ila_0 ila
-set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
-set_property ALL_PROBE_SAME_MU_CNT 2 [get_debug_cores u_ila_0]
-set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 1024 [get_debug_cores u_ila_0]
-set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_0]
-set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
-set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
-set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
-set_property port_width 1 [get_debug_ports u_ila_0/clk]
-connect_debug_port u_ila_0/clk [get_nets [list clk_IBUF_BUFG]]
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 8 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {tdata[0]} {tdata[1]} {tdata[2]} {tdata[3]} {tdata[4]} {tdata[5]} {tdata[6]} {tdata[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 8 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 1 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list ext_pl_tlast]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 1 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list ext_pl_tready]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
-set_property port_width 1 [get_debug_ports u_ila_0/probe4]
-connect_debug_port u_ila_0/probe4 [get_nets [list TREADY]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
-set_property port_width 1 [get_debug_ports u_ila_0/probe5]
-connect_debug_port u_ila_0/probe5 [get_nets [list TVALID]]
-set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
-set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
-set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
-connect_debug_port dbg_hub/clk [get_nets clk_IBUF_BUFG]
+
+
+
+
+
+

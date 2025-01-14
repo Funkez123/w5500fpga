@@ -1,7 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  --include "../../../../w5500StateMachine.ip_user_files/ipstatic/hdl" \
-"../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/sim/axis_data_fifo_8bit.v" \
 "../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/sim/axis_data_fifo_16_times_8bit.v" \
+"../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/sim/axis_data_fifo_8bit.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"

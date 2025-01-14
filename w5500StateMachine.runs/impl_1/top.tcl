@@ -122,7 +122,6 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param tcl.collectionResultDisplayLimit 0
   set_param chipscope.maxJobs 4
   set_param xicom.use_bs_reader 1
   set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project

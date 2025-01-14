@@ -551,7 +551,7 @@ begin
             when CHECK_IF_FREE_SIZE_IS_AVAILABLE =>
                 if(rx_payload_last = '1') then
                     --if(to_integer(unsigned(rx_shift_payload_buffer(15 downto 0))) > 4) then
-                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2000) then
+                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2020) then
                         w5500state_next <= SET_DEST_IP;
                     else 
                         w5500state_next <= READ_TX_FREE_BUFFER_SIZE;
@@ -626,7 +626,6 @@ begin
                     payload_data_has_been_set <= '0';
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
-                            streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
                             conf_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
                             if(ext_pl_tvalid = '1') then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
