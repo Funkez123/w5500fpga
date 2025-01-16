@@ -7,8 +7,8 @@ entity w5500_axi_data_streamer is
         clk        : in  std_logic;
         reset        : in  std_logic := '0';
         -- from w5500 state machine (the header that need's to be SPI transmitted before the payload data)
-        conf_header: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
-        conf_header_valid : in std_logic;
+        spi_header: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
+        spi_header_valid : in std_logic;
         
         -- from w5500 state machine (The payload data that the statemachine wants to send via SPI)
         tx_plready    : out std_logic; -- payload ready AXIStream ready
@@ -40,7 +40,7 @@ end w5500_axi_data_streamer;
 
 architecture Behavioral of w5500_axi_data_streamer is
     -- State type declaration
-    type state_type is (FIFO_INIT_STATE, IDLE, CONF_BYTE_0, CONF_BYTE_1, CONF_BYTE_2, PAYLOAD_STREAM, DONE_STATE);
+    type state_type is (FIFO_INIT_STATE, IDLE, SPI_HEADER_BYTE_0, SPI_HEADER_BYTE_1, SPI_HEADER_BYTE_2, PAYLOAD_STREAM, DONE_STATE);
     signal state : state_type := FIFO_INIT_STATE;
 
     -- Internal signals
@@ -51,9 +51,9 @@ architecture Behavioral of w5500_axi_data_streamer is
     signal payload_fifo_tlast_buffer : std_logic := '0';
     signal tx_plready_buffer : std_logic := '0';
     
-    signal rready_buffer : std_logic := '0'; -- this is the internal buffer between rready and the fifo, that can be set to '0' during the conf_byte states
+    signal rready_buffer : std_logic := '0'; -- this is the internal buffer between rready and the fifo, that can be set to '0' during the spi_header_byte states
     signal rdata_buffer : std_logic_vector(7 downto 0);
-    signal rvalid_buffer : std_logic := '0'; -- we need to have controll, over rvalid and rlast, since we only want the Axi stream RX-FIFO to actually handle data after the conf-Header has been skipped
+    signal rvalid_buffer : std_logic := '0'; -- we need to have controll, over rvalid and rlast, since we only want the Axi stream RX-FIFO to actually handle data after the spi-Header has been skipped
     signal rlast_buffer : std_logic := '0';
     
     signal bytes_received : integer := 0;
@@ -127,35 +127,35 @@ begin
                     tvalid <= '0';
                     tlast <= '0';
                     payload_fifo_ready <= '0';
-                    if conf_header_valid = '1' and tx_plvalid = '1' and tx_plready_buffer = '1' then
-                        state <= CONF_BYTE_0;
+                    if spi_header_valid = '1' and tx_plvalid = '1' and tx_plready_buffer = '1' then
+                        state <= SPI_HEADER_BYTE_0;
                     end if;
 
                 -- Transmitting Byte 0 (Most Significant Byte)
-                when CONF_BYTE_0 =>
-                    tdata <= conf_header(23 downto 16);  -- Send MSB first
+                when SPI_HEADER_BYTE_0 =>
+                    tdata <= spi_header(23 downto 16);  -- Send MSB first
                     tvalid <= '1';
                     payload_fifo_ready <= '0';
                     if tready = '1' then
-                        state <= CONF_BYTE_1;
+                        state <= SPI_HEADER_BYTE_1;
                     end if;
 
                 -- Transmitting Byte 1
-                when CONF_BYTE_1 =>
-                    tdata <= conf_header(15 downto 8);
+                when SPI_HEADER_BYTE_1 =>
+                    tdata <= spi_header(15 downto 8);
                     tvalid <= '1';
                     payload_fifo_ready <= '0';
                     if tready = '1' then
-                        state <= CONF_BYTE_2;
+                        state <= SPI_HEADER_BYTE_2;
                     end if;
 
                 -- Transmitting Byte 2
-                when CONF_BYTE_2 =>
-                    tdata <= conf_header(7 downto 0);
+                when SPI_HEADER_BYTE_2 =>
+                    tdata <= spi_header(7 downto 0);
                     tvalid <= '1';
                     payload_fifo_ready <= '0';
                     if tready = '1' then
-                        state <= PAYLOAD_STREAM;    -- once the conf_header was transmitted, we can switch to payload streaming
+                        state <= PAYLOAD_STREAM;    -- once the spi_header was transmitted, we can switch to payload streaming
                         payload_fifo_ready <= tready; -- this is set one state earlier, so it doesn't have that one clk-cycle delay
                     end if;
                     
@@ -176,7 +176,6 @@ begin
                     tvalid <= '0';
                     tlast <= '0';
                     state <= IDLE;
-
                 when others =>
                     state <= IDLE;
             end case;
@@ -195,7 +194,7 @@ begin
             
             if(rvalid = '1') then
                 --if it's a transmit message then acknoledge, but ignore rx axi stream
-                if(conf_header(2)='1')then -- rwb bit where 1 = write, and 0 = read
+                if(spi_header(2)='1')then -- rwb bit where 1 = write, and 0 = read
                     rready <= '1';
                     rvalid_buffer <= '0';
                     rlast_buffer <= '0';

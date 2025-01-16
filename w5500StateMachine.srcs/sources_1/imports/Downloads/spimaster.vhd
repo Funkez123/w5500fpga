@@ -110,8 +110,8 @@ architecture behavioral of w5500_state_machine is
     signal rx_payload_last : std_logic := '0';
     
     
-    signal conf_header : std_logic_vector(23 downto 0);
-    signal conf_header_valid : std_logic;
+    signal spi_header : std_logic_vector(23 downto 0);
+    signal spi_header_valid : std_logic;
     
     signal rready_int_buffer : std_logic := '0';
    
@@ -137,8 +137,8 @@ architecture behavioral of w5500_state_machine is
         Port (
             clk        : in  std_logic;
             reset        : in  std_logic;
-            conf_header: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
-            conf_header_valid : in std_logic;
+            spi_header: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
+            spi_header_valid : in std_logic;
             
             tx_plready    : out std_logic; -- payload ready AXIStream ready
             tx_plvalid    : in std_logic;  --payload valid AXISTream valid
@@ -169,8 +169,8 @@ begin
         port map (
             clk          => clk,
             reset        => reset,
-            conf_header => conf_header,   -- the first 24 bits to transmit before continuing with the payload
-            conf_header_valid => conf_header_valid,
+            spi_header => spi_header,   -- the first 24 bits to transmit before continuing with the payload
+            spi_header_valid => spi_header_valid,
         
             tx_plready    => payload_ready, -- payload ready AXIStream ready
             tx_plvalid    => payload_valid,  --payload valid AXISTream valid
@@ -207,7 +207,7 @@ begin
 	end process;
 	
     ------ State Machine Transistion logic-------
-	process (clk, reset, w5500state, spi_busy, conf_header, payload_valid)
+	process (clk, reset, w5500state, spi_busy, spi_header, payload_valid)
 	begin
 	
 	if clk'event and clk = '1' then
@@ -230,7 +230,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1;
-                            conf_header <= x"0000" & "00000" & '1' & "00";  -- Mode Register 0x0000 -- + "00000" (BSB for common register) + '1' (write) + "00" for vdm
+                            spi_header <= x"0000" & "00000" & '1' & "00";  -- Mode Register 0x0000 -- + "00000" (BSB for common register) + '1' (write) + "00" for vdm
                             raw_payload_buffer <= x"80000000"; -- first byte is "10000000" which means the software reset bit is high          
                         end if;
                     end if;
@@ -246,7 +246,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1;
-                            conf_header <= x"001F" & "00001" & '1' & "00"; 
+                            spi_header <= x"001F" & "00001" & '1' & "00"; 
                             raw_payload_buffer <= x"02000000"; -- 16*1024 =    
                         end if;
                     end if;
@@ -262,7 +262,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4;
-                            conf_header <= x"0001" & "00000" & '1' & "00";  --gateway address register 0x0001 + CommonRegister BSB "00000" + write"1" + "00" VDM
+                            spi_header <= x"0001" & "00000" & '1' & "00";  --gateway address register 0x0001 + CommonRegister BSB "00000" + write"1" + "00" VDM
                             raw_payload_buffer <= x"C0A80201"; -- 192 168 2 1 (gateway) of EASYBOX Router
                            
                         end if;
@@ -279,7 +279,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4;
-                            conf_header <= x"0005" & "00000" & '1' & "00"; --subnet mask register 0x0005 + WriteCommand in VDM
+                            spi_header <= x"0005" & "00000" & '1' & "00"; --subnet mask register 0x0005 + WriteCommand in VDM
                             raw_payload_buffer <= x"FFFFFF00"; -- 255 255 255 0
                         end if;
                     end if;
@@ -296,7 +296,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4;
-                            conf_header <= x"0009" & "00000" & '1' & "00"; --source mac address register 0x0009 + WriteCommand 
+                            spi_header <= x"0009" & "00000" & '1' & "00"; --source mac address register 0x0009 + WriteCommand 
                             raw_payload_buffer <= x"D47F39AE"; -- 0xD4, 0x7F, 0x39, 0xAE (4Bytes)
                         end if;
                     end if; 
@@ -312,7 +312,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2;
-                            conf_header <= x"000D" & "00000" & '1' & "00"; --source mac address register 0x0009 (plus 4 Byte offset = 0x000D)
+                            spi_header <= x"000D" & "00000" & '1' & "00"; --source mac address register 0x0009 (plus 4 Byte offset = 0x000D)
                             raw_payload_buffer <= x"92B10000"; -- 0x92, 0xB1 (2 Bytes)
                         end if;
                     end if; 
@@ -330,7 +330,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4;
-                            conf_header <= x"000F" & "00000" & '1' & "00"; --source ip address register + Write Command in VDM
+                            spi_header <= x"000F" & "00000" & '1' & "00"; --source ip address register + Write Command in VDM
                             raw_payload_buffer <= source_ip_address; 
                         end if;
                     end if; 
@@ -346,7 +346,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to set Mode
-                            conf_header <= x"0000" & "00001" & '1' & "00"; --Mode Register : 0x4000 + BSB for Socket 0 Register
+                            spi_header <= x"0000" & "00001" & '1' & "00"; --Mode Register : 0x4000 + BSB for Socket 0 Register
                             raw_payload_buffer <= x"02000000"; -- first Byte is : "0000 0010" for UDP mode (PDF page 45), enables UDP Multicast and sets UDP mode
                         end if;
                     end if; 
@@ -362,7 +362,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Two Bytes to set Socket Port for Socket 0
-                            conf_header <= x"0004" & "00001" & '1' & "00"; --Socket Port register : 0x0004 + "00001" Socket 0 BSB + Write Command
+                            spi_header <= x"0004" & "00001" & '1' & "00"; --Socket Port register : 0x0004 + "00001" Socket 0 BSB + Write Command
                             raw_payload_buffer <= source_udp_port & x"0000"; --payload provided by source udp port signal 
                         end if;
                     end if; 
@@ -378,7 +378,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to set Mode
-                            conf_header <= x"0001" & "00001" & '1' & "00"; --Command Register : 0x0001 + "00001" Socket 0 BSB + Write Command
+                            spi_header <= x"0001" & "00001" & '1' & "00"; --Command Register : 0x0001 + "00001" Socket 0 BSB + Write Command
                             raw_payload_buffer <= x"01000000"; -- first Byte is "0x01" (PDF page 46) for Socket OPEN -> S0_SR should change to 0x02 for "open Socket status"
                         end if;
                     end if; 
@@ -396,7 +396,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Status is one byte in size
-                            conf_header <= x"0003" & "00001" & '0' & "00"; --  
+                            spi_header <= x"0003" & "00001" & '0' & "00"; --  
                             raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
                         end if;
                     end if; 
@@ -430,7 +430,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- 2 Byte size variable
-                            conf_header <= x"0026" & "00001" & '0' & "00"; --  
+                            spi_header <= x"0026" & "00001" & '0' & "00"; --  
                             raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
                         end if;
                     end if; 
@@ -462,7 +462,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes
-                            conf_header <= x"0028" & "00001" & '0' & "00"; -- Free Buffer Size register 0x0028, Socket 0 BSB and read
+                            spi_header <= x"0028" & "00001" & '0' & "00"; -- Free Buffer Size register 0x0028, Socket 0 BSB and read
                             raw_payload_buffer <= x"00000000"; -- just reading
                         end if;
                     end if; 
@@ -486,7 +486,7 @@ begin
                 else
                    if(w5500state_next /= UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ) then
                         if(payload_data_has_been_set = '0') then   
-                            conf_header <= rx_shift_payload_buffer(15 downto 0) & "00011" & '0' & "00"; -- pointer that has been read a state before + "BSB for Socket 0 RX Memory" + readCommand '0' + VDM                                
+                            spi_header <= rx_shift_payload_buffer(15 downto 0) & "00011" & '0' & "00"; -- pointer that has been read a state before + "BSB for Socket 0 RX Memory" + readCommand '0' + VDM                                
                             payload_byte_length <= to_integer(unsigned(rx_received_size_reg)); -- package length that has been read 2 states before 
                             payload_data_has_been_set <= '1';
                         end if;
@@ -503,7 +503,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes
-                            conf_header <= x"0028" & "00001" & '1' & "00"; -- write new pointer to 0x0028-29 of Socket 0
+                            spi_header <= x"0028" & "00001" & '1' & "00"; -- write new pointer to 0x0028-29 of Socket 0
                             raw_payload_buffer <= std_logic_vector(unsigned(rx_pointer_reg)+unsigned(rx_received_size_reg)) & x"0000"; 
                         end if;
                     end if; 
@@ -519,7 +519,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Command is only one byte
-                            conf_header <= x"0001" & "00001" & '1' & "00"; -- Command register 0x0001, Socket 0 BSB and write
+                            spi_header <= x"0001" & "00001" & '1' & "00"; -- Command register 0x0001, Socket 0 BSB and write
                             raw_payload_buffer <= x"40000000"; -- See Sn_CR , 0x40 completes the read process
                             rx_pointer_reg <= x"0000"; -- reset temporal variables
                             rx_received_size_reg <= x"0000";
@@ -542,7 +542,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- 2 Bytes to read
-                            conf_header <= x"0020" & "00001" & '0' & "00"; -- Free Buffer Size register 0x0020, Socket 0 BSB and read
+                            spi_header <= x"0020" & "00001" & '0' & "00"; -- Free Buffer Size register 0x0020, Socket 0 BSB and read
                             raw_payload_buffer <= x"00000000"; -- just reading
                         end if;
                     end if; 
@@ -568,7 +568,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 4; -- 4 Bytes to set Dest IP
-                            conf_header <= x"000C" & "00001" & '1' & "00"; --DEST IP register : 0x000C + "00001" Socket 0 BSB + Write Command
+                            spi_header <= x"000C" & "00001" & '1' & "00"; --DEST IP register : 0x000C + "00001" Socket 0 BSB + Write Command
                             raw_payload_buffer <= dest_ip_address; -- provided by dest_ip_signal
                         end if;
                     end if; 
@@ -584,7 +584,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Two Bytes to set Socket Port for Socket 0
-                            conf_header <= x"0010" & "00001" & '1' & "00"; --DEST port register : 0x0010 + "00001" Socket 0 BSB + Write Command
+                            spi_header <= x"0010" & "00001" & '1' & "00"; --DEST port register : 0x0010 + "00001" Socket 0 BSB + Write Command
                             raw_payload_buffer <= dest_udp_port & x"0000"; -- (page 30)
                         end if;
                     end if; 
@@ -601,7 +601,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0024" & "00001" & '0' & "00"; --  0x24 and 25 are the TX Write pointers for socket 0
+                            spi_header <= x"0024" & "00001" & '0' & "00"; --  0x24 and 25 are the TX Write pointers for socket 0
                             raw_payload_buffer <= x"00000000"; -- 0x0000 because we are just reading
                         end if;
                     end if; 
@@ -615,18 +615,18 @@ begin
                     streammanager_next_state <= TX_FIFO_PASSTHROUGH_MODE;
                 end if;
             
-            -- now we need to set the conf_header and write into the 
+            -- now we need to set the spi_header and write into the 
             
             when WRITE_TX_DATA_TO_BUFFER =>   
             state_debug_out <= "001101";
-            -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the conf header and the PASSTHROUGH MODE      
+            -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the spi header and the PASSTHROUGH MODE      
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_TX_WRITE_POINTER_AFTER_WRITE;
                     streammanager_next_state <= CONTROLLER_PHASE;
                     payload_data_has_been_set <= '0';
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
-                            conf_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
+                            spi_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
                             if(ext_pl_tvalid = '1') then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
                             end if;
@@ -646,7 +646,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
-                            conf_header <= x"0024" & "00001" & '1' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, write command with '1' as rwb bit
+                            spi_header <= x"0024" & "00001" & '1' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, write command with '1' as rwb bit
                             raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+1)) & x"0000";   
                         end if;
                     end if; 
@@ -663,7 +663,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to read status
-                            conf_header <= x"0001" & "00001" & '1' & "00"; --  0x0001 for Socket Command Register + "00001" BSB for Socket 0, write command
+                            spi_header <= x"0001" & "00001" & '1' & "00"; --  0x0001 for Socket Command Register + "00001" BSB for Socket 0, write command
                             raw_payload_buffer <= x"20000000"; -- 0x20, send command
                             tx_write_pointer <= "0000000000000000";
                             ptm_transmitted_byte_counter <= 0;
@@ -682,7 +682,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to read status
-                            conf_header <= x"0002" & "00001" & '0' & "00";
+                            spi_header <= x"0002" & "00001" & '0' & "00";
                             raw_payload_buffer <= x"00000000"; -- 0x00, were not writing anything to mosi just reading
                         end if;
                     end if; 
@@ -718,7 +718,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 1; -- Just one Byte to read status
-                            conf_header <= x"0003" & "00001" & '1' & "00"; 
+                            spi_header <= x"0003" & "00001" & '1' & "00"; 
                             raw_payload_buffer <= rx_shift_payload_buffer(7 downto 0) & x"000000"; -- We clear the Interrupt register FLAGS by writing back the ones that are '1', since we have read them in the last state, they are in rx_shift_
                         end if;
                     end if; 
@@ -756,7 +756,7 @@ begin
                         shift_payload_buffer <= shift_payload_buffer(23 downto 0) & "00000000";
                         byte_length_buffer <= byte_length_buffer - 1;
                         payload_valid <= '1'; 
-                        conf_header_valid <= '1';
+                        spi_header_valid <= '1';
                     
                         if(byte_length_buffer = 1) then
                             payload_last <= '1';
@@ -766,7 +766,7 @@ begin
                     else
                         payload_valid <= '0';
                         payload_last <= '0';
-                        conf_header_valid <= '0';
+                        spi_header_valid <= '0';
  
                     end if;
                 
@@ -800,9 +800,9 @@ begin
                     end if;
                     
                     if(payload_data_has_been_set = '1') then
-                        conf_header_valid <= '0';
+                        spi_header_valid <= '0';
                     else
-                        conf_header_valid <= '1';
+                        spi_header_valid <= '1';
                     end if;
                     
                     payload_data <= ext_pl_tdata;
@@ -816,7 +816,7 @@ begin
                     if(byte_length_buffer > 0) then
                         payload_data <= x"00"; -- we are just reading
                         payload_valid <= '1'; 
-                        conf_header_valid <= '1';
+                        spi_header_valid <= '1';
                         byte_length_buffer <= byte_length_buffer - 1;
                         
                         if(byte_length_buffer = 1) then
@@ -827,7 +827,7 @@ begin
                     else
                         payload_valid <= '0';
                         payload_last <= '0';
-                        conf_header_valid <= '0';
+                        spi_header_valid <= '0';
                     end if;
                 
                     if(prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then -- this indicates a switch of states in the upper state machine
