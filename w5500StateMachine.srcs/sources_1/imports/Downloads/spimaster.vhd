@@ -744,113 +744,116 @@ begin
  --switches who has controll of the PAYLOAD FIFO in the W5500 Data streamer. TX/RX Passthrough phase or controller phase
             
     process (clk, reset)
-    begin 
-        
-        if(reset='1') then
-            
-        end if;
-    
-        if(clk'event and clk = '1') then
-            streammanager_state <= streammanager_next_state;
-            prev_payload_data_has_been_set <= payload_data_has_been_set; 
-            case streammanager_state is                     
-                when CONTROLLER_PHASE => -- SPI Master takes care of writing to Payload FIFO
-                    -- The SPI Master controlls the streamer by having the valid Signals high as long as data should be transmitted. 
-                    -- The "meaningful" data is the payload, as long as there are payload bytes to transmit, the all valid signals should be high.
-                
-                    if(byte_length_buffer > 0) then
-                        payload_data <= shift_payload_buffer(31 downto 24);
-                        shift_payload_buffer <= shift_payload_buffer(23 downto 0) & "00000000";
-                        byte_length_buffer <= byte_length_buffer - 1;
-                        payload_valid <= '1'; 
-                        spi_header_valid <= '1';
-                    
-                        if(byte_length_buffer = 1) then
-                            payload_last <= '1';
-                        else 
-                            payload_last <= '0';
-                        end if;
-                    else
-                        payload_valid <= '0';
+begin 
+    if (reset = '1') then
+        streammanager_state <= CONTROLLER_PHASE;
+        payload_valid       <= '0';
+        payload_last        <= '0';
+        ext_pl_tready       <= '0';
+        ext_pl_rvalid       <= '0';
+        rx_payload_ready    <= '0';
+    elsif (rising_edge(clk)) then
+        streammanager_state <= streammanager_next_state;
+        prev_payload_data_has_been_set <= payload_data_has_been_set;
+
+        case streammanager_state is                     
+            when CONTROLLER_PHASE =>
+                if (byte_length_buffer > 0) then
+                    payload_data  <= shift_payload_buffer(31 downto 24);
+                    shift_payload_buffer <= shift_payload_buffer(23 downto 0) & "00000000";
+                    byte_length_buffer   <= byte_length_buffer - 1;
+                    payload_valid <= '1'; 
+                    spi_header_valid <= '1';
+
+                    if (byte_length_buffer = 1) then
+                        payload_last <= '1';
+                    else 
                         payload_last <= '0';
-                        spi_header_valid <= '0';
- 
                     end if;
-                
-                    if(prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then -- this indicates a switch of states in the upper state machine
-                        byte_length_buffer <= payload_byte_length;
-                        shift_payload_buffer <= raw_payload_buffer;
-                    end if;
-                
-                    -- receiving part of the state machine
-                    -- it basically immediately reads the RXFIFO from the W5500 data streamer into rx_shift_payload_buffer, so that it's data can be accessed in the next state. This is useful to handle pointers read from the W5500 registers
-                    rx_payload_ready <= '1';
-                    if(rx_payload_valid = '1') then
-                        rx_shift_payload_buffer <= rx_shift_payload_buffer(23 downto 0) & rx_payload_data;
-                    end if; 
-                
-                    -- when the w5500 state machine controlls the Data streamer, the axi stream isn't ready for the external data handler
+                else
+                    payload_valid <= '0';
+                    payload_last  <= '0';
+                    spi_header_valid <= '0';
+                end if;
+
+                -- Synchronize buffer update
+                if (prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then
+                    byte_length_buffer <= payload_byte_length;
+                    shift_payload_buffer <= raw_payload_buffer;
+                end if;
+
+                -- RX FIFO Handling
+                rx_payload_ready <= '1';
+                if (rx_payload_valid = '1') then
+                    rx_shift_payload_buffer <= rx_shift_payload_buffer(23 downto 0) & rx_payload_data;
+                end if;
+
+                -- Disable AXI Stream Output
+                ext_pl_tready <= '0';
+                ext_pl_rvalid <= '0';
+
+            when TX_FIFO_PASSTHROUGH_MODE =>
+            
+                payload_valid <= ext_pl_tvalid;
+                payload_data  <= ext_pl_tdata;
+                payload_last  <= ext_pl_tlast;
+
+                if (payload_data_has_been_set = '1') then
+                    spi_header_valid <= '0';
+                else
+                    spi_header_valid <= '1';
+                end if;
+  
+                if(payload_ready = '1') then
+                    ext_pl_tready <= '1';
+                else
                     ext_pl_tready <= '0';
-                    ext_pl_rvalid <= '0';
-                    
-                    
-                    
-                when TX_FIFO_PASSTHROUGH_MODE => -- external source takes care of writing to TX Payload FIFO
-            
-                    -- transmitting part of the Passthrough MODE 
-                    if(ext_pl_tvalid = '1' and payload_ready = '1') then
-                        payload_valid <= ext_pl_tvalid;
-                    else
-                        payload_valid <= '0';
-                    end if;
-                    
-                    if(payload_data_has_been_set = '1') then
-                        spi_header_valid <= '0';
-                    else
-                        spi_header_valid <= '1';
-                    end if;
-                    
-                    payload_data <= ext_pl_tdata;
-                    payload_last <= ext_pl_tlast;
-                    ext_pl_tready <= payload_ready;
-                    
-                    ext_pl_rvalid <= '0';
-                        
-                 when RX_FIFO_PASSTHROUGH_MODE =>
-                     
-                    payload_data <= x"00"; 
-                     
-                    if(byte_length_buffer > 0) then
-                        byte_length_buffer <= byte_length_buffer - 1;
-                        payload_valid <= '1'; 
-                        spi_header_valid <= '1';
-                    
-                        if(byte_length_buffer = 1) then
-                            payload_last <= '1';
-                        else 
-                            payload_last <= '0';
-                        end if;
-                    else
-                        payload_valid <= '0';
+                end if;
+
+                ext_pl_rvalid <= '0';
+
+            when RX_FIFO_PASSTHROUGH_MODE =>
+                if (byte_length_buffer > 0) then
+                    byte_length_buffer <= byte_length_buffer - 1;
+                    payload_valid <= '1'; 
+                    spi_header_valid <= '1';
+
+                    if (byte_length_buffer = 1) then
+                        payload_last <= '1';
+                    else 
                         payload_last <= '0';
-                        spi_header_valid <= '0';
                     end if;
-                    
-                    if(prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then -- this indicates a switch of states in the upper state machine
-                        byte_length_buffer <= payload_byte_length;
+                else
+                    payload_valid <= '0';
+                    payload_last  <= '0';
+                    spi_header_valid <= '0';
+                end if;
+
+                if (prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then
+                    byte_length_buffer <= payload_byte_length;
+                end if;
+
+                    if(ext_pl_rready = '1') then
+                        rx_payload_ready <= '1';
+                    else
+                        rx_payload_ready <= '0';
                     end if;
-                                         
+
                     ext_pl_rvalid <= rx_payload_valid;
-                    ext_pl_rlast <= rx_payload_last;
-                    ext_pl_rdata <= rx_payload_data;
-                    rx_payload_ready <= ext_pl_rready;
-                    
-                    --ext_pl_tready <= '0';
-                    
-                when others =>     
-            end case;
-        end if;
-    end process;
+                    ext_pl_rdata  <= rx_payload_data;
+                    ext_pl_rlast  <= rx_payload_last;
+
+                    ext_pl_tready <= '0';
+
+            when others =>
+                -- Default Safe State
+                payload_valid <= '0';
+                payload_last  <= '0';
+                ext_pl_tready <= '0';
+                ext_pl_rvalid <= '0';
+        end case;
+    end if;
+end process;
     
             
 end architecture behavioral;

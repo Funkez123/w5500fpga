@@ -293,6 +293,14 @@ connect_debug_port u_ila_0/probe12 [get_nets [list ext_pl_rready]]
 
 connect_debug_port u_ila_0/probe14 [get_nets [list tready]]
 
+connect_debug_port u_ila_0/probe7 [get_nets [list ext_pl_rlast]]
+connect_debug_port u_ila_0/probe12 [get_nets [list rready]]
+
+
+
+
+
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 2 [get_debug_cores u_ila_0]
@@ -305,32 +313,32 @@ set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
 set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list clk_wiz/inst/clk_out1]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 8 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {rdata[0]} {rdata[1]} {rdata[2]} {rdata[3]} {rdata[4]} {rdata[5]} {rdata[6]} {rdata[7]}]]
+set_property port_width 6 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {state_debug_out_OBUF[0]} {state_debug_out_OBUF[1]} {state_debug_out_OBUF[2]} {state_debug_out_OBUF[3]} {state_debug_out_OBUF[4]} {state_debug_out_OBUF[5]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 16 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/rx_received_size_reg[0]} {spi_m/rx_received_size_reg[1]} {spi_m/rx_received_size_reg[2]} {spi_m/rx_received_size_reg[3]} {spi_m/rx_received_size_reg[4]} {spi_m/rx_received_size_reg[5]} {spi_m/rx_received_size_reg[6]} {spi_m/rx_received_size_reg[7]} {spi_m/rx_received_size_reg[8]} {spi_m/rx_received_size_reg[9]} {spi_m/rx_received_size_reg[10]} {spi_m/rx_received_size_reg[11]} {spi_m/rx_received_size_reg[12]} {spi_m/rx_received_size_reg[13]} {spi_m/rx_received_size_reg[14]} {spi_m/rx_received_size_reg[15]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {tdata[0]} {tdata[1]} {tdata[2]} {tdata[3]} {tdata[4]} {tdata[5]} {tdata[6]} {tdata[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
 set_property port_width 8 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {rdata__0[0]} {rdata__0[1]} {rdata__0[2]} {rdata__0[3]} {rdata__0[4]} {rdata__0[5]} {rdata__0[6]} {rdata__0[7]}]]
+connect_debug_port u_ila_0/probe2 [get_nets [list {rdata[0]} {rdata[1]} {rdata[2]} {rdata[3]} {rdata[4]} {rdata[5]} {rdata[6]} {rdata[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 6 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list {state_debug_out_OBUF[0]} {state_debug_out_OBUF[1]} {state_debug_out_OBUF[2]} {state_debug_out_OBUF[3]} {state_debug_out_OBUF[4]} {state_debug_out_OBUF[5]}]]
+set_property port_width 8 [get_debug_ports u_ila_0/probe3]
+connect_debug_port u_ila_0/probe3 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
 set_property port_width 8 [get_debug_ports u_ila_0/probe4]
-connect_debug_port u_ila_0/probe4 [get_nets [list {tdata[0]} {tdata[1]} {tdata[2]} {tdata[3]} {tdata[4]} {tdata[5]} {tdata[6]} {tdata[7]}]]
+connect_debug_port u_ila_0/probe4 [get_nets [list {rdata__0[0]} {rdata__0[1]} {rdata__0[2]} {rdata__0[3]} {rdata__0[4]} {rdata__0[5]} {rdata__0[6]} {rdata__0[7]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
-set_property port_width 8 [get_debug_ports u_ila_0/probe5]
-connect_debug_port u_ila_0/probe5 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
+set_property port_width 1 [get_debug_ports u_ila_0/probe5]
+connect_debug_port u_ila_0/probe5 [get_nets [list ext_pl_tlast]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe6]
 set_property port_width 1 [get_debug_ports u_ila_0/probe6]
-connect_debug_port u_ila_0/probe6 [get_nets [list cs_OBUF]]
+connect_debug_port u_ila_0/probe6 [get_nets [list ext_pl_tvalid]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
 set_property port_width 1 [get_debug_ports u_ila_0/probe7]
@@ -342,23 +350,19 @@ connect_debug_port u_ila_0/probe8 [get_nets [list ext_pl_rvalid]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
 set_property port_width 1 [get_debug_ports u_ila_0/probe9]
-connect_debug_port u_ila_0/probe9 [get_nets [list ext_pl_tlast]]
+connect_debug_port u_ila_0/probe9 [get_nets [list ext_pl_tready]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe10]
 set_property port_width 1 [get_debug_ports u_ila_0/probe10]
-connect_debug_port u_ila_0/probe10 [get_nets [list ext_pl_tvalid]]
+connect_debug_port u_ila_0/probe10 [get_nets [list cs_OBUF]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe11]
 set_property port_width 1 [get_debug_ports u_ila_0/probe11]
-connect_debug_port u_ila_0/probe11 [get_nets [list mosi_OBUF]]
+connect_debug_port u_ila_0/probe11 [get_nets [list sclk_OBUF]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe12]
 set_property port_width 1 [get_debug_ports u_ila_0/probe12]
-connect_debug_port u_ila_0/probe12 [get_nets [list rready]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe13]
-set_property port_width 1 [get_debug_ports u_ila_0/probe13]
-connect_debug_port u_ila_0/probe13 [get_nets [list sclk_OBUF]]
+connect_debug_port u_ila_0/probe12 [get_nets [list mosi_OBUF]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
