@@ -70,6 +70,9 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param tcl.collectionResultDisplayLimit 0
+set_param chipscope.maxJobs 4
+set_param xicom.use_bs_reader 1
 set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7z020clg400-1
@@ -97,11 +100,15 @@ read_vhdl -library xil_defaultlib {
   C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/pwm.vhd
   C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd
 }
+read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
+
+read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_ooc.xdc]
+
 read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
 set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit_ooc.xdc]
-
-read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
-set_property used_in_implementation false [get_files -all c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit_ooc.xdc]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

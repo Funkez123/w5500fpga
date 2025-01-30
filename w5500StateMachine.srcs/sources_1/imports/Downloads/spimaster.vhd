@@ -63,6 +63,7 @@ architecture behavioral of w5500_state_machine is
         CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE,
         GET_RX_READ_POINTER_STATE,
         GET_UPDATED_TX_WR_POINTER_BEFORE_SEND,
+        WAIT_FOR_EXT_DATA_HANDLER_TO_FINISH_READING_FROM_FIFO,
         CHECK_TX_READ_POINTER_AFTER_SUCCESSFUL_TRANSMISSION,
         ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER,
         CHECK_INTERRUPT_REG_RETURNED_VALUE,
@@ -89,7 +90,7 @@ architecture behavioral of w5500_state_machine is
     
     signal raw_payload_buffer : std_logic_vector(31 downto 0) := (others => '0');    
     signal shift_payload_buffer : std_logic_vector(31 downto 0) := (others => '0'); -- buffer for second process
-    signal payload_byte_length : integer := 0; -- this has to be set every time the raw_payload_buffer is updated.
+    signal payload_byte_length : integer range 0 to 1514; -- this has to be set every time the raw_payload_buffer is updated.
     signal byte_length_buffer : integer := 0; -- buffer for second process
     signal prev_payload_data_has_been_set : std_logic := '0'; 
     signal payload_data_has_been_set : std_logic := '0';
@@ -462,7 +463,7 @@ begin
                         if(payload_data_has_been_set = '0') then
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes
-                            spi_header <= x"0028" & "00001" & '0' & "00"; -- Free Buffer Size register 0x0028, Socket 0 BSB and read
+                            spi_header <= x"0028" & "00001" & '0' & "00"; --0x28 and 29 are the Sn_RX_RD pointer register, '0' rwb because reading
                             raw_payload_buffer <= x"00000000"; -- just reading
                         end if;
                     end if; 
@@ -480,18 +481,24 @@ begin
             state_debug_out <= "000111";
             -- reads the data from the RX Buffer
                 if(spi_busy = '0' and prev_spi_busy = '1') then
-                    w5500state_next <= UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ;
+                    w5500state_next <= WAIT_FOR_EXT_DATA_HANDLER_TO_FINISH_READING_FROM_FIFO;
                     payload_data_has_been_set <= '0';
-                    streammanager_next_state <= CONTROLLER_PHASE;
                 else
-                   if(w5500state_next /= UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ) then
+                   if(w5500state_next /= WAIT_FOR_EXT_DATA_HANDLER_TO_FINISH_READING_FROM_FIFO) then
                         if(payload_data_has_been_set = '0') then   
-                            spi_header <= rx_shift_payload_buffer(15 downto 0) & "00011" & '0' & "00"; -- pointer that has been read a state before + "BSB for Socket 0 RX Memory" + readCommand '0' + VDM                                
+                            spi_header <= rx_pointer_reg & "00011" & '0' & "00"; -- pointer that has been read a state before + "BSB for Socket 0 RX Memory" + readCommand '0' + VDM                                
                             payload_byte_length <= to_integer(unsigned(rx_received_size_reg)); -- package length that has been read 2 states before 
                             payload_data_has_been_set <= '1';
                         end if;
                     end if; 
                 end if;
+                
+            when WAIT_FOR_EXT_DATA_HANDLER_TO_FINISH_READING_FROM_FIFO =>
+                if(rx_payload_last = '1') then --if RX FIFO is empty, then all the contents have been read
+                    streammanager_next_state <= CONTROLLER_PHASE;
+                    w5500state_next <= UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ;
+                end if;
+            
             
             when UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ => 
             state_debug_out <= "001000";  
@@ -647,7 +654,7 @@ begin
                             payload_data_has_been_set <= '1';
                             payload_byte_length <= 2; -- Pointer is two bytes in length
                             spi_header <= x"0024" & "00001" & '1' & "00"; --  0x0024 and 25 are the TX Pointer Registers + "00001" BSB for Socket 0, write command with '1' as rwb bit
-                            raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+1)) & x"0000";   
+                            raw_payload_buffer <= std_logic_vector((unsigned(tx_write_pointer)+ptm_transmitted_byte_counter)) & x"0000";   
                         end if;
                     end if; 
                 end if;
@@ -791,10 +798,8 @@ begin
                 when TX_FIFO_PASSTHROUGH_MODE => -- external source takes care of writing to TX Payload FIFO
             
                     -- transmitting part of the Passthrough MODE 
-                    
                     if(ext_pl_tvalid = '1' and payload_ready = '1') then
                         payload_valid <= ext_pl_tvalid;
-                          
                     else
                         payload_valid <= '0';
                     end if;
@@ -812,13 +817,14 @@ begin
                     ext_pl_rvalid <= '0';
                         
                  when RX_FIFO_PASSTHROUGH_MODE =>
-                        
+                     
+                    payload_data <= x"00"; 
+                     
                     if(byte_length_buffer > 0) then
-                        payload_data <= x"00"; -- we are just reading
+                        byte_length_buffer <= byte_length_buffer - 1;
                         payload_valid <= '1'; 
                         spi_header_valid <= '1';
-                        byte_length_buffer <= byte_length_buffer - 1;
-                        
+                    
                         if(byte_length_buffer = 1) then
                             payload_last <= '1';
                         else 
@@ -829,19 +835,18 @@ begin
                         payload_last <= '0';
                         spi_header_valid <= '0';
                     end if;
-                
+                    
                     if(prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then -- this indicates a switch of states in the upper state machine
                         byte_length_buffer <= payload_byte_length;
                     end if;
-                        
-                    -- receiving part of the Passthrough MODE
-                    -- external has to handle the data that has been received, literally a passthrough
-                    ext_pl_rdata <= rx_payload_data;
-                    ext_pl_rlast <= rx_payload_last;
+                                         
                     ext_pl_rvalid <= rx_payload_valid;
-                    rx_payload_ready <= ext_pl_rready;        
-                            
-                    ext_pl_tready <= '0';        
+                    ext_pl_rlast <= rx_payload_last;
+                    ext_pl_rdata <= rx_payload_data;
+                    rx_payload_ready <= ext_pl_rready;
+                    
+                    --ext_pl_tready <= '0';
+                    
                 when others =>     
             end case;
         end if;

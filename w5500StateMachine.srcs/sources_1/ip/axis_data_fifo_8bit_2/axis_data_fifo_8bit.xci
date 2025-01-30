@@ -4,14 +4,14 @@
     "xci_name": "axis_data_fifo_8bit",
     "component_reference": "xilinx.com:ip:axis_data_fifo:2.0",
     "ip_revision": "11",
-    "gen_directory": "../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2",
+    "gen_directory": "../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit",
     "parameters": {
       "component_parameters": {
         "TDATA_NUM_BYTES": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "TID_WIDTH": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "TDEST_WIDTH": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "TUSER_WIDTH": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "FIFO_DEPTH": [ { "value": "512", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "FIFO_DEPTH": [ { "value": "512", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "FIFO_MODE": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "IS_ACLK_ASYNC": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "ACLKEN_CONV_MODE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -28,9 +28,9 @@
         "HAS_AFULL": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "HAS_PROG_FULL": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "PROG_FULL_THRESH": [ { "value": "11", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
-        "ENABLE_ECC": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "ENABLE_ECC": [ { "value": "0", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
         "HAS_ECC_ERR_INJECT": [ { "value": "0", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
-        "FIFO_MEMORY_TYPE": [ { "value": "block", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "FIFO_MEMORY_TYPE": [ { "value": "auto", "resolve_type": "user", "usage": "all" } ],
         "Component_Name": [ { "value": "axis_data_fifo_8bit", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
@@ -46,7 +46,7 @@
         "C_SYNCHRONIZER_STAGE": [ { "value": "3", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_ACLKEN_CONV_MODE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_ECC_MODE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_FIFO_MEMORY_TYPE": [ { "value": "block", "resolve_type": "generated", "usage": "all" } ],
+        "C_FIFO_MEMORY_TYPE": [ { "value": "auto", "resolve_type": "generated", "usage": "all" } ],
         "C_USE_ADV_FEATURES": [ { "value": "825241648", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_PROG_EMPTY_THRESH": [ { "value": "5", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_PROG_FULL_THRESH": [ { "value": "11", "resolve_type": "generated", "format": "long", "usage": "all" } ]
@@ -68,11 +68,11 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "11" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit_2" } ],
+        "OUTPUTDIR": [ { "value": "../../../../w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.2" } ],
-        "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
+        "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },
     "boundary": {

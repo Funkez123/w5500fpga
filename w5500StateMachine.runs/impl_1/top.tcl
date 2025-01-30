@@ -122,7 +122,9 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
+  set_param tcl.collectionResultDisplayLimit 0
   set_param chipscope.maxJobs 4
+  set_param xicom.use_bs_reader 1
   set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project
   set_param runs.launchOptions { -jobs 16  }
 OPTRACE "create in-memory project" START { }
@@ -141,8 +143,9 @@ OPTRACE "set parameters" START { }
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
   add_files -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.dcp
-  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
   read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
+  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
 OPTRACE "read constraints: implementation" START { }
   read_xdc C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc
 OPTRACE "read constraints: implementation" END { }

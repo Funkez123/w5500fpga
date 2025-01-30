@@ -1,5 +1,5 @@
 // (c) Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
-// (c) Copyright 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+// (c) Copyright 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of AMD and is protected under U.S. and international copyright
@@ -92,13 +92,13 @@ output wire [7 : 0] m_axis_tdata;
 output wire m_axis_tlast;
 
   axis_data_fifo_v2_0_11_top #(
-    .C_FAMILY("artix7"),
+    .C_FAMILY("zynq"),
     .C_AXIS_TDATA_WIDTH(8),
     .C_AXIS_TID_WIDTH(1),
     .C_AXIS_TDEST_WIDTH(1),
     .C_AXIS_TUSER_WIDTH(1),
     .C_AXIS_SIGNAL_SET(32'B00000000000000000000000000010011),
-    .C_FIFO_DEPTH(16),
+    .C_FIFO_DEPTH(512),
     .C_FIFO_MODE(1),
     .C_IS_ACLK_ASYNC(0),
     .C_SYNCHRONIZER_STAGE(3),

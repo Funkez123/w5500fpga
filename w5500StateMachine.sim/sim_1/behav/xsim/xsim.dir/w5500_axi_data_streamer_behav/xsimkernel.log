@@ -1,7 +1,0 @@
-Running: xsim.dir/w5500_axi_data_streamer_behav/xsimk.exe -simmode gui -wdb w5500_axi_data_streamer_behav.wdb -simrunnum 0 -socket 50979
-Design successfully loaded
-Design Loading Memory Usage: 9452 KB (Peak: 9452 KB)
-Design Loading CPU Usage: 0 ms
-Simulation completed
-Simulation Memory Usage: 10324 KB (Peak: 10324 KB)
-Simulation CPU Usage: 0 ms

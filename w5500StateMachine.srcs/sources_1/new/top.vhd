@@ -50,6 +50,14 @@ end top;
 
 architecture Behavioral of top is
 
+    component clk_wiz_0
+        port(
+            clk_in1: in std_logic;
+            reset : in std_logic;
+            clk_out1 : out std_logic
+         );
+    end component;
+        
 
     component transceive_unit
         port (
@@ -107,7 +115,11 @@ architecture Behavioral of top is
             tdata       : out STD_LOGIC_VECTOR(7 downto 0);
             tvalid      : out STD_LOGIC;
             tlast       : out STD_LOGIC;
-            tready      : in  STD_LOGIC
+            tready      : in  STD_LOGIC;
+            rdata       : in  STD_LOGIC_VECTOR(7 downto 0);
+            rlast       : in  STD_LOGIC;
+            rvalid      : in  STD_LOGIC;
+            rready      : out STD_LOGIC
         );
     end component;
 --Inputs
@@ -141,12 +153,25 @@ architecture Behavioral of top is
 	signal ext_pl_rready : std_logic := '1';
 	signal ext_pl_rlast : std_logic;
 		
+    --- CLOCK WIZARD
+    signal clk_out : std_logic;		
+
+
 begin
+    
+    --clock wizard
+    clk_wiz : clk_wiz_0
+    port map(
+        clk_in1 => clk,
+        reset => reset,
+        clk_out1 => clk_out
+    );
+    
     
     -- instantiate the w5500_state_machine
     spi_m : w5500_state_machine
         port map(
-        clk => clk,
+        clk => clk_out,
         reset => reset,
         spi_busy => spi_busy,
         state_debug_out => state_debug_out,
@@ -170,13 +195,12 @@ begin
 		ext_pl_rready => ext_pl_rready,
 		ext_pl_rvalid => ext_pl_rvalid,
 		ext_pl_rlast => ext_pl_rlast
-
 		);
         
         
      txrx_unit : transceive_unit
         port map(
-            clk => clk,
+            clk => clk_out,
 			reset => reset,
 			mosi => mosi,
 			miso => miso,
@@ -195,12 +219,16 @@ begin
 
     extdatahandler : ext_data_handler
         port map(
-            clk => clk,
+            clk => clk_out,
             rst => reset,
             tdata => ext_pl_tdata,
             tvalid => ext_pl_tvalid,
             tlast => ext_pl_tlast,
-            tready => ext_pl_tready
+            tready => ext_pl_tready,
+            rdata => ext_pl_rdata,
+            rvalid => ext_pl_rvalid,
+            rlast => ext_pl_rlast,
+            rready => ext_pl_rready   
         );
 
 end Behavioral;
