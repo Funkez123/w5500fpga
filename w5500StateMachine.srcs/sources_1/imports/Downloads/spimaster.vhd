@@ -8,8 +8,6 @@ entity w5500_state_machine is
         clk:    in std_logic;
 		reset:  in std_logic := '0';
         spi_busy: in std_logic := '0';
-        --debug signal 
-        state_debug_out : out std_logic_vector(5 downto 0);
         
         tdata:   out std_logic_vector (7 downto 0); -- data to send
 		tvalid:    out std_logic; -- axi stream from statemachine to spi master
@@ -101,7 +99,6 @@ architecture behavioral of w5500_state_machine is
     signal payload_valid : std_logic;
     signal payload_last : std_logic := '0';
     
-    signal raw_rx_payload_buffer : std_logic_vector(31 downto 0) := (others => '0');    
     signal rx_shift_payload_buffer : std_logic_vector(31 downto 0) := (others => '0'); -- buffer for second process
     
     --rx data payload signals
@@ -414,15 +411,13 @@ begin
             
             
             when CHECK_IF_EXT_TX_AXIS_HAS_DATA =>    
-                state_debug_out <= "000001";   
                 if(ext_pl_tvalid = '1' and payload_ready = '1') then   -- if data on the external TX AXIstream is valid and the payload fifo is ready, then continue
                     w5500state_next <= READ_TX_FREE_BUFFER_SIZE; -- here starts the TX sending data pipeline
                 else
                     w5500state_next <= REQUEST_RECEIVED_DATA_SIZE; -- if we can't send data now, we can check if we have received data
                 end if;
             
-            when REQUEST_RECEIVED_DATA_SIZE => 
-            state_debug_out <= "000010";           
+            when REQUEST_RECEIVED_DATA_SIZE =>       
                 if(spi_busy = '0' and prev_spi_busy = '1') then -- if spi is done and the last packa   
                     w5500state_next <= WAIT_FOR_REQUESTED_DATA_SIZE;
                     payload_data_has_been_set <= '0';
@@ -438,14 +433,12 @@ begin
                 end if;
             
             when WAIT_FOR_REQUESTED_DATA_SIZE =>
-                state_debug_out <= "100001"; 
                 if(rx_payload_last = '1') then
                     w5500state_next <= CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE;
                     rx_received_size_reg <= rx_shift_payload_buffer(15 downto 0);
                 end if;   
                     
-            when CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE => 
-            state_debug_out <= "000011";          
+            when CHECK_IF_RECEIVED_DATA_IS_AVAILABLE_STATE =>      
                 if(rx_received_size_reg = x"0000") then
                     w5500state_next <= CHECK_IF_EXT_TX_AXIS_HAS_DATA; -- if no data is received, then check if maybe the external module wants to send data instead
                 else
@@ -453,7 +446,6 @@ begin
                 end if;
                             
             when GET_RX_READ_POINTER_STATE =>  
-            state_debug_out <= "000100";  
             -- reads the RX Read Pointer for Socket 0  
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= WAIT_FOR_RX_READ_POINTER_TO_BE_RECEIVED;
@@ -469,8 +461,7 @@ begin
                     end if; 
                 end if;
                             
-            when WAIT_FOR_RX_READ_POINTER_TO_BE_RECEIVED => 
-            state_debug_out <= "000101";        
+            when WAIT_FOR_RX_READ_POINTER_TO_BE_RECEIVED =>    
                 if(rx_payload_last = '1') then
                     rx_pointer_reg <= rx_shift_payload_buffer(15 downto 0);
                     w5500state_next <= READ_HEADER_AND_PAYLOAD_FROM_RX_BUFFER_STATE; -- if no data is received, then check again
@@ -478,7 +469,6 @@ begin
                 end if;
             
             when READ_HEADER_AND_PAYLOAD_FROM_RX_BUFFER_STATE =>   
-            state_debug_out <= "000111";
             -- reads the data from the RX Buffer
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= WAIT_FOR_EXT_DATA_HANDLER_TO_FINISH_READING_FROM_FIFO;
@@ -501,7 +491,6 @@ begin
             
             
             when UPDATE_RX_READ_POINTER_AFTER_BUFFER_READ => 
-            state_debug_out <= "001000";  
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER;
                     payload_data_has_been_set <= '0';
@@ -517,7 +506,6 @@ begin
                 end if;
             
             when ISSUE_READ_COMMAND_TO_UPDATE_RX_WRITE_POINTER =>   
-            state_debug_out <= "001001";
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
                     payload_data_has_been_set <= '0';
@@ -539,7 +527,6 @@ begin
             -- start of the TX Pipeline
             
             when READ_TX_FREE_BUFFER_SIZE =>  
-            state_debug_out <= "001010"; 
             -- reads the value from the free buffer size register     
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= CHECK_IF_FREE_SIZE_IS_AVAILABLE;
@@ -598,7 +585,6 @@ begin
                 end if;
 
             when GET_TX_WR_POINTER =>   
-            state_debug_out <= "001011"; 
             -- reads the current value of the socket 0 tx buffer pointer             
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED;
@@ -614,8 +600,7 @@ begin
                     end if; 
                 end if;
             
-             when WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED => 
-             state_debug_out <= "001100";        
+             when WAIT_FOR_TX_WRITE_POINTER_TO_BE_RECEIVED =>      
                 if(rx_payload_last = '1') then
                     w5500state_next <= WRITE_TX_DATA_TO_BUFFER; -- if no data is received, then check again
                     tx_write_pointer <= rx_shift_payload_buffer(15 downto 0);
@@ -625,7 +610,6 @@ begin
             -- now we need to set the spi_header and write into the 
             
             when WRITE_TX_DATA_TO_BUFFER =>   
-            state_debug_out <= "001101";
             -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the spi header and the PASSTHROUGH MODE      
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= UPDATE_TX_WRITE_POINTER_AFTER_WRITE;
@@ -634,7 +618,7 @@ begin
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
                             spi_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            if(ext_pl_tvalid = '1') then
+                            if(payload_ready = '1' and payload_valid = '1') then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
                             end if;
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
@@ -643,7 +627,6 @@ begin
                 end if;
             
             when UPDATE_TX_WRITE_POINTER_AFTER_WRITE =>
-            state_debug_out <= "001110";   
             -- writes the new tx_pointer to the socket 0 bsb            
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= ISSUE_SEND_COMMAND;
@@ -660,7 +643,6 @@ begin
                 end if;
             
             when ISSUE_SEND_COMMAND =>   
-            state_debug_out <= "001111";
             -- allow transmission of that data             
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= REQUEST_INTERRUPT_REG;
@@ -679,7 +661,6 @@ begin
                 end if;
                                 
             when REQUEST_INTERRUPT_REG => 
-            state_debug_out <= "010011"; 
             -- page 46      
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= WAIT_FOR_INTERRUPT_REGISTER_TO_BE_RECEIVED;
@@ -696,13 +677,11 @@ begin
                 end if;
             
             when WAIT_FOR_INTERRUPT_REGISTER_TO_BE_RECEIVED =>         
-            state_debug_out <= "010100"; 
                 if(rx_payload_last = '1') then
                     w5500state_next <= CHECK_INTERRUPT_REG_RETURNED_VALUE; -- if no data is received, then check again
                 end if;
                 
-            when CHECK_INTERRUPT_REG_RETURNED_VALUE =>    
-            state_debug_out <= "010101";     
+            when CHECK_INTERRUPT_REG_RETURNED_VALUE =>      
             --page 48 of W5500 Datasheet
                 if(rx_shift_payload_buffer(4) = '0') then -- check for the SEND_OK Bit in the Interrupt Register
                     if(rx_shift_payload_buffer(3) = '1') then -- if the TIMEOUT Bit is set, then
@@ -716,7 +695,6 @@ begin
                 end if;
             
             when CLEAR_INTERRUPT_FLAGS_FROM_IR =>   
-            state_debug_out <= "010110"; 
                 if(spi_busy = '0' and prev_spi_busy = '1') then
                     w5500state_next <= GET_SOCKET_STATUS_THROUGH_SN_SR;
                     payload_data_has_been_set <= '0';
@@ -747,11 +725,22 @@ begin
 begin 
     if (reset = '1') then
         streammanager_state <= CONTROLLER_PHASE;
+        streammanager_state <= CONTROLLER_PHASE;
         payload_valid       <= '0';
         payload_last        <= '0';
         ext_pl_tready       <= '0';
         ext_pl_rvalid       <= '0';
+        
+        ext_pl_rdata <= x"00";
+        ext_pl_rlast <= '0';
+        payload_data <= x"00";
+        rx_shift_payload_buffer <= x"00000000";
+        shift_payload_buffer <= x"00000000";
+        prev_payload_data_has_been_set <= '0';
         rx_payload_ready    <= '0';
+        byte_length_buffer <= 0;
+        spi_header_valid <= '0';
+        
     elsif (rising_edge(clk)) then
         streammanager_state <= streammanager_next_state;
         prev_payload_data_has_been_set <= payload_data_has_been_set;
@@ -798,7 +787,7 @@ begin
                 payload_data  <= ext_pl_tdata;
                 payload_last  <= ext_pl_tlast;
 
-                if (payload_data_has_been_set = '1') then
+                if (payload_data_has_been_set = '1') then -- this basically set's the header valid bit for exactly one clk cycle
                     spi_header_valid <= '0';
                 else
                     spi_header_valid <= '1';

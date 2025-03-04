@@ -40,10 +40,7 @@ entity top is
 		mosi: out std_logic;
 		miso: in  std_logic := '0';
 		sclk: out std_logic;
-		cs:   out std_logic;
-		
-		--debug signals
-		state_debug_out : out std_logic_vector(5 downto 0)	
+		cs:   out std_logic
 	);
 
 end top;
@@ -84,7 +81,6 @@ architecture Behavioral of top is
         clk:    in std_logic;
 		reset:  in std_logic;
         spi_busy: in std_logic := '0';
-        state_debug_out : out std_logic_vector(5 downto 0);
         
         tdata:   out std_logic_vector (7 downto 0); -- data to send
 		tvalid:    out std_logic; -- axi stream from statemachine to spi master
@@ -122,10 +118,6 @@ architecture Behavioral of top is
             rready      : out STD_LOGIC
         );
     end component;
---Inputs
-
-    signal rwb: std_logic := '0';
-    signal master_reset : std_logic := '0';
 
 --Outputs
 
@@ -174,7 +166,6 @@ begin
         clk => clk_out,
         reset => reset,
         spi_busy => spi_busy,
-        state_debug_out => state_debug_out,
         
         tdata => tdata,  
         tvalid => tvalid,

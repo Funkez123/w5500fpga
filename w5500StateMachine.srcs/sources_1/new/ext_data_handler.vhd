@@ -1,3 +1,4 @@
+
 ----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
@@ -8,7 +9,7 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: Loop-Back Test Implementation (Dynamic Buffer Handling)
+-- Description: 
 -- 
 -- Dependencies: 
 -- 
@@ -18,23 +19,34 @@
 -- 
 ----------------------------------------------------------------------------------
 
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.numeric_std.ALL;
+use IEEE.numeric_std.all;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
 
 entity ext_data_handler is
+    generic (
+        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test
+    );
     port (
         clk         : in  STD_LOGIC;
         rst         : in  STD_LOGIC;
-        
         tdata       : out STD_LOGIC_VECTOR(7 downto 0);
         tvalid      : out STD_LOGIC;
         tlast       : out STD_LOGIC;
         tready      : in  STD_LOGIC;
-        
         rdata       : in  STD_LOGIC_VECTOR(7 downto 0);
-        rvalid      : in  STD_LOGIC;
         rlast       : in  STD_LOGIC;
+        rvalid      : in  STD_LOGIC;
         rready      : out STD_LOGIC
     );
 end ext_data_handler;
@@ -74,6 +86,13 @@ architecture Behavioral of ext_data_handler is
         );
     end component;
 
+    -- signals for testmode 0
+    constant INTERVAL   : integer := 20000; -- Interval between transmissions
+    signal counter      : integer := 0;
+    signal byte_index   : integer := 0;
+    signal packet_count : integer := 0;  -- Track the number of packets sent
+    signal sending      : boolean := false;
+
 begin
 
     not_reset <= not rst;
@@ -92,7 +111,51 @@ begin
             m_axis_tlast  => tlast_buffer 
         );
 
-    process(clk)
+
+    -- Test Mode 
+GEN_TEST_0: if TEST_MODE = 0 generate
+    
+    process(clk, rst)
+    begin
+    if rising_edge(clk) then
+        if rst = '1' then
+            counter      <= 0;
+            byte_index   <= 0;
+            packet_count <= 0;
+            sending      <= false;
+            tdata        <= (others => '0');
+            tvalid       <= '0';
+            tlast        <= '0';
+        else
+            if(sending = true) then
+            -- this just send's the byte index
+            tvalid <= '1';
+            tlast <= '1';
+            tdata <= std_logic_vector(to_unsigned(byte_index,8));
+                        
+            if(tready = '1') then
+                byte_index <= byte_index + 1;
+                sending <= false;
+            end if;            
+        
+        else --if sending = false
+            tlast <= '0';
+            tvalid <= '0';
+            if(counter = INTERVAL - 1) then
+                counter <= 0;
+                sending <= true;
+            else
+                counter <= counter + 1; 
+            end if;
+        end if;
+    end if;
+    end if;
+end process;
+
+end generate GEN_TEST_0;
+
+GEN_TEST_1: if TEST_MODE = 1 generate
+process(clk)
     begin
         if rising_edge(clk) then
             if rst = '1' then
@@ -187,4 +250,5 @@ begin
         end if;
     end process;
 
+end generate GEN_TEST_1;
 end Behavioral;

@@ -1,35 +1,10 @@
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="2880" HostCore="16" HostMemory="016198311936">
+    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="19416" HostCore="16" HostMemory="016198311936">
     </Process>
 </ProcessHandle>
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="8536" HostCore="16" HostMemory="016198311936">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="6112" HostCore="16" HostMemory="016198311936">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="12980" HostCore="16" HostMemory="016198311936">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="13128" HostCore="16" HostMemory="016198311936">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="4864" HostCore="16" HostMemory="016198311936">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="10916" HostCore="16" HostMemory="016198311936">
+    <Process Command="vivado.bat" Owner="daniel" Host="DESKTOP-FEDBMRF" Pid="16316" HostCore="16" HostMemory="016198311936">
     </Process>
 </ProcessHandle>

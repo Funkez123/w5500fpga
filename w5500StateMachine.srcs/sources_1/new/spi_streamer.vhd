@@ -116,6 +116,8 @@ begin
             state <= FIFO_INIT_STATE;
             tvalid <= '0';
             tdata <= (others => '0');
+            payload_fifo_ready <= '0';
+            tlast <= '0';
         elsif rising_edge(clk) then
             case state is
                 when FIFO_INIT_STATE =>
