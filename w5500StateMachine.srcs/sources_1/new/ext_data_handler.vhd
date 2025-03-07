@@ -86,7 +86,7 @@ architecture Behavioral of ext_data_handler is
     end component;
 
     -- signals for testmode 0
-    constant INTERVAL   : integer := 20000; -- Interval between transmissions
+    constant INTERVAL   : integer := 187500; -- Interval between transmissions
     signal counter      : integer := 0;
     signal byte_index   : integer := 0;
     signal packet_count : integer := 0;  -- Track the number of packets sent

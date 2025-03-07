@@ -1,8 +1,8 @@
 -------------------------------------
 | Tool Version : Vivado v.2023.2
-| Date         : Fri Mar  7 13:16:23 2025
+| Date         : Fri Mar  7 21:10:51 2025
 | Host         : DESKTOP-FEDBMRF
-| Design       : checkpoint_top
+| Design       : design_1
 | Device       : xc7z020-clg400-1--
 -------------------------------------
 

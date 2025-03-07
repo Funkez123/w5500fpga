@@ -123,7 +123,7 @@ architecture behavioral of w5500_state_machine is
     -- PASSTHROUGH MODE COUNTERS
     signal ptm_transmitted_byte_counter : integer range 0 to 512;
     signal ext_pl_tlast_was_received : std_logic := '0';
-    
+    signal first_tx_passthrough_byte_received : std_logic := '0';
     
     -- "generics"
     constant source_ip_address : std_logic_vector(31 downto 0) := x"C0A80264"; --local ip address   192 168 2 100
@@ -783,6 +783,7 @@ begin
                 ext_pl_rvalid <= '0';
 
                 ext_pl_tlast_was_received <= '0';
+                first_tx_passthrough_byte_received <= '0';
 
             when TX_FIFO_PASSTHROUGH_MODE =>
 
@@ -792,7 +793,9 @@ begin
                     if(ext_pl_tlast_was_received = '1') then
                         payload_valid <= '0';
                     else
-                        payload_valid <= ext_pl_tvalid;
+                        
+                        payload_valid <= '1';
+                        
                         if(ext_pl_tlast = '1') then
                             ext_pl_tlast_was_received <= '1';
                         end if;
@@ -847,7 +850,8 @@ begin
                 ext_pl_tready <= '0';
 
                 ext_pl_tlast_was_received <= '0';
-
+                first_tx_passthrough_byte_received <= '0';
+                
             when others =>
                 -- Default Safe State
                 payload_valid <= '0';
@@ -856,6 +860,7 @@ begin
                 ext_pl_rvalid <= '0';
                 
                 ext_pl_tlast_was_received <= '0';
+                first_tx_passthrough_byte_received <= '0';
         end case;
     end if;
 end process;

@@ -115,6 +115,7 @@ proc step_failed { step } {
 OPTRACE "impl_1" END { }
 }
 
+set_msg_config -id {Common 17-41} -limit 10000000
 
 OPTRACE "impl_1" START { ROLLUP_1 }
 OPTRACE "Phase: Init Design" START { ROLLUP_AUTO }
@@ -123,15 +124,39 @@ set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
   set_param chipscope.maxJobs 4
+  set_param xicom.use_bs_reader 1
   set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project
   set_param runs.launchOptions { -jobs 16  }
-  reset_param project.defaultXPMLibraries 
-  open_checkpoint C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/impl_1/top.dcp
+OPTRACE "create in-memory project" START { }
+  create_project -in_memory -part xc7z020clg400-1
+  set_property board_part_repo_paths {C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/board_store/xilinx_board_store} [current_project]
+  set_property board_part www.digilentinc.com:pynq-z1:part0:1.0 [current_project]
+  set_property design_mode GateLvl [current_fileset]
+  set_param project.singleFileAddWarning.threshold 0
+OPTRACE "create in-memory project" END { }
+OPTRACE "set parameters" START { }
   set_property webtalk.parent_dir C:/Users/danie/w5500StateMachine/w5500StateMachine.cache/wt [current_project]
   set_property parent.project_path C:/Users/danie/w5500StateMachine/w5500StateMachine.xpr [current_project]
   set_property ip_output_repo C:/Users/danie/w5500StateMachine/w5500StateMachine.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO} [current_project]
+OPTRACE "set parameters" END { }
+OPTRACE "add files" START { }
+  add_files -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.dcp
+  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
+  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+  read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
+OPTRACE "read constraints: implementation" START { }
+  read_xdc C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc
+OPTRACE "read constraints: implementation" END { }
+OPTRACE "read constraints: implementation_pre" START { }
+OPTRACE "read constraints: implementation_pre" END { }
+OPTRACE "add files" END { }
+OPTRACE "link_design" START { }
+  link_design -top top -part xc7z020clg400-1 
+OPTRACE "link_design" END { }
+OPTRACE "gray box cells" START { }
+OPTRACE "gray box cells" END { }
 OPTRACE "init_design_reports" START { REPORT }
 OPTRACE "init_design_reports" END { }
 OPTRACE "init_design_write_hwdef" START { }
