@@ -1,4 +1,3 @@
-
 ----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
@@ -35,7 +34,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test
+        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test
     );
     port (
         clk         : in  STD_LOGIC;
@@ -57,7 +56,7 @@ architecture Behavioral of ext_data_handler is
     type state_type is (IDLE, RECEIVE_HEADER, RECEIVE_DATA, SEND_DATA);
     signal current_state, next_state : state_type := IDLE;
 
-    signal not_reset : std_logic := '1'; -- Simulation-only initialization
+    signal not_reset : std_logic := '0'; -- Simulation-only initialization
 
     signal rdata_buffer    : std_logic_vector(7 downto 0);
     signal rvalid_buffer   : std_logic := '0';
@@ -189,7 +188,7 @@ process(clk)
                                 rlast_buffer <= '0';
                             else
                                 -- Start receiving actual payload data
-                                current_state   <= RECEIVE_DATA;
+                                current_state <= RECEIVE_DATA;
                                 
                                 --in the clk cycle of the state switch, we can already receive the first byte
                                 if (rvalid = '1') then

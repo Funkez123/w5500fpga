@@ -122,6 +122,7 @@ architecture behavioral of w5500_state_machine is
    
     -- PASSTHROUGH MODE COUNTERS
     signal ptm_transmitted_byte_counter : integer range 0 to 512;
+    signal ext_pl_tlast_was_received : std_logic := '0';
     
     
     -- "generics"
@@ -213,6 +214,7 @@ begin
             when RESET_STATE =>
                 if(payload_ready = '1') then --when the FIFOs in the W5500 Streamer are ready, then we can continue
                     w5500state_next <= RESET_W5500_CHIP_STATE;
+                    streammanager_next_state <= CONTROLLER_PHASE;
                     rx_received_size_reg <= x"0000";
                     rx_pointer_reg <= x"0000";
                     tx_write_pointer <= "0000000000000000";
@@ -618,7 +620,7 @@ begin
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
                             spi_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            if(payload_ready = '1' and payload_valid = '1') then
+                            if(payload_valid = '1' and payload_ready = '1') then
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
                             end if;
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
@@ -718,13 +720,12 @@ begin
     end if;
     end process;
     
-            --- SPI DATA Streamer AXI stream manager ---
- --switches who has controll of the PAYLOAD FIFO in the W5500 Data streamer. TX/RX Passthrough phase or controller phase
-            
-    process (clk, reset)
+--- SPI DATA Streamer AXI stream manager ---
+-- Switches control of PAYLOAD FIFO in the W5500 Data streamer. TX/RX Passthrough phase or controller phase
+
+process (clk, reset)
 begin 
     if (reset = '1') then
-        streammanager_state <= CONTROLLER_PHASE;
         streammanager_state <= CONTROLLER_PHASE;
         payload_valid       <= '0';
         payload_last        <= '0';
@@ -781,9 +782,30 @@ begin
                 ext_pl_tready <= '0';
                 ext_pl_rvalid <= '0';
 
+                ext_pl_tlast_was_received <= '0';
+
             when TX_FIFO_PASSTHROUGH_MODE =>
-            
-                payload_valid <= ext_pl_tvalid;
+                -- Ensure ext_pl_tready is only asserted when payload_ready is high
+                if (payload_ready = '1') then
+                    ext_pl_tready <= '1';
+                else
+                    ext_pl_tready <= '0';
+                end if;
+
+                if (ext_pl_tvalid = '1') then
+                    if(ext_pl_tlast_was_received = '1') then
+                        payload_valid <= '0';
+                    else
+                        payload_valid <= '1';
+                        if(ext_pl_tlast = '1') then
+                            ext_pl_tlast_was_received <= '1';
+                        end if;
+                    end if;
+                else
+                    payload_valid <= '0';
+                end if;
+                
+                -- Pass through AXI stream signals
                 payload_data  <= ext_pl_tdata;
                 payload_last  <= ext_pl_tlast;
 
@@ -791,12 +813,6 @@ begin
                     spi_header_valid <= '0';
                 else
                     spi_header_valid <= '1';
-                end if;
-  
-                if(payload_ready = '1') then
-                    ext_pl_tready <= '1';
-                else
-                    ext_pl_tready <= '0';
                 end if;
 
                 ext_pl_rvalid <= '0';
@@ -822,17 +838,19 @@ begin
                     byte_length_buffer <= payload_byte_length;
                 end if;
 
-                    if(ext_pl_rready = '1') then
-                        rx_payload_ready <= '1';
-                    else
-                        rx_payload_ready <= '0';
-                    end if;
+                if (ext_pl_rready = '1') then
+                    rx_payload_ready <= '1';
+                else
+                    rx_payload_ready <= '0';
+                end if;
 
-                    ext_pl_rvalid <= rx_payload_valid;
-                    ext_pl_rdata  <= rx_payload_data;
-                    ext_pl_rlast  <= rx_payload_last;
+                ext_pl_rvalid <= rx_payload_valid;
+                ext_pl_rdata  <= rx_payload_data;
+                ext_pl_rlast  <= rx_payload_last;
 
-                    ext_pl_tready <= '0';
+                ext_pl_tready <= '0';
+
+                ext_pl_tlast_was_received <= '0';
 
             when others =>
                 -- Default Safe State
@@ -840,10 +858,11 @@ begin
                 payload_last  <= '0';
                 ext_pl_tready <= '0';
                 ext_pl_rvalid <= '0';
+                
+                ext_pl_tlast_was_received <= '0';
         end case;
     end if;
 end process;
     
-            
 end architecture behavioral;
 
