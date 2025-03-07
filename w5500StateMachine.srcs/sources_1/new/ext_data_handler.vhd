@@ -154,6 +154,12 @@ end process;
 end generate GEN_TEST_0;
 
 GEN_TEST_1: if TEST_MODE = 1 generate
+
+tdata <= tdata_buffer;
+tvalid <= tvalid_buffer;
+tready_buffer <= tready;
+tlast <= tlast_buffer;
+
 process(clk)
     begin
         if rising_edge(clk) then
@@ -163,14 +169,10 @@ process(clk)
                 header_byte_counter <= 0;
                 rvalid_buffer       <= '0';
                 rready              <= '1';
-                tvalid              <= '0';
-                tlast               <= '0';
             else
                 case current_state is
                     when IDLE =>
                         -- Reset signals and wait for incoming data
-                        tvalid        <= '0';
-                        tlast         <= '0';
                         rready        <= '1';
                         header_byte_counter <= 0;
 
@@ -201,11 +203,7 @@ process(clk)
                                 
                             end if;
                         end if;
-                        
-                        tvalid        <= '0';
-                        tlast         <= '0';
-                        tready_buffer <= '0';
-                        
+                                               
                     when RECEIVE_DATA =>
                         -- Store data in the FIFO
                         if (rvalid = '1') then
@@ -223,17 +221,8 @@ process(clk)
                             current_state <= SEND_DATA;
                         end if;
                         
-                        tvalid        <= '0';
-                        tlast         <= '0';
-                        tready_buffer <= '0';
-
                     when SEND_DATA =>
                         -- Read from FIFO and send data
-                        
-                        tvalid        <= tvalid_buffer;
-                        tdata         <= tdata_buffer;
-                        tlast         <= tlast_buffer;
-                        tready_buffer <= tready;
 
                         if (tlast_buffer = '1' and tvalid_buffer = '1' and tready = '1') then
                             -- Packet fully sent, go back to IDLE
