@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date             : Fri Mar  7 11:08:33 2025
+| Date             : Fri Mar  7 13:16:44 2025
 | Host             : DESKTOP-FEDBMRF running 64-bit major release  (build 9200)
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb -rpx top_power_routed.rpx
 | Design           : top
@@ -53,13 +53,13 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.005 |        8 |       --- |             --- |
-| Slice Logic    |     0.004 |     1578 |       --- |             --- |
-|   LUT as Logic |     0.004 |      674 |     53200 |            1.27 |
-|   CARRY4       |    <0.001 |       44 |     13300 |            0.33 |
-|   Register     |    <0.001 |      563 |    106400 |            0.53 |
-|   Others       |     0.000 |       60 |       --- |             --- |
-| Signals        |     0.003 |     1087 |       --- |             --- |
-| Block RAM      |     0.002 |      2.5 |       140 |            1.79 |
+| Slice Logic    |     0.004 |     1471 |       --- |             --- |
+|   LUT as Logic |     0.004 |      641 |     53200 |            1.20 |
+|   CARRY4       |    <0.001 |       42 |     13300 |            0.32 |
+|   Register     |    <0.001 |      517 |    106400 |            0.49 |
+|   Others       |     0.000 |       50 |       --- |             --- |
+| Signals        |     0.003 |     1030 |       --- |             --- |
+| Block RAM      |     0.002 |        2 |       140 |            1.43 |
 | MMCM           |     0.106 |        1 |         4 |           25.00 |
 | I/O            |     0.001 |        6 |       125 |            4.80 |
 | Static Power   |     0.108 |          |           |                 |
@@ -157,11 +157,11 @@ Table of Contents
 | top                           |     0.122 |
 |   clk_wiz                     |     0.107 |
 |     inst                      |     0.107 |
-|   extdatahandler              |     0.001 |
-|   spi_m                       |     0.009 |
+|   spi_m                       |     0.010 |
 |     u_w5500_axi_data_streamer |     0.003 |
-|       u_rx_fifo               |     0.001 |
 |   txrx_unit                   |     0.003 |
+|     u_rx_payload_fifo         |     0.001 |
+|       inst                    |     0.001 |
 |     u_tx_payload_fifo         |     0.001 |
 |       inst                    |     0.001 |
 +-------------------------------+-----------+

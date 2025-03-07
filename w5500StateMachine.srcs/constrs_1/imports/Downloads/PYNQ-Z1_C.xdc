@@ -319,3 +319,11 @@ connect_debug_port u_ila_0/probe11 [get_nets [list spi_m/u_w5500_axi_data_stream
 connect_debug_port u_ila_0/probe0 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
 
 
+
+connect_debug_port u_ila_0/probe2 [get_nets [list {ext_pl_tdata[0]} {ext_pl_tdata[1]} {ext_pl_tdata[2]} {ext_pl_tdata[3]} {ext_pl_tdata[4]} {ext_pl_tdata[5]} {ext_pl_tdata[6]} {ext_pl_tdata[7]}]]
+connect_debug_port u_ila_0/probe3 [get_nets [list {rdata__0[0]} {rdata__0[1]} {rdata__0[2]} {rdata__0[3]} {rdata__0[4]} {rdata__0[5]} {rdata__0[6]} {rdata__0[7]}]]
+connect_debug_port u_ila_0/probe10 [get_nets [list ext_pl_rready]]
+connect_debug_port u_ila_0/probe12 [get_nets [list ext_pl_tvalid]]
+connect_debug_port u_ila_0/probe14 [get_nets [list ext_pl_rvalid]]
+connect_debug_port u_ila_0/probe15 [get_nets [list ext_pl_rlast]]
+

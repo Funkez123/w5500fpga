@@ -785,18 +785,14 @@ begin
                 ext_pl_tlast_was_received <= '0';
 
             when TX_FIFO_PASSTHROUGH_MODE =>
-                -- Ensure ext_pl_tready is only asserted when payload_ready is high
-                if (payload_ready = '1') then
-                    ext_pl_tready <= '1';
-                else
-                    ext_pl_tready <= '0';
-                end if;
 
-                if (ext_pl_tvalid = '1') then
+                ext_pl_tready <= payload_ready;
+
+                if (ext_pl_tvalid = '1' and payload_ready = '1') then
                     if(ext_pl_tlast_was_received = '1') then
                         payload_valid <= '0';
                     else
-                        payload_valid <= '1';
+                        payload_valid <= ext_pl_tvalid;
                         if(ext_pl_tlast = '1') then
                             ext_pl_tlast_was_received <= '1';
                         end if;

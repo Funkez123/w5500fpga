@@ -34,7 +34,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test
+        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test
     );
     port (
         clk         : in  STD_LOGIC;
