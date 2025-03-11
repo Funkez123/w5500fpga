@@ -547,7 +547,7 @@ begin
             when CHECK_IF_FREE_SIZE_IS_AVAILABLE =>
                 if(rx_payload_last = '1') then
                     --if(to_integer(unsigned(rx_shift_payload_buffer(15 downto 0))) > 4) then
-                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 2020) then
+                    if(unsigned(rx_shift_payload_buffer(15 downto 0)) > 1024) then
                         w5500state_next <= SET_DEST_IP;
                     else 
                         w5500state_next <= READ_TX_FREE_BUFFER_SIZE;

@@ -17,8 +17,6 @@
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.all;
@@ -34,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test
+        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;
@@ -69,7 +67,7 @@ architecture Behavioral of ext_data_handler is
     signal tlast_buffer    : std_logic := '0';
     
     signal header_byte_counter : integer := 0;
-
+    
     component axis_data_fifo_8bit is 
         Port(
             s_axis_tdata  : in  std_logic_vector(7 downto 0);
@@ -85,12 +83,18 @@ architecture Behavioral of ext_data_handler is
         );
     end component;
 
-    -- signals for testmode 0
-    constant INTERVAL   : integer := 187500; -- Interval between transmissions
+ 
+    -- signals for testmode 0 and 2
+
     signal counter      : integer := 0;
     signal byte_index   : integer := 0;
     signal packet_count : integer := 0;  -- Track the number of packets sent
     signal sending      : boolean := false;
+    constant INTERVAL   : integer := 187500; -- Interval between transmissions
+    constant DATA_SIZE : integer := 255;
+
+
+
 
 begin
 
@@ -239,4 +243,51 @@ process(clk)
     end process;
 
 end generate GEN_TEST_1;
+
+GEN_TEST_2: if TEST_MODE = 2 generate -- sending 256 Bytes
+
+    process(clk, rst, sending)
+    begin
+        if rising_edge(clk) then
+            if rst = '1' then
+                counter     <= 0;
+                byte_index  <= 0;
+                sending     <= false;
+                tdata       <= (others => '0');
+                tvalid      <= '0';
+                tlast       <= '0';
+            else
+                if sending then
+                    -- Transmit the test data
+                    tdata  <= std_logic_vector(to_unsigned(byte_index,8));
+                    tvalid <= '1';
+
+                    if byte_index = DATA_SIZE then
+                        tlast      <= '1';
+                        sending    <= false; -- End of transmission
+                        byte_index <= 0;     -- Reset index
+                    else
+                        tlast <= '0';
+                        if tready = '1' then
+                            byte_index <= byte_index + 1;   
+                        end if;
+                    end if;
+                else
+                    -- Wait for the interval to pass
+                    tvalid <= '0';
+                    tlast  <= '0';
+
+                    if counter = INTERVAL - 1 then
+                        counter  <= 0;
+                        sending  <= true;    -- Start sending
+                        byte_index <= 0;     -- Ensure reset to 0 only here
+                    else
+                        counter <= counter + 1;
+                    end if;
+                end if;
+            end if;
+        end if;
+    end process;
+end generate GEN_TEST_2;
+
 end Behavioral;
