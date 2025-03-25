@@ -327,3 +327,5 @@ connect_debug_port u_ila_0/probe12 [get_nets [list ext_pl_tvalid]]
 connect_debug_port u_ila_0/probe14 [get_nets [list ext_pl_rvalid]]
 connect_debug_port u_ila_0/probe15 [get_nets [list ext_pl_rlast]]
 
+
+

@@ -5,3 +5,6 @@
 
 # IP: ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==axis_data_fifo_8bit || ORIG_REF_NAME==axis_data_fifo_8bit} -quiet] -quiet
+
+# IP: ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
+set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==axis_data_fifo_16_times_8bit || ORIG_REF_NAME==axis_data_fifo_16_times_8bit} -quiet] -quiet
