@@ -32,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
+        TEST_MODE : integer := 2  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;

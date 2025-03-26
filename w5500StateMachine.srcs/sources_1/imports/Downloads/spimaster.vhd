@@ -788,26 +788,19 @@ begin
             when TX_FIFO_PASSTHROUGH_MODE =>
 
                 ext_pl_tready <= payload_ready;
-
-                if (ext_pl_tvalid = '1' and payload_ready = '1') then
-                    if(ext_pl_tlast_was_received = '1') then
-                        payload_valid <= '0';
-                    else
-                        
-                        payload_valid <= '1';
-                        
-                        if(ext_pl_tlast = '1') then
-                            ext_pl_tlast_was_received <= '1';
-                        end if;
-                    end if;
-                else
-                    payload_valid <= '0';
-                end if;
                 
+                if(ext_pl_tlast_was_received = '1') then
+                   payload_valid <= '0';
+                else
+                   payload_valid <= '1';
+                   if(ext_pl_tlast = '1') then
+                       ext_pl_tlast_was_received <= '1';
+                   end if;
+                end if;
                 -- Pass through AXI stream signals
                 payload_data  <= ext_pl_tdata;
                 payload_last  <= ext_pl_tlast;
-
+                
                 if (payload_data_has_been_set = '1') then -- this basically set's the header valid bit for exactly one clk cycle
                     spi_header_valid <= '0';
                 else

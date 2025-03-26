@@ -114,10 +114,6 @@ begin
     begin
         if reset = '1' then
             state <= FIFO_INIT_STATE;
-            tvalid <= '0';
-            tdata <= (others => '0');
-            payload_fifo_ready <= '0';
-            tlast <= '0';
         elsif rising_edge(clk) then
             case state is
                 when FIFO_INIT_STATE =>
@@ -126,47 +122,30 @@ begin
                     end if;
             
                 when IDLE =>
-                    tvalid <= '0';
-                    tlast <= '0';
-                    payload_fifo_ready <= '0';
                     if spi_header_valid = '1' and tx_plvalid = '1' and tx_plready_buffer = '1' then
                         state <= SPI_HEADER_BYTE_0;
                     end if;
 
                 -- Transmitting Byte 0 (Most Significant Byte)
                 when SPI_HEADER_BYTE_0 =>
-                    tdata <= spi_header(23 downto 16);  -- Send MSB first
-                    tvalid <= '1';
-                    payload_fifo_ready <= '0';
                     if tready = '1' then
                         state <= SPI_HEADER_BYTE_1;
                     end if;
 
                 -- Transmitting Byte 1
                 when SPI_HEADER_BYTE_1 =>
-                    tdata <= spi_header(15 downto 8);
-                    tvalid <= '1';
-                    payload_fifo_ready <= '0';
                     if tready = '1' then
                         state <= SPI_HEADER_BYTE_2;
                     end if;
 
                 -- Transmitting Byte 2
                 when SPI_HEADER_BYTE_2 =>
-                    tdata <= spi_header(7 downto 0);
-                    tvalid <= '1';
-                    payload_fifo_ready <= '0';
                     if tready = '1' then
                         state <= PAYLOAD_STREAM;    -- once the spi_header was transmitted, we can switch to payload streaming
-                        payload_fifo_ready <= tready; -- this is set one state earlier, so it doesn't have that one clk-cycle delay
                     end if;
                     
                 -- transmitting payload data and receiving data
-                when PAYLOAD_STREAM => -- it's enough when the tx_payload fifo decides how long data has to be received
-                    tdata <= payload_fifo_output_buffer;
-                    tvalid <= payload_fifo_valid;
-                    tlast <= payload_fifo_tlast_buffer;
-                     
+                when PAYLOAD_STREAM => -- it's enough when the tx_payload fifo decides how long data has to be received                     
                     if payload_fifo_tlast_buffer = '1'  then -- if tlast is set, then switch to done state
                         state <= DONE_STATE;
                     else 
@@ -175,13 +154,48 @@ begin
                     
                 -- Transmission done
                 when DONE_STATE =>
-                    tvalid <= '0';
-                    tlast <= '0';
                     state <= IDLE;
                 when others =>
                     state <= IDLE;
             end case;
         end if;
+    end process;
+    
+    process(clk) 
+    begin
+        case state is
+            when FIFO_INIT_STATE =>
+                tvalid <= '0';
+                tlast <= '0';
+                payload_fifo_ready <= '0';
+            when IDLE =>
+                payload_fifo_ready <= '0';
+                tlast <= '0';
+                tvalid <= '0';
+            when SPI_HEADER_BYTE_0 =>
+                tdata <= spi_header(23 downto 16);  -- Send MSB first
+                tvalid <= '1';
+                tlast <= '0';
+                payload_fifo_ready <= '0';
+            when SPI_HEADER_BYTE_1 =>
+                tdata <= spi_header(15 downto 8);  -- second byte
+                tvalid <= '1';
+                tlast <= '0';
+                payload_fifo_ready <= '0';
+            when SPI_HEADER_BYTE_2 =>
+                tvalid <= '1';
+                tdata <= spi_header(7 downto 0); -- third byte of SPI Header
+                tlast <= '0';
+                payload_fifo_ready <= '0';
+            when PAYLOAD_STREAM => -- full passthrough of TX FIFO
+                tdata <= payload_fifo_output_buffer;
+                tvalid <= payload_fifo_valid;
+                tlast <= payload_fifo_tlast_buffer;
+                payload_fifo_ready <= tready;
+            when DONE_STATE =>
+                tvalid <= '0';
+                tlast <= '0';
+            end case;
     end process;
     
     
