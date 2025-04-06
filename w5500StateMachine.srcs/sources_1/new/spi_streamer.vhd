@@ -191,7 +191,7 @@ begin
                 tdata <= payload_fifo_output_buffer;
                 tvalid <= payload_fifo_valid;
                 tlast <= payload_fifo_tlast_buffer;
-                payload_fifo_ready <= tready;
+                payload_fifo_ready <= '1';
             when DONE_STATE =>
                 tvalid <= '0';
                 tlast <= '0';

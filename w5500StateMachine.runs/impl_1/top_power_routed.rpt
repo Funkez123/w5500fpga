@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date             : Wed Mar 26 15:18:10 2025
+| Date             : Sun Apr  6 09:13:00 2025
 | Host             : DESKTOP-FEDBMRF running 64-bit major release  (build 9200)
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb -rpx top_power_routed.rpx
 | Design           : top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.232        |
+| Total On-Chip Power (W)  | 0.231        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.124        |
+| Dynamic (W)              | 0.123        |
 | Device Static (W)        | 0.108        |
 | Effective TJA (C/W)      | 11.5         |
 | Max Ambient (C)          | 82.3         |
@@ -52,18 +52,18 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.006 |        8 |       --- |             --- |
-| Slice Logic    |     0.004 |     1669 |       --- |             --- |
-|   LUT as Logic |     0.004 |      635 |     53200 |            1.19 |
+| Clocks         |     0.005 |        8 |       --- |             --- |
+| Slice Logic    |     0.004 |     1734 |       --- |             --- |
+|   LUT as Logic |     0.004 |      683 |     53200 |            1.28 |
 |   CARRY4       |    <0.001 |      108 |     13300 |            0.81 |
-|   Register     |    <0.001 |      635 |    106400 |            0.60 |
-|   Others       |     0.000 |       82 |       --- |             --- |
-| Signals        |     0.003 |     1201 |       --- |             --- |
+|   Register     |    <0.001 |      661 |    106400 |            0.62 |
+|   Others       |     0.000 |       83 |       --- |             --- |
+| Signals        |     0.003 |     1270 |       --- |             --- |
 | Block RAM      |     0.004 |        4 |       140 |            2.86 |
 | MMCM           |     0.106 |        1 |         4 |           25.00 |
 | I/O            |     0.001 |        6 |       125 |            4.80 |
 | Static Power   |     0.108 |          |           |                 |
-| Total          |     0.232 |          |           |                 |
+| Total          |     0.231 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -73,7 +73,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.025 |       0.017 |      0.008 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.024 |       0.016 |      0.008 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.069 |       0.059 |      0.011 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -154,14 +154,13 @@ Table of Contents
 +-------------------------------+-----------+
 | Name                          | Power (W) |
 +-------------------------------+-----------+
-| top                           |     0.124 |
+| top                           |     0.123 |
 |   clk_wiz                     |     0.107 |
 |     inst                      |     0.107 |
-|   extdatahandler              |     0.001 |
-|   spi_m                       |     0.011 |
+|   spi_m                       |     0.010 |
 |     u_w5500_axi_data_streamer |     0.004 |
-|       u_payload_fifo          |     0.002 |
-|       u_rx_fifo               |     0.002 |
+|       u_payload_fifo          |     0.001 |
+|       u_rx_fifo               |     0.001 |
 |   txrx_unit                   |     0.004 |
 |     u_rx_payload_fifo         |     0.002 |
 |       inst                    |     0.002 |

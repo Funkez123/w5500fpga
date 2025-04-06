@@ -124,12 +124,14 @@ architecture behavioral of w5500_state_machine is
     signal ptm_transmitted_byte_counter : integer range 0 to 512;
     signal ext_pl_tlast_was_received : std_logic := '0';
     signal first_tx_passthrough_byte_received : std_logic := '0';
-    
+        
     -- "generics"
     constant source_ip_address : std_logic_vector(31 downto 0) := x"C0A80264"; --local ip address   192 168 2 100
-    constant dest_ip_address : std_logic_vector(31 downto 0) := x"C0A8026B"; --destination ip address  192 168 2 XXX
+    constant dest_ip_address : std_logic_vector(31 downto 0) := x"C0A8026A"; --destination ip address  192 168 2 XXX
     constant source_udp_port : std_logic_vector(15 downto 0) := x"00D9"; -- local udp port   217
     constant dest_udp_port : std_logic_vector(15 downto 0) := x"00D9"; --destination udp port   217
+   
+    
    
    
     component w5500_axi_data_streamer is
@@ -620,7 +622,8 @@ begin
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
                             spi_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            if(payload_valid = '1' and payload_ready = '1') then
+                            -- if(ext_pl_tlast_was_received = '0') then
+                            if(payload_valid = '1' and payload_ready = '1') then --passthrough_mode transmitter byte counter <- increments during TX_FIFO_PASSTHROUGH_MODE, counting clock cycles that data is written 
                                 ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
                             end if;
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
@@ -723,6 +726,7 @@ begin
 --- SPI DATA Streamer AXI stream manager ---
 -- Switches control of PAYLOAD FIFO in the W5500 Data streamer. TX/RX Passthrough phase or controller phase
 
+-- Main process
 process (clk, reset)
 begin 
     if (reset = '1') then
@@ -731,7 +735,6 @@ begin
         payload_last        <= '0';
         ext_pl_tready       <= '0';
         ext_pl_rvalid       <= '0';
-        
         ext_pl_rdata <= x"00";
         ext_pl_rlast <= '0';
         payload_data <= x"00";
@@ -741,12 +744,36 @@ begin
         rx_payload_ready    <= '0';
         byte_length_buffer <= 0;
         spi_header_valid <= '0';
+
+        ext_pl_tlast_was_received <= '0';
+        first_tx_passthrough_byte_received <= '0';
+
+    elsif  streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
+    
+        streammanager_state <= streammanager_next_state;
+    
+        payload_data <= ext_pl_tdata;
+        payload_valid <= ext_pl_tvalid;
+        ext_pl_tready <= payload_ready;
+        payload_last <= ext_pl_tlast;
+    
+        ext_pl_rvalid <= '0';
+    
+        if(ext_pl_tlast = '1') then
+            ext_pl_tlast_was_received <= '1';
+        end if;
+    
+        if payload_data_has_been_set = '1' then
+            spi_header_valid <= '0';
+        else
+            spi_header_valid <= '1';
+        end if;
         
-    elsif (rising_edge(clk)) then
+    elsif rising_edge(clk) then
         streammanager_state <= streammanager_next_state;
         prev_payload_data_has_been_set <= payload_data_has_been_set;
 
-        case streammanager_state is                     
+        case streammanager_state is
             when CONTROLLER_PHASE =>
                 if (byte_length_buffer > 0) then
                     payload_data  <= shift_payload_buffer(31 downto 24);
@@ -766,48 +793,20 @@ begin
                     spi_header_valid <= '0';
                 end if;
 
-                -- Synchronize buffer update
                 if (prev_payload_data_has_been_set = '0' and payload_data_has_been_set = '1') then
                     byte_length_buffer <= payload_byte_length;
                     shift_payload_buffer <= raw_payload_buffer;
                 end if;
 
-                -- RX FIFO Handling
                 rx_payload_ready <= '1';
                 if (rx_payload_valid = '1') then
                     rx_shift_payload_buffer <= rx_shift_payload_buffer(23 downto 0) & rx_payload_data;
                 end if;
 
-                -- Disable AXI Stream Output
                 ext_pl_tready <= '0';
                 ext_pl_rvalid <= '0';
-
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
-
-            when TX_FIFO_PASSTHROUGH_MODE =>
-
-                ext_pl_tready <= payload_ready;
-                
-                if(ext_pl_tlast_was_received = '1') then
-                   payload_valid <= '0';
-                else
-                   payload_valid <= '1';
-                   if(ext_pl_tlast = '1') then
-                       ext_pl_tlast_was_received <= '1';
-                   end if;
-                end if;
-                -- Pass through AXI stream signals
-                payload_data  <= ext_pl_tdata;
-                payload_last  <= ext_pl_tlast;
-                
-                if (payload_data_has_been_set = '1') then -- this basically set's the header valid bit for exactly one clk cycle
-                    spi_header_valid <= '0';
-                else
-                    spi_header_valid <= '1';
-                end if;
-
-                ext_pl_rvalid <= '0';
 
             when RX_FIFO_PASSTHROUGH_MODE =>
                 if (byte_length_buffer > 0) then
@@ -841,22 +840,18 @@ begin
                 ext_pl_rlast  <= rx_payload_last;
 
                 ext_pl_tready <= '0';
-
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
-                
+
             when others =>
-                -- Default Safe State
                 payload_valid <= '0';
                 payload_last  <= '0';
                 ext_pl_tready <= '0';
                 ext_pl_rvalid <= '0';
-                
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
         end case;
     end if;
 end process;
-    
-end architecture behavioral;
 
+end architecture behavioral;

@@ -244,9 +244,8 @@ process(clk)
 
 end generate GEN_TEST_1;
 
-GEN_TEST_2: if TEST_MODE = 2 generate -- sending 256 Bytes
-
-    process(clk, rst, sending)
+GEN_TEST_2: if TEST_MODE = 2 generate
+    process(clk, rst)
     begin
         if rising_edge(clk) then
             if rst = '1' then
@@ -258,18 +257,18 @@ GEN_TEST_2: if TEST_MODE = 2 generate -- sending 256 Bytes
                 tlast       <= '0';
             else
                 if sending then
-                    -- Transmit the test data
-                    tdata  <= std_logic_vector(to_unsigned(byte_index,8));
+                    -- Assign tdata every cycle while sending
+                    tdata  <= std_logic_vector(to_unsigned(byte_index, 8));
                     tvalid <= '1';
 
-                    if byte_index = DATA_SIZE then
-                        tlast      <= '1';
-                        sending    <= false; -- End of transmission
-                        byte_index <= 0;     -- Reset index
+                    if byte_index = 255 then  
+                        tlast   <= '1';      -- Mark last byte
+                        sending <= false;    -- Stop sending
+                        byte_index <= 0;     -- Reset index for next burst
                     else
                         tlast <= '0';
                         if tready = '1' then
-                            byte_index <= byte_index + 1;   
+                            byte_index <= byte_index + 1; -- Increment on valid transmission
                         end if;
                     end if;
                 else
@@ -278,9 +277,9 @@ GEN_TEST_2: if TEST_MODE = 2 generate -- sending 256 Bytes
                     tlast  <= '0';
 
                     if counter = INTERVAL - 1 then
-                        counter  <= 0;
-                        sending  <= true;    -- Start sending
-                        byte_index <= 0;     -- Ensure reset to 0 only here
+                        counter    <= 0;
+                        sending    <= true;    -- Start sending
+                        byte_index <= 0;       -- Ensure reset to 0 only here
                     else
                         counter <= counter + 1;
                     end if;
@@ -289,5 +288,6 @@ GEN_TEST_2: if TEST_MODE = 2 generate -- sending 256 Bytes
         end if;
     end process;
 end generate GEN_TEST_2;
+
 
 end Behavioral;
