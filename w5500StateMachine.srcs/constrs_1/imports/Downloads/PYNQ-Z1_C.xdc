@@ -365,3 +365,55 @@ connect_debug_port u_ila_0/probe7 [get_nets [list ext_pl_rvalid]]
 
 connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_tready]]
 
+
+connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_tlast]]
+connect_debug_port u_ila_0/probe7 [get_nets [list extdatahandler_n_0]]
+connect_debug_port u_ila_0/probe9 [get_nets [list tlast]]
+
+connect_debug_port u_ila_0/probe10 [get_nets [list sending]]
+
+connect_debug_port u_ila_0/probe10 [get_nets [list spi_m_n_5]]
+
+connect_debug_port u_ila_0/probe1 [get_nets [list {tdata__0[0]} {tdata__0[1]} {tdata__0[2]} {tdata__0[3]} {tdata__0[4]} {tdata__0[5]} {tdata__0[6]} {tdata__0[7]}]]
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {ext_pl_tdata[0]}]]
+
+
+connect_debug_port u_ila_0/probe8 [get_nets [list spi_m/u_w5500_axi_data_streamer/ext_pl_tlast_was_received]]
+
+connect_debug_port u_ila_0/probe5 [get_nets [list payload_ready]]
+
+connect_debug_port u_ila_0/probe8 [get_nets [list spi_m/spi_header_valid_C_i_1_n_0]]
+
+connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/bytes_written_into_tx_fifo[0]} {spi_m/bytes_written_into_tx_fifo[1]} {spi_m/bytes_written_into_tx_fifo[2]} {spi_m/bytes_written_into_tx_fifo[3]} {spi_m/bytes_written_into_tx_fifo[4]} {spi_m/bytes_written_into_tx_fifo[5]} {spi_m/bytes_written_into_tx_fifo[6]} {spi_m/bytes_written_into_tx_fifo[7]} {spi_m/bytes_written_into_tx_fifo[8]} {spi_m/bytes_written_into_tx_fifo[9]} {spi_m/bytes_written_into_tx_fifo[10]}]]
+connect_debug_port u_ila_0/probe2 [get_nets [list {spi_m/ptm_transmitted_byte_counter[0]} {spi_m/ptm_transmitted_byte_counter[1]} {spi_m/ptm_transmitted_byte_counter[2]} {spi_m/ptm_transmitted_byte_counter[3]} {spi_m/ptm_transmitted_byte_counter[4]} {spi_m/ptm_transmitted_byte_counter[5]} {spi_m/ptm_transmitted_byte_counter[6]} {spi_m/ptm_transmitted_byte_counter[7]} {spi_m/ptm_transmitted_byte_counter[8]} {spi_m/ptm_transmitted_byte_counter[9]} {spi_m/ptm_transmitted_byte_counter[10]}]]
+
+
+connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_tvalid]]
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {ext_pl_tdata[0]} {ext_pl_tdata[1]} {ext_pl_tdata[2]} {ext_pl_tdata[3]} {ext_pl_tdata[4]} {ext_pl_tdata[5]} {ext_pl_tdata[6]} {ext_pl_tdata[7]}]]
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {ext_pl_tdata[0]} {ext_pl_tdata[1]} {ext_pl_tdata[2]} {ext_pl_tdata[3]} {ext_pl_tdata[4]} {ext_pl_tdata[5]} {ext_pl_tdata[6]} {ext_pl_tdata[7]}]]
+
+connect_debug_port u_ila_0/probe2 [get_nets [list byte_index]]
+connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_tlast]]
+connect_debug_port u_ila_0/probe5 [get_nets [list extdatahandler_n_0]]
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {spi_m/ptm_transmitted_byte_counter[0]} {spi_m/ptm_transmitted_byte_counter[1]} {spi_m/ptm_transmitted_byte_counter[2]} {spi_m/ptm_transmitted_byte_counter[3]} {spi_m/ptm_transmitted_byte_counter[4]} {spi_m/ptm_transmitted_byte_counter[5]} {spi_m/ptm_transmitted_byte_counter[6]} {spi_m/ptm_transmitted_byte_counter[7]} {spi_m/ptm_transmitted_byte_counter[8]} {spi_m/ptm_transmitted_byte_counter[9]}]]
+connect_debug_port u_ila_0/probe10 [get_nets [list spi_m_n_2]]
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {ext_pl_rdata[0]} {ext_pl_rdata[1]} {ext_pl_rdata[2]} {ext_pl_rdata[3]} {ext_pl_rdata[4]} {ext_pl_rdata[5]} {ext_pl_rdata[6]} {ext_pl_rdata[7]}]]
+connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/bytes_counted_during_tx_fifo_passthrough[0]} {spi_m/bytes_counted_during_tx_fifo_passthrough[1]} {spi_m/bytes_counted_during_tx_fifo_passthrough[2]} {spi_m/bytes_counted_during_tx_fifo_passthrough[3]} {spi_m/bytes_counted_during_tx_fifo_passthrough[4]} {spi_m/bytes_counted_during_tx_fifo_passthrough[5]} {spi_m/bytes_counted_during_tx_fifo_passthrough[6]} {spi_m/bytes_counted_during_tx_fifo_passthrough[7]} {spi_m/bytes_counted_during_tx_fifo_passthrough[8]} {spi_m/bytes_counted_during_tx_fifo_passthrough[9]} {spi_m/bytes_counted_during_tx_fifo_passthrough[10]}]]
+connect_debug_port u_ila_0/probe4 [get_nets [list ext_pl_rlast]]
+connect_debug_port u_ila_0/probe5 [get_nets [list ext_pl_rvalid0]]
+connect_debug_port u_ila_0/probe7 [get_nets [list extdatahandler_n_2]]
+connect_debug_port u_ila_0/probe13 [get_nets [list spi_m_n_3]]
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {ext_pl_tdata[0]} {ext_pl_tdata[1]} {ext_pl_tdata[2]} {ext_pl_tdata[3]} {ext_pl_tdata[4]} {ext_pl_tdata[5]} {ext_pl_tdata[6]} {ext_pl_tdata[7]}]]
+connect_debug_port u_ila_0/probe3 [get_nets [list ext_pl_tlast]]
+
+
+

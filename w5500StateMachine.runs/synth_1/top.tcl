@@ -70,10 +70,7 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param chipscope.maxJobs 4
-set_param xicom.use_bs_reader 1
 set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project
-set_msg_config -id {Common 17-41} -limit 10000000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7z020clg400-1
 
@@ -129,7 +126,7 @@ read_checkpoint -auto_incremental -incremental C:/Users/danie/w5500StateMachine/
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top top -part xc7z020clg400-1
+synth_design -top top -part xc7z020clg400-1 -directive RuntimeOptimized
 OPTRACE "synth_design" END { }
 if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"

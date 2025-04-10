@@ -161,7 +161,7 @@ begin
         end if;
     end process;
     
-    process(clk) 
+    process(clk) -- combinatorical process that allows SPI Master to first read from SPI header, then from tx_payload_fifo
     begin
         case state is
             when FIFO_INIT_STATE =>
@@ -169,9 +169,9 @@ begin
                 tlast <= '0';
                 payload_fifo_ready <= '0';
             when IDLE =>
-                payload_fifo_ready <= '0';
-                tlast <= '0';
                 tvalid <= '0';
+                tlast <= '0';
+                payload_fifo_ready <= '0';
             when SPI_HEADER_BYTE_0 =>
                 tdata <= spi_header(23 downto 16);  -- Send MSB first
                 tvalid <= '1';
@@ -191,10 +191,11 @@ begin
                 tdata <= payload_fifo_output_buffer;
                 tvalid <= payload_fifo_valid;
                 tlast <= payload_fifo_tlast_buffer;
-                payload_fifo_ready <= '1';
+                payload_fifo_ready <= tready; --SPI master's ready (TXRX Unit)
             when DONE_STATE =>
                 tvalid <= '0';
                 tlast <= '0';
+                payload_fifo_ready <= '0';
             end case;
     end process;
     

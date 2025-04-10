@@ -121,7 +121,8 @@ architecture behavioral of w5500_state_machine is
    
    
     -- PASSTHROUGH MODE COUNTERS
-    signal ptm_transmitted_byte_counter : integer range 0 to 512;
+    signal ptm_transmitted_byte_counter : integer range 0 to 1024;
+    signal bytes_counted_during_tx_fifo_passthrough : integer range 0 to 1024;
     signal ext_pl_tlast_was_received : std_logic := '0';
     signal first_tx_passthrough_byte_received : std_logic := '0';
         
@@ -622,9 +623,9 @@ begin
                 else
                     if(w5500state_next /= UPDATE_TX_WRITE_POINTER_AFTER_WRITE) then
                             spi_header <= tx_write_pointer & "00010" & '1' & "00"; -- offset address has been read into rx_shift_payload_buffer in the state before, write to Socket 0: TX-Buffer block
-                            -- if(ext_pl_tlast_was_received = '0') then
-                            if(payload_valid = '1' and payload_ready = '1') then --passthrough_mode transmitter byte counter <- increments during TX_FIFO_PASSTHROUGH_MODE, counting clock cycles that data is written 
-                                ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;  
+                            
+                            if(payload_valid = '1' and payload_ready = '1') then 
+                                ptm_transmitted_byte_counter <= ptm_transmitted_byte_counter + 1;
                             end if;
                             -- we don't have a raw payload buffer since the external TX AXIStream writes into our "W5500 Data streamer TX Payload FIFO" directly
                             payload_data_has_been_set <= '1';
@@ -744,14 +745,13 @@ begin
         rx_payload_ready    <= '0';
         byte_length_buffer <= 0;
         spi_header_valid <= '0';
-
         ext_pl_tlast_was_received <= '0';
         first_tx_passthrough_byte_received <= '0';
 
     elsif  streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
-    
+        
         streammanager_state <= streammanager_next_state;
-    
+        
         payload_data <= ext_pl_tdata;
         payload_valid <= ext_pl_tvalid;
         ext_pl_tready <= payload_ready;
@@ -763,12 +763,12 @@ begin
             ext_pl_tlast_was_received <= '1';
         end if;
     
-        if payload_data_has_been_set = '1' then
-            spi_header_valid <= '0';
-        else
+        if payload_valid = '1' then
             spi_header_valid <= '1';
+        else
+            spi_header_valid <= '0';
         end if;
-        
+
     elsif rising_edge(clk) then
         streammanager_state <= streammanager_next_state;
         prev_payload_data_has_been_set <= payload_data_has_been_set;
@@ -808,6 +808,8 @@ begin
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
 
+
+
             when RX_FIFO_PASSTHROUGH_MODE =>
                 if (byte_length_buffer > 0) then
                     byte_length_buffer <= byte_length_buffer - 1;
@@ -843,6 +845,7 @@ begin
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
 
+                
             when others =>
                 payload_valid <= '0';
                 payload_last  <= '0';
@@ -850,6 +853,7 @@ begin
                 ext_pl_rvalid <= '0';
                 ext_pl_tlast_was_received <= '0';
                 first_tx_passthrough_byte_received <= '0';
+                
         end case;
     end if;
 end process;

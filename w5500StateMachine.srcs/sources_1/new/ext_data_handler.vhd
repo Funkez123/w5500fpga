@@ -32,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 2  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
+        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;
@@ -261,7 +261,7 @@ GEN_TEST_2: if TEST_MODE = 2 generate
                     tdata  <= std_logic_vector(to_unsigned(byte_index, 8));
                     tvalid <= '1';
 
-                    if byte_index = 255 then  
+                    if byte_index = DATA_SIZE - 1 then  
                         tlast   <= '1';      -- Mark last byte
                         sending <= false;    -- Stop sending
                         byte_index <= 0;     -- Reset index for next burst
