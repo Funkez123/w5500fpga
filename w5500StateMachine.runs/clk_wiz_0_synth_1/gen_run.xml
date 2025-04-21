@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="clk_wiz_0_synth_1" LaunchPart="xc7z020clg400-1" LaunchTime="1738158991">
+<GenRun Id="clk_wiz_0_synth_1" LaunchPart="xc7z020clg400-1" LaunchTime="1745139387">
   <File Type="PA-TCL" Name="clk_wiz_0.tcl"/>
   <File Type="REPORTS-TCL" Name="clk_wiz_0_reports.tcl"/>
   <File Type="RDS-RDS" Name="clk_wiz_0.vds"/>
@@ -40,7 +40,19 @@
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedInSteps" Val="synth_1"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_1"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_10"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_11"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_12"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_13"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_14"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_2"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_3"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_4"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_5"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_6"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_7"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_8"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_9"/>
         <Attr Name="AutoDcp" Val="1"/>
       </FileInfo>
     </File>

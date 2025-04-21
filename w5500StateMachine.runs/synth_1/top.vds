@@ -3,8 +3,8 @@
 # SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Thu Apr 10 16:21:11 2025
-# Process ID: 21716
+# Start of session at: Mon Apr 21 10:36:58 2025
+# Process ID: 9800
 # Current directory: C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1
 # Command line: vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
 # Log file: C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.vds
@@ -15,7 +15,7 @@ source top.tcl -notrace
 Command: read_checkpoint -auto_incremental -incremental C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/utils_1/imports/synth_1/spi_master.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/utils_1/imports/synth_1/spi_master.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
-Command: synth_design -top top -part xc7z020clg400-1 -directive RuntimeOptimized
+Command: synth_design -top top -part xc7z020clg400-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
@@ -24,13 +24,13 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 8720
+INFO: [Synth 8-7075] Helper process launched with PID 10744
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 1345.551 ; gain = 439.270
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1345.973 ; gain = 439.688
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'top' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:48]
-INFO: [Synth 8-3491] module 'clk_wiz_0' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-21716-DESKTOP-FEDBMRF/realtime/clk_wiz_0_stub.vhdl:6' bound to instance 'clk_wiz' of component 'clk_wiz_0' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:155]
-INFO: [Synth 8-638] synthesizing module 'clk_wiz_0' [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-21716-DESKTOP-FEDBMRF/realtime/clk_wiz_0_stub.vhdl:15]
+INFO: [Synth 8-3491] module 'clk_wiz_0' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-9800-DESKTOP-FEDBMRF/realtime/clk_wiz_0_stub.vhdl:6' bound to instance 'clk_wiz' of component 'clk_wiz_0' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:155]
+INFO: [Synth 8-638] synthesizing module 'clk_wiz_0' [C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/.Xil/Vivado-9800-DESKTOP-FEDBMRF/realtime/clk_wiz_0_stub.vhdl:15]
 INFO: [Synth 8-3491] module 'w5500_state_machine' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:5' bound to instance 'spi_m' of component 'w5500_state_machine' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:164]
 INFO: [Synth 8-638] synthesizing module 'w5500_state_machine' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:35]
 INFO: [Synth 8-3491] module 'w5500_axi_data_streamer' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:5' bound to instance 'u_w5500_axi_data_streamer' of component 'w5500_axi_data_streamer' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:170]
@@ -70,7 +70,6 @@ INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_axis' (0#1) [C:/Xilinx/V
 INFO: [Synth 8-6155] done synthesizing module 'axis_data_fifo_v2_0_11_top' (0#1) [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit/hdl/axis_data_fifo_v2_0_vl_rfs.v:53]
 INFO: [Synth 8-6155] done synthesizing module 'axis_data_fifo_8bit' (0#1) [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit/synth/axis_data_fifo_8bit.v:53]
 INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit/synth/axis_data_fifo_8bit.v:53' bound to instance 'u_rx_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:98]
-WARNING: [Synth 8-614] signal 'state' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:164]
 WARNING: [Synth 8-614] signal 'spi_header' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:164]
 WARNING: [Synth 8-614] signal 'payload_fifo_output_buffer' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:164]
 WARNING: [Synth 8-614] signal 'payload_fifo_valid' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:164]
@@ -78,7 +77,6 @@ WARNING: [Synth 8-614] signal 'payload_fifo_tlast_buffer' is read in the process
 WARNING: [Synth 8-614] signal 'tready' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:164]
 INFO: [Synth 8-256] done synthesizing module 'w5500_axi_data_streamer' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:41]
 WARNING: [Synth 8-614] signal 'streammanager_state' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
-WARNING: [Synth 8-614] signal 'streammanager_next_state' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
 WARNING: [Synth 8-614] signal 'ext_pl_tdata' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
 WARNING: [Synth 8-614] signal 'ext_pl_tvalid' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
 WARNING: [Synth 8-614] signal 'payload_ready' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
@@ -86,13 +84,13 @@ WARNING: [Synth 8-614] signal 'ext_pl_tlast' is read in the process but is not i
 WARNING: [Synth 8-614] signal 'payload_valid' is read in the process but is not in the sensitivity list [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:731]
 INFO: [Synth 8-256] done synthesizing module 'w5500_state_machine' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:35]
 INFO: [Synth 8-3491] module 'transceive_unit' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:5' bound to instance 'txrx_unit' of component 'transceive_unit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:192]
-INFO: [Synth 8-638] synthesizing module 'transceive_unit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:30]
-INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53' bound to instance 'u_tx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:78]
+INFO: [Synth 8-638] synthesizing module 'transceive_unit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:27]
+INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53' bound to instance 'u_tx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:75]
 INFO: [Synth 8-6157] synthesizing module 'axis_data_fifo_16_times_8bit' [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53]
 INFO: [Synth 8-6155] done synthesizing module 'axis_data_fifo_16_times_8bit' (0#1) [c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53]
-INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53' bound to instance 'u_rx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:92]
-INFO: [Synth 8-226] default block is never used [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:132]
-INFO: [Synth 8-256] done synthesizing module 'transceive_unit' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:30]
+INFO: [Synth 8-3491] module 'axis_data_fifo_16_times_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_16_times_8bit/synth/axis_data_fifo_16_times_8bit.v:53' bound to instance 'u_rx_payload_fifo' of component 'axis_data_fifo_16_times_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:89]
+INFO: [Synth 8-226] default block is never used [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:129]
+INFO: [Synth 8-256] done synthesizing module 'transceive_unit' (0#1) [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/transceiveunit.vhd:27]
 INFO: [Synth 8-3491] module 'ext_data_handler' declared at 'C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:33' bound to instance 'extdatahandler' of component 'ext_data_handler' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/top.vhd:211]
 INFO: [Synth 8-638] synthesizing module 'ext_data_handler' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:51]
 INFO: [Synth 8-3491] module 'axis_data_fifo_8bit' declared at 'c:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_data_fifo_8bit/synth/axis_data_fifo_8bit.v:53' bound to instance 'loop_back_buffer_fifo' of component 'axis_data_fifo_8bit' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:103]
@@ -101,8 +99,10 @@ INFO: [Synth 8-256] done synthesizing module 'top' (0#1) [C:/Users/danie/w5500St
 WARNING: [Synth 8-6014] Unused sequential element gen_rd_b.gen_doutb_pipe.enb_pipe_reg[0] was removed.  [C:/Xilinx/Vivado/2023.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:3069]
 WARNING: [Synth 8-6014] Unused sequential element gdvld.data_valid_std_reg was removed.  [C:/Xilinx/Vivado/2023.2/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:544]
 WARNING: [Synth 8-6014] Unused sequential element gen_fwft.empty_fwft_fb_reg was removed.  [C:/Xilinx/Vivado/2023.2/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1398]
-WARNING: [Synth 8-6014] Unused sequential element ext_pl_tlast_was_received_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:748]
-WARNING: [Synth 8-6014] Unused sequential element first_tx_passthrough_byte_received_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:749]
+WARNING: [Synth 8-6014] Unused sequential element ext_pl_tlast_was_received_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:754]
+WARNING: [Synth 8-6014] Unused sequential element first_tx_passthrough_byte_received_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/imports/Downloads/spimaster.vhd:755]
+WARNING: [Synth 8-6014] Unused sequential element GEN_TEST_0.packet_count_reg was removed.  [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:130]
+WARNING: [Synth 8-3848] Net rdata_buffer in module/entity ext_data_handler does not have driver. [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/ext_data_handler.vhd:59]
 WARNING: [Synth 8-7129] Port ACLK in module axis_infrastructure_v1_1_1_util_aclken_converter_wrapper is either unconnected or has no load
 WARNING: [Synth 8-7129] Port ARESETN in module axis_infrastructure_v1_1_1_util_aclken_converter_wrapper is either unconnected or has no load
 WARNING: [Synth 8-7129] Port S_ACLKEN in module axis_infrastructure_v1_1_1_util_aclken_converter_wrapper is either unconnected or has no load
@@ -132,19 +132,29 @@ WARNING: [Synth 8-7129] Port injectsbiterrb in module xpm_memory_base is either 
 WARNING: [Synth 8-7129] Port injectdbiterrb in module xpm_memory_base is either unconnected or has no load
 WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis is either unconnected or has no load
 WARNING: [Synth 8-7129] Port m_axis_aclk in module axis_data_fifo_v2_0_11_top is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[7] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[6] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[5] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[4] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[3] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[2] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[1] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rdata[0] in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rlast in module ext_data_handler is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rvalid in module ext_data_handler is either unconnected or has no load
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1480.648 ; gain = 574.367
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1479.906 ; gain = 573.621
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1480.648 ; gain = 574.367
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1479.906 ; gain = 573.621
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1480.648 ; gain = 574.367
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1479.906 ; gain = 573.621
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 1480.648 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.018 . Memory (MB): peak = 1479.906 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -169,22 +179,22 @@ Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl
 INFO: [Project 1-1714] 10 XPM XDC files have been applied to the design.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1584.359 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1504.496 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1584.359 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1504.496 ; gain = 0.000
 INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Constraint Validation : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1504.496 ; gain = 598.211
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg400-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1504.496 ; gain = 598.211
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -207,11 +217,10 @@ Applied set_property KEEP_HIERARCHY = SOFT for extdatahandler/loop_back_buffer_f
 Applied set_property KEEP_HIERARCHY = SOFT for spi_m/u_w5500_axi_data_streamer/u_rx_fifo/inst/\gen_fifo.xpm_fifo_axis_inst . (constraint file  auto generated constraint).
 Applied set_property KEEP_HIERARCHY = SOFT for txrx_unit/u_tx_payload_fifo/inst/\gen_fifo.xpm_fifo_axis_inst . (constraint file  auto generated constraint).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1504.496 ; gain = 598.211
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'gen_fwft.curr_fwft_state_reg' in module 'xpm_fifo_base'
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'w5500_axi_data_streamer'
-INFO: [Synth 8-802] inferred FSM for state register 'GEN_TEST_1.current_state_reg' in module 'ext_data_handler'
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
@@ -234,18 +243,8 @@ INFO: [Synth 8-3354] encoded FSM with state register 'gen_fwft.curr_fwft_state_r
               done_state |                              110 |                              110
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'w5500_axi_data_streamer'
-WARNING: [Synth 8-327] inferring latch for variable 'tdata_reg' [C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/new/spi_streamer.vhd:176]
----------------------------------------------------------------------------------------------------
-                   State |                     New Encoding |                Previous Encoding 
----------------------------------------------------------------------------------------------------
-                    idle |                               00 |                               00
-          receive_header |                               01 |                               01
-            receive_data |                               10 |                               10
-               send_data |                               11 |                               11
----------------------------------------------------------------------------------------------------
-INFO: [Synth 8-3354] encoded FSM with state register 'GEN_TEST_1.current_state_reg' using encoding 'sequential' in module 'ext_data_handler'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 1504.496 ; gain = 598.211
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -277,8 +276,7 @@ Detailed RTL Component Info :
 	              28K Bit	(2048 X 14 bit)          RAMs := 5     
 +---Muxes : 
 	  37 Input   32 Bit        Muxes := 1     
-	   2 Input   32 Bit        Muxes := 1     
-	   4 Input   32 Bit        Muxes := 1     
+	   2 Input   32 Bit        Muxes := 2     
 	  37 Input   24 Bit        Muxes := 1     
 	  37 Input   11 Bit        Muxes := 1     
 	   7 Input    8 Bit        Muxes := 1     
@@ -289,15 +287,15 @@ Detailed RTL Component Info :
 	   2 Input    5 Bit        Muxes := 2     
 	   4 Input    5 Bit        Muxes := 1     
 	   2 Input    4 Bit        Muxes := 1     
-	   2 Input    3 Bit        Muxes := 1     
 	   7 Input    3 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 1     
 	  37 Input    3 Bit        Muxes := 1     
-	   2 Input    2 Bit        Muxes := 152   
-	   4 Input    2 Bit        Muxes := 37    
+	   2 Input    2 Bit        Muxes := 158   
+	   4 Input    2 Bit        Muxes := 36    
 	  37 Input    2 Bit        Muxes := 1     
-	   4 Input    1 Bit        Muxes := 36    
-	   2 Input    1 Bit        Muxes := 97    
-	   7 Input    1 Bit        Muxes := 5     
+	   4 Input    1 Bit        Muxes := 28    
+	   2 Input    1 Bit        Muxes := 99    
+	   7 Input    1 Bit        Muxes := 4     
 	   5 Input    1 Bit        Muxes := 1     
 	   3 Input    1 Bit        Muxes := 10    
 	  37 Input    1 Bit        Muxes := 4     
@@ -317,6 +315,32 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-7129] Port rsta in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port regcea in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterra in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterra in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clkb in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[13] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[12] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[11] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[10] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[9] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[8] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[7] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[6] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[5] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[4] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[3] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[2] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[1] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[0] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterrb in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterrb in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis__xdcDup__4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis__xdcDup__3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis__xdcDup__2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_aclk in module xpm_fifo_axis__xdcDup__1 is either unconnected or has no load
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
@@ -329,7 +353,7 @@ INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 WARNING: [Synth 8-3332] Sequential element (spi_m/ext_pl_tready_reg_C) is unused and will be removed from module top.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 1504.496 ; gain = 598.211
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
@@ -359,7 +383,18 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:17 . Memory (MB): peak = 1504.496 ; gain = 598.211
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
+INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
+INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
+INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
+INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1514.172 ; gain = 607.887
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -382,8 +417,9 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-7052] The timing for the instance extdatahandler/loop_back_buffer_fifo/inst/gen_fifo.xpm_fifo_axis_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/gen_wr_a.gen_word_narrow.mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Technology Mapping : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -400,38 +436,46 @@ Start Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[7] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[6] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[5] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[4] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[3] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[2] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[1] to constant 0
+WARNING: [Synth 8-3295] tying undriven pin extdatahandler/loop_back_buffer_fifo:s_axis_tdata[0] to constant 0
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished IO Insertion : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -449,48 +493,46 @@ Report Cell Usage:
 |      |Cell           |Count |
 +------+---------------+------+
 |1     |clk_wiz_0_bbox |     1|
-|2     |CARRY4         |   119|
-|3     |LUT1           |     8|
-|4     |LUT2           |   405|
-|5     |LUT3           |   155|
-|6     |LUT4           |   145|
-|7     |LUT5           |    87|
-|8     |LUT6           |   290|
+|2     |CARRY4         |   117|
+|3     |LUT1           |    10|
+|4     |LUT2           |   178|
+|5     |LUT3           |    89|
+|6     |LUT4           |   225|
+|7     |LUT5           |    97|
+|8     |LUT6           |   272|
 |9     |RAMB36E1       |     5|
-|10    |FDCE           |   114|
-|11    |FDPE           |    15|
-|12    |FDRE           |   463|
-|13    |FDSE           |    88|
-|14    |LD             |     8|
-|15    |LDC            |    14|
+|11    |FDCE           |   102|
+|12    |FDPE           |    13|
+|13    |FDRE           |   480|
+|14    |FDSE           |    92|
+|15    |LDC            |    12|
 |16    |IBUF           |     2|
 |17    |OBUF           |     2|
 |18    |OBUFT          |     1|
 +------+---------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 3 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:12 ; elapsed = 00:00:17 . Memory (MB): peak = 1584.359 ; gain = 574.367
-Synthesis Optimization Complete : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1584.359 ; gain = 678.078
+Synthesis finished with 0 errors, 0 critical warnings and 36 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1518.191 ; gain = 587.316
+Synthesis Optimization Complete : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1518.191 ; gain = 611.906
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1584.359 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 146 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.014 . Memory (MB): peak = 1523.988 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 134 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1584.359 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1527.707 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 22 instances were transformed.
-  LD => LDCE: 8 instances
-  LDC => LDCE: 14 instances
+  A total of 12 instances were transformed.
+  LDC => LDCE: 12 instances
 
-Synth Design complete | Checksum: efe3b8b3
+Synth Design complete | Checksum: d91d94e3
 INFO: [Common 17-83] Releasing license: Synthesis
-102 Infos, 57 Warnings, 0 Critical Warnings and 0 Errors encountered.
+106 Infos, 100 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1584.359 ; gain = 1098.707
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1584.359 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:24 ; elapsed = 00:00:30 . Memory (MB): peak = 1527.707 ; gain = 1042.234
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1527.707 ; gain = 0.000
 INFO: [Common 17-1381] The checkpoint 'C:/Users/danie/w5500StateMachine/w5500StateMachine.runs/synth_1/top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu Apr 10 16:21:40 2025...
+INFO: [Common 17-206] Exiting Vivado at Mon Apr 21 10:37:35 2025...

@@ -1,2 +1,4 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/danie/w5500StateMachine/w5500StateMachine.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/danie/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_sim_netlist.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_wiz_0
+INFO: [VRFC 10-311] analyzing module clk_wiz_0_clk_wiz
 INFO: [VRFC 10-311] analyzing module glbl

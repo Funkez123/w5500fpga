@@ -32,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
+        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;
@@ -118,8 +118,11 @@ begin
     -- Test Mode 
 GEN_TEST_0: if TEST_MODE = 0 generate
     
-    process(clk, rst)
+ process(clk, rst)
     begin
+    
+    rready <= '1'; --this accepts all incoming received data from the W5500, but does nothing with it
+     
     if rising_edge(clk) then
         if rst = '1' then
             counter      <= 0;
@@ -128,7 +131,7 @@ GEN_TEST_0: if TEST_MODE = 0 generate
             sending      <= false;
             tdata        <= (others => '0');
             tvalid       <= '0';
-            tlast        <= '0';
+            tlast <= '0';
         else
             if(sending = true) then
             -- this just send's the byte index
@@ -137,13 +140,14 @@ GEN_TEST_0: if TEST_MODE = 0 generate
             tdata <= std_logic_vector(to_unsigned(byte_index,8));
                         
             if(tready = '1') then
+                tvalid <= '0';
                 byte_index <= byte_index + 1;
                 sending <= false;
             end if;            
         
         else --if sending = false
-            tlast <= '0';
             tvalid <= '0';
+            tlast <= '0';
             if(counter = INTERVAL - 1) then
                 counter <= 0;
                 sending <= true;
@@ -154,6 +158,7 @@ GEN_TEST_0: if TEST_MODE = 0 generate
     end if;
     end if;
 end process;
+
 
 end generate GEN_TEST_0;
 

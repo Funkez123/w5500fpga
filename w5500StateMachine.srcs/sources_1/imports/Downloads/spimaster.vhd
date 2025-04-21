@@ -729,9 +729,15 @@ begin
 
 -- Main process
 process (clk, reset)
-begin 
-    if (reset = '1') then
-        streammanager_state <= CONTROLLER_PHASE;
+begin
+
+    if(rising_edge(clk)) then
+        streammanager_state <= streammanager_next_state;
+        prev_payload_data_has_been_set <= payload_data_has_been_set;
+    end if;
+
+    if (reset = '1') then 
+        --streammanager_state <= CONTROLLER_PHASE;       
         payload_valid       <= '0';
         payload_last        <= '0';
         ext_pl_tready       <= '0';
@@ -750,8 +756,6 @@ begin
 
     elsif  streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
         
-        streammanager_state <= streammanager_next_state;
-        
         payload_data <= ext_pl_tdata;
         payload_valid <= ext_pl_tvalid;
         ext_pl_tready <= payload_ready;
@@ -762,7 +766,7 @@ begin
         if(ext_pl_tlast = '1') then
             ext_pl_tlast_was_received <= '1';
         end if;
-    
+        
         if payload_valid = '1' then
             spi_header_valid <= '1';
         else
@@ -770,8 +774,6 @@ begin
         end if;
 
     elsif rising_edge(clk) then
-        streammanager_state <= streammanager_next_state;
-        prev_payload_data_has_been_set <= payload_data_has_been_set;
 
         case streammanager_state is
             when CONTROLLER_PHASE =>

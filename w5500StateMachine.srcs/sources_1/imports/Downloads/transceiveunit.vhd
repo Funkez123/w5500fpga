@@ -4,12 +4,9 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity transceive_unit is
 -- SPI-Mode 0
-	generic (
-		num_bits:   integer := 8 -- number of bits to transmit
-	);
 	port (
-		tdata:   in std_logic_vector (num_bits-1 downto 0); -- payload
-		rdata:   out std_logic_vector (num_bits-1 downto 0); -- receiving data
+		tdata:   in std_logic_vector (7 downto 0); -- payload
+		rdata:   out std_logic_vector (7 downto 0); -- receiving data
 		mosi:      out std_logic;
 		miso:      in std_logic := '0';
 		sclk:      out std_logic;
@@ -32,21 +29,21 @@ architecture behavioral of transceive_unit is
 	type spi_state is (wait_for_fifo_ready, spi_idle, spi_execute, spi_done);
 	signal spistate, spistate_next: spi_state;
 
-	signal clk_toggles : integer range 0 to num_bits*2 + 1;    --clock toggle counter
+	signal clk_toggles : integer range 0 to 8*2 + 1;    --clock toggle counter
 	signal sclk_buffer : std_logic;
 
     signal tx_phase : std_logic; -- tx_phase of 1 means sclk rising edge, 0 means falling edge
 	
 	signal not_reset : std_logic;
 	signal cs_buffer : std_logic;
-	signal rdata_buffer : std_logic_vector((num_bits-1) downto 0);
-    signal tx_buffer : std_logic_vector ((num_bits-1) downto 0) := (others=>'0'); 
-    signal tx_current_payload : std_logic_vector ((num_bits-1) downto 0) := (others=>'0');
+	signal rdata_buffer : std_logic_vector((8-1) downto 0);
+    signal tx_buffer : std_logic_vector ((8-1) downto 0) := (others=>'0'); 
+    signal tx_current_payload : std_logic_vector ((8-1) downto 0) := (others=>'0');
     signal tx_payload_valid : std_logic := '0';
     signal tx_payload_valid_buffer : std_logic := '0';
     signal tx_payload_ready : std_logic := '0';
     signal tx_payload_last : std_logic := '0';
-    signal rx_buffer :  std_logic_vector ((num_bits -1) downto 0) := (others=>'0');
+    signal rx_buffer :  std_logic_vector ((8 -1) downto 0) := (others=>'0');
     signal rx_buffer_valid : std_logic := '0';
     signal rx_buffer_ready : std_logic := '1';
     signal rx_buffer_last : std_logic := '0';
@@ -167,7 +164,7 @@ architecture behavioral of transceive_unit is
                 tx_phase <= not tx_phase; -- this switches between TX Phase(rising edge on SCLK) and NOT TX_PHASE (falling edge on SCLK)
                 
                 -- counter
-			    if(clk_toggles = num_bits*2 - 1) then  --reset counter
+			    if(clk_toggles = 8*2 - 1) then  --reset counter
 				    clk_toggles <= 0;              
                 else
                     if(cs_buffer = '0' and spistate_next /= spi_done) then -- clk toggles can only happen when cs is low
@@ -182,19 +179,19 @@ architecture behavioral of transceive_unit is
                 
                 -- transmit data: -- tx_phase = '0' means that data is basically written on the falling edge
                 if(tx_phase = '0' and clk_toggles < 14) then
-                    mosi <= tx_buffer(num_bits-1);
-                    tx_buffer <= tx_buffer(num_bits-2 downto 0) & '0'; -- shift the data
+                    mosi <= tx_buffer(8-1);
+                    tx_buffer <= tx_buffer(8-2 downto 0) & '0'; -- shift the data
                 else -- for clk_toggles = 15 it's time to check if there is any more data to send
                     if(tx_payload_valid_buffer = '1' and clk_toggles = 15) then -- if there is more data to send
-                        tx_buffer <= tx_current_payload(num_bits-2 downto 0) & '0'; -- this has to be shifted by one already, since mosi is written directly in the next line
-                        mosi <= tx_current_payload(num_bits-1);
+                        tx_buffer <= tx_current_payload(8-2 downto 0) & '0'; -- this has to be shifted by one already, since mosi is written directly in the next line
+                        mosi <= tx_current_payload(8-1);
                         tx_payload_ready <= '1'; -- set ready for one clk to clear that Byte from the FIFO                  
                     end if;                
                 end if;
                 
                 --receive data: tx_phase = '1' means data is read on the rising edge
-                if(tx_phase = '1' and clk_toggles < num_bits*2 - 1) then -- num_bits*2 - 1 = 15, clk_toggles 16 (which is just 0 after 15) is the last time a bit of the current byte is read
-                    rx_buffer <= rx_buffer(num_bits-2 downto 0) & miso;
+                if(tx_phase = '1' and clk_toggles < 8*2 - 1) then -- 8*2 - 1 = 15, clk_toggles 16 (which is just 0 after 15) is the last time a bit of the current byte is read
+                    rx_buffer <= rx_buffer(8-2 downto 0) & miso;
                     rx_buffer_valid <= '0'; -- rx_buffer can't be valid on tx_phase
                     rx_buffer_last <= '0';
                 else 
