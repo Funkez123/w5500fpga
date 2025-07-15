@@ -62,7 +62,7 @@
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="ac701"/>
     <Option Name="FeatureSet" Val="FeatureSet_Classic"/>
-    <Option Name="WTXSimLaunchSim" Val="1193"/>
+    <Option Name="WTXSimLaunchSim" Val="1228"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -129,12 +129,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/ext_data_handler.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci"/>
@@ -148,6 +142,27 @@
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/ext_data_handler.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/ext_data_handler/new/ext_data_handler_ooc.xdc">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="out_of_context"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Downloads/custom_fifo.vhd">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../Downloads/custom_fifo.vhd"/>
+          <Attr Name="ImportTime" Val="1750591774"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -180,7 +195,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="ext_data_handler"/>
+        <Option Name="TopModule" Val="top"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
@@ -207,6 +222,11 @@
           <Attr Name="UsedInSteps" Val="synth_1_copy_12"/>
           <Attr Name="UsedInSteps" Val="synth_1_copy_13"/>
           <Attr Name="UsedInSteps" Val="synth_1_copy_14"/>
+          <Attr Name="UsedInSteps" Val="synth_1_copy_15"/>
+          <Attr Name="UsedInSteps" Val="synth_1_copy_16"/>
+          <Attr Name="UsedInSteps" Val="synth_1_copy_17"/>
+          <Attr Name="UsedInSteps" Val="synth_1_copy_18"/>
+          <Attr Name="UsedInSteps" Val="synth_1_copy_19"/>
           <Attr Name="UsedInSteps" Val="synth_1_copy_2"/>
           <Attr Name="UsedInSteps" Val="synth_1_copy_3"/>
           <Attr Name="UsedInSteps" Val="synth_1_copy_4"/>
@@ -274,7 +294,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_1_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_1_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_1_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -293,7 +313,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_2_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_2_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_2_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -320,7 +340,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_3_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_3_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_3_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -339,7 +359,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_4_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_4_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_4_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -358,7 +378,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_5_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_5_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_5_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -375,7 +395,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_6_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_6_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_6_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -394,7 +414,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_7_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_7_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_7_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -413,7 +433,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_8_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_8_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_8_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -430,7 +450,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_9_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_9_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_9_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -449,7 +469,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_10_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_10_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_10_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -468,7 +488,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_11_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_11_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_11_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -485,7 +505,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_12_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_12_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_12_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -504,7 +524,7 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_13_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_13_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_13_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>
@@ -521,7 +541,100 @@
         <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_14_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
           <ReportConfigOption Name="dummy_option" Type="string"/>
         </ReportConfig>
-        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_14_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_14_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+          <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
+        </ReportConfig>
+      </ReportStrategy>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="synth_1_copy_15" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1/synth_1_copy_15" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1_copy_15">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023" CtrlBit="true">
+        <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_15_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+        </ReportConfig>
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_15_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+          <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
+        </ReportConfig>
+      </ReportStrategy>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="synth_1_copy_16" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1/synth_1_copy_16" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1_copy_16">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
+        <Step Id="synth_design">
+          <Option Id="Directive">0</Option>
+        </Step>
+      </Strategy>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023" CtrlBit="true">
+        <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_16_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+        </ReportConfig>
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_16_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+          <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
+        </ReportConfig>
+      </ReportStrategy>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="synth_1_copy_17" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1/synth_1_copy_17" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1_copy_17">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
+        <Step Id="synth_design">
+          <Option Id="Directive">1</Option>
+        </Step>
+      </Strategy>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023" CtrlBit="true">
+        <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_17_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+        </ReportConfig>
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_17_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth_1.rpt" Version="1" Minor="0">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+          <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
+        </ReportConfig>
+      </ReportStrategy>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="synth_1_copy_18" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1/synth_1_copy_18" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1_copy_18">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
+        <Step Id="synth_design">
+          <Option Id="Directive">7</Option>
+        </Step>
+      </Strategy>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023" CtrlBit="true">
+        <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_18_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+        </ReportConfig>
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_18_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+          <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
+        </ReportConfig>
+      </ReportStrategy>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="synth_1_copy_19" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1/synth_1_copy_19" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1_copy_19">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
+        <Step Id="synth_design">
+          <Option Id="Directive">1</Option>
+        </Step>
+      </Strategy>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023" CtrlBit="true">
+        <ReportConfig DisplayName="synthesis_report" Name="synth_1_copy_19_synth_synthesis_report_0" Spec="" RunStep="synth_design" ReportFile="top.vds">
+          <ReportConfigOption Name="dummy_option" Type="string"/>
+        </ReportConfig>
+        <ReportConfig DisplayName="Utilization - Synth Design" Name="synth_1_copy_19_synth_report_utilization_0" Spec="report_utilization" RunStep="synth_design" ReportFile="top_utilization_synth.rpt" Version="1" Minor="0">
           <ReportConfigOption Name="dummy_option" Type="string"/>
           <ReportConfigOutputOption Name="pb" Type="string" Value=""/>
         </ReportConfig>

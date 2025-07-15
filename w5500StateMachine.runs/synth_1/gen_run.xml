@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7z020clg400-1" LaunchTime="1745224616" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7z020clg400-1" LaunchTime="1750179409" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/spi_master.dcp">
   <File Type="PA-TCL" Name="top.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="top_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="top_reports.tcl"/>
   <File Type="RDS-RDS" Name="top.vds"/>
   <File Type="RDS-UTIL" Name="top_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="top_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="top.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="top_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="top_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/spi_streamer.vhd">
@@ -47,12 +44,6 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/ext_data_handler.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/ip/axis_data_fifo_8bit_2/axis_data_fifo_8bit.xci"/>
@@ -67,6 +58,19 @@
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/ext_data_handler.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/ext_data_handler/new/ext_data_handler_ooc.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="out_of_context"/>
       </FileInfo>
     </File>
     <Config>
@@ -102,6 +106,11 @@
         <Attr Name="UsedInSteps" Val="synth_1_copy_12"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_13"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_14"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_15"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_16"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_17"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_18"/>
+        <Attr Name="UsedInSteps" Val="synth_1_copy_19"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_2"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_3"/>
         <Attr Name="UsedInSteps" Val="synth_1_copy_4"/>

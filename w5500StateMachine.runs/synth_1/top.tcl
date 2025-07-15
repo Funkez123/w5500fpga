@@ -70,7 +70,9 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 4
 set_param ced.repoPaths C:/Xilinx/Vivado/2023.2/data/xhub/boards/XilinxBoardStore/ced_store/Vivado_example_project
+set_msg_config -id {Common 17-41} -limit 10000000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7z020clg400-1
 
@@ -115,6 +117,9 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
+read_xdc -mode out_of_context C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/ext_data_handler/new/ext_data_handler_ooc.xdc
+set_property used_in_implementation false [get_files C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/ext_data_handler/new/ext_data_handler_ooc.xdc]
+
 read_xdc C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc
 set_property used_in_implementation false [get_files C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc]
 

@@ -115,6 +115,7 @@ proc step_failed { step } {
 OPTRACE "impl_1" END { }
 }
 
+set_msg_config -id {Common 17-41} -limit 10000000
 
 OPTRACE "impl_1" START { ROLLUP_1 }
 OPTRACE "Phase: Init Design" START { ROLLUP_AUTO }
@@ -145,6 +146,7 @@ OPTRACE "add files" START { }
   read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
   read_ip -quiet C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
 OPTRACE "read constraints: implementation" START { }
+  read_xdc -mode out_of_context C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/ext_data_handler/new/ext_data_handler_ooc.xdc
   read_xdc C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/constrs_1/imports/Downloads/PYNQ-Z1_C.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "read constraints: implementation_pre" START { }

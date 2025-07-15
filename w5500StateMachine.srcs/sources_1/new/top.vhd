@@ -8,12 +8,13 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description: This version runs directly from the board's main clock input.
 -- 
 -- Dependencies: 
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
+-- Revision 0.02 - Removed clock wizard to use direct board clock.
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
@@ -21,18 +22,11 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
 use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity top is
     	port (
+		-- This is the main clock from the board's oscillator (e.g., 100 MHz)
 		clk:  in  std_logic;
 		reset: in  std_logic := '0';
 		
@@ -42,20 +36,12 @@ entity top is
 		sclk: out std_logic;
 		cs:   out std_logic
 	);
-
 end top;
 
 architecture Behavioral of top is
 
-    component clk_wiz_0
-        port(
-            clk_in1: in std_logic;
-            reset : in std_logic;
-            clk_out1 : out std_logic
-         );
-    end component;
+    -- REMOVED: The clk_wiz_0 component is no longer needed.
         
-
     component transceive_unit
         port (
 			clk:    in std_logic;
@@ -81,22 +67,18 @@ architecture Behavioral of top is
         clk:    in std_logic;
 		reset:  in std_logic;
         spi_busy: in std_logic := '0';
-        
         tdata:   out std_logic_vector (7 downto 0); -- data to send
 		tvalid:    out std_logic; -- axi stream from statemachine to spi master
 		tready :   in std_logic; 
 		tlast :    out std_logic;
-		
 		rdata:     in std_logic_vector (7 downto 0); -- data received
 		rvalid :   in std_logic; -- axi stream from spi master to state machine
 		rready :   out std_logic;
 		rlast :    in std_logic;
-		
 		ext_pl_tdata:   in std_logic_vector (7 downto 0); -- payload data to send from external source
 		ext_pl_tready : out std_logic;
 		ext_pl_tvalid : in std_logic;
 		ext_pl_tlast : in std_logic;
-		
 		ext_pl_rdata:  out std_logic_vector (7 downto 0); -- payload data that has been received from the w5500 provided for external source
         ext_pl_rready : in std_logic := '1';
 		ext_pl_rvalid : out std_logic;
@@ -120,78 +102,59 @@ architecture Behavioral of top is
     end component;
 
 --Outputs
-
     signal spi_busy: std_logic;
     	
 -- w5500 data signals
     signal tdata : std_logic_vector(7 downto 0) := (others => '0');
     signal rdata : std_logic_vector(7 downto 0) := (others => '0');
-  
-    signal TVALID : std_logic;
-    signal RVALID : std_logic;
-    signal TREADY : std_logic;
-    signal RREADY : std_logic;
-    signal rlast : std_logic;
-    signal tlast : std_logic;
+    signal TVALID, RVALID, TREADY, RREADY, rlast, tlast : std_logic;
     
-    -- these here are actually physical hardware IO signals, but since they can't be propery used yet they're just default internal signals
+    -- Hardware IO simulation signals
     signal ext_pl_tdata : std_logic_vector(7 downto 0);
 	signal ext_pl_tvalid : std_logic := '1';
 	signal ext_pl_tready : std_logic;
 	signal ext_pl_tlast : std_logic:='0';
-    
     signal ext_pl_rdata : std_logic_vector(7 downto 0);
 	signal ext_pl_rvalid : std_logic;
 	signal ext_pl_rready : std_logic := '1';
 	signal ext_pl_rlast : std_logic;
 		
-    --- CLOCK WIZARD
-    signal clk_out : std_logic;		
-
+    -- REMOVED: The clk_out signal is no longer needed.	
 
 begin
     
-    --clock wizard
-    clk_wiz : clk_wiz_0
-    port map(
-        clk_in1 => clk,
-        reset => reset,
-        clk_out1 => clk_out
-    );
+    -- REMOVED: The clk_wiz instantiation is gone.
     
-    
-    -- instantiate the w5500_state_machine
+    -- Instantiate the w5500_state_machine
     spi_m : w5500_state_machine
         port map(
-        clk => clk_out,
-        reset => reset,
-        spi_busy => spi_busy,
-        
-        tdata => tdata,  
-        tvalid => tvalid,
-		tready => tready,
-		tlast => tlast,
-		        
-		rdata => rdata,  
-		rvalid => rvalid,
-		rready => rready,
-		rlast => rlast,
-		
-        ext_pl_tdata => ext_pl_tdata,
-        ext_pl_tready => ext_pl_tready,
-        ext_pl_tvalid => ext_pl_tvalid,
-        ext_pl_tlast => ext_pl_tlast,
-        
-		ext_pl_rdata => ext_pl_rdata,
-		ext_pl_rready => ext_pl_rready,
-		ext_pl_rvalid => ext_pl_rvalid,
-		ext_pl_rlast => ext_pl_rlast
+            -- CHANGED: Connected directly to the top-level clock and reset
+            clk => clk,
+            reset => reset,
+            spi_busy => spi_busy,
+            tdata => tdata,  
+            tvalid => tvalid,
+            tready => tready,
+            tlast => tlast,
+            rdata => rdata,  
+            rvalid => rvalid,
+            rready => rready,
+            rlast => rlast,
+            ext_pl_tdata => ext_pl_tdata,
+            ext_pl_tready => ext_pl_tready,
+            ext_pl_tvalid => ext_pl_tvalid,
+            ext_pl_tlast => ext_pl_tlast,
+            ext_pl_rdata => ext_pl_rdata,
+            ext_pl_rready => ext_pl_rready,
+            ext_pl_rvalid => ext_pl_rvalid,
+            ext_pl_rlast => ext_pl_rlast
 		);
         
-        
-     txrx_unit : transceive_unit
+    -- Instantiate the transceive_unit
+    txrx_unit : transceive_unit
         port map(
-            clk => clk_out,
+            -- CHANGED: Connected directly to the top-level clock and reset
+            clk => clk,
 			reset => reset,
 			mosi => mosi,
 			miso => miso,
@@ -208,9 +171,11 @@ begin
 		    rlast => rlast
 		    );
 
+    -- Instantiate the ext_data_handler
     extdatahandler : ext_data_handler
         port map(
-            clk => clk_out,
+            -- CHANGED: Connected directly to the top-level clock and reset
+            clk => clk,
             rst => reset,
             tdata => ext_pl_tdata,
             tvalid => ext_pl_tvalid,

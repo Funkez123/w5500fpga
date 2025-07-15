@@ -32,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
+        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;
@@ -68,20 +68,21 @@ architecture Behavioral of ext_data_handler is
     
     signal header_byte_counter : integer := 0;
     
-    component axis_data_fifo_8bit is 
-        Port(
-            s_axis_tdata  : in  std_logic_vector(7 downto 0);
-            s_axis_tready : out std_logic;
-            s_axis_tvalid : in  std_logic;
-            s_axis_tlast  : in  std_logic;
-            s_axis_aclk   : in  std_logic;
-            s_axis_aresetn: in  std_logic;
-            m_axis_tdata  : out std_logic_vector(7 downto 0);
-            m_axis_tready : in  std_logic;
-            m_axis_tvalid : out std_logic;
-            m_axis_tlast  : out std_logic
-        );
+    component custom_fifo is
+         port (
+            i_rst_sync     : in  std_logic;
+            i_clk          : in  std_logic;
+            s_axis_tvalid  : in  std_logic;
+            s_axis_tdata   : in  std_logic_vector(7 downto 0);
+            s_axis_tlast   : in  std_logic;
+            s_axis_tready  : out std_logic;
+            m_axis_tvalid  : out std_logic;
+            m_axis_tdata   : out std_logic_vector(7 downto 0);
+            m_axis_tlast   : out std_logic;
+            m_axis_tready  : in  std_logic
+         );
     end component;
+    
 
  
     -- signals for testmode 0 and 2
@@ -98,22 +99,19 @@ architecture Behavioral of ext_data_handler is
 
 begin
 
-    not_reset <= not rst;
-
-    loop_back_buffer_fifo : axis_data_fifo_8bit
+    loop_back_buffer_fifo : custom_fifo
         port map (
             s_axis_tdata  => rdata_buffer,
             s_axis_tready => rready_buffer,
             s_axis_tvalid => rvalid_buffer,
             s_axis_tlast  => rlast_buffer,
-            s_axis_aclk   => clk,
-            s_axis_aresetn=> not_reset,
+            i_clk         => clk,
+            i_rst_sync    => rst,
             m_axis_tdata  => tdata_buffer,
             m_axis_tready => tready_buffer,
             m_axis_tvalid => tvalid_buffer,
             m_axis_tlast  => tlast_buffer 
         );
-
 
     -- Test Mode 
 GEN_TEST_0: if TEST_MODE = 0 generate

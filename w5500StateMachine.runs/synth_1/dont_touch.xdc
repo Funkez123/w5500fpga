@@ -8,3 +8,5 @@ set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==axis_data_f
 
 # IP: ip/axis_data_fifo_16_times_8bit/axis_data_fifo_16_times_8bit.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==axis_data_fifo_16_times_8bit || ORIG_REF_NAME==axis_data_fifo_16_times_8bit} -quiet] -quiet
+
+# XDC: C:/Users/danie/w5500StateMachine/w5500StateMachine.srcs/ext_data_handler/new/ext_data_handler_ooc.xdc

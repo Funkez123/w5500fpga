@@ -34,7 +34,7 @@ architecture behavioral of transceive_unit is
 
     signal tx_phase : std_logic; -- tx_phase of 1 means sclk rising edge, 0 means falling edge
 	
-	signal not_reset : std_logic;
+	--signal not_reset : std_logic; -- REMOVED: Unnecessary and caused a bug
 	signal cs_buffer : std_logic;
 	signal rdata_buffer : std_logic_vector((8-1) downto 0);
     signal tx_buffer : std_logic_vector ((8-1) downto 0) := (others=>'0'); 
@@ -54,46 +54,46 @@ architecture behavioral of transceive_unit is
     
     signal first_execute : std_logic := '1';
     
-    component axis_data_fifo_16_times_8bit is 
-        Port(
-            s_axis_tdata : in std_logic_vector(7 downto 0);
-            s_axis_tready: out std_logic;
-            s_axis_tvalid : in std_logic;
-            s_axis_aclk : in std_logic;
-            s_axis_tlast : in std_logic;
-            s_axis_aresetn : in std_logic;
-            m_axis_tdata : out std_logic_vector(7 downto 0);
-            m_axis_tready: in std_logic;
-            m_axis_tvalid : out std_logic;
-            m_axis_tlast : out std_logic
-        );
+    component custom_fifo is 
+        port (
+            i_rst_sync     : in  std_logic;
+            i_clk          : in  std_logic;
+            s_axis_tvalid  : in  std_logic;
+            s_axis_tdata   : in  std_logic_vector(7 downto 0);
+            s_axis_tlast   : in  std_logic;
+            s_axis_tready  : out std_logic;
+            m_axis_tvalid  : out std_logic;
+            m_axis_tdata   : out std_logic_vector(7 downto 0);
+            m_axis_tlast   : out std_logic;
+            m_axis_tready  : in  std_logic
+         );
     end component;
     
     
     begin
     
-    u_tx_payload_fifo : axis_data_fifo_16_times_8bit -- fifo that stores the data that needs to be sent
+    u_tx_payload_fifo : custom_fifo -- fifo that stores the data that needs to be sent
         port map (
             s_axis_tdata => tdata,
             s_axis_tready => tready_int_buffer,
             s_axis_tvalid => tvalid,
             s_axis_tlast => tlast,
-            s_axis_aclk => clk,
-            s_axis_aresetn => not_reset,
+            i_clk => clk,
+            i_rst_sync => reset, -- FIXED: Connect reset directly
             m_axis_tdata => tx_current_payload,
             m_axis_tready => tx_payload_ready,
             m_axis_tvalid => tx_payload_valid,
             m_axis_tlast => tx_payload_last
         );
     
-        u_rx_payload_fifo : axis_data_fifo_16_times_8bit -- data that has been read while the execution state
+        u_rx_payload_fifo : custom_fifo -- data that has been read while the execution state
         port map (
             s_axis_tdata => rx_buffer,
             s_axis_tready => rx_buffer_ready, 
             s_axis_tvalid => rx_buffer_valid,
             s_axis_tlast => rx_buffer_last,
-            s_axis_aclk => clk,
-            s_axis_aresetn => not_reset,
+            i_clk => clk,
+            i_rst_sync => reset, -- FIXED: Connect reset directly
             m_axis_tdata => rdata_buffer,
             m_axis_tready => rready, 
             m_axis_tvalid => rvalid_int_buffer,
@@ -107,7 +107,7 @@ architecture behavioral of transceive_unit is
     tx_payload_valid_buffer <= tx_payload_valid;
     rvalid <= rvalid_int_buffer;
     rlast <= rlast_int_buffer;
-    not_reset <= not reset; 
+    -- not_reset <= not reset; -- REMOVED
     
 -- state memory
 	process (clk, reset)
@@ -121,6 +121,8 @@ architecture behavioral of transceive_unit is
     
    
 ------ State Machine -------
+    -- WARNING: This process mixes clocked and combinatorial logic, which is not recommended.
+    -- Consider refactoring into two separate processes.
 	process (clk, reset, spistate)
 	begin
 		if reset = '1' then
@@ -243,4 +245,3 @@ architecture behavioral of transceive_unit is
 	end process;
 
 end architecture behavioral;
-
