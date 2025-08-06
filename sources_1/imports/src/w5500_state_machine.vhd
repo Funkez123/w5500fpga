@@ -139,28 +139,28 @@ architecture behavioral of w5500_state_machine is
         Port (
             clk        : in  std_logic;
             reset        : in  std_logic;
-            spi_header: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
-            spi_header_valid : in std_logic;
+            m_spi_header_data: in std_logic_vector(23 downto 0);   -- the first 24 bits to transmit before continuing with the payload
+            m_spi_header_valid : in std_logic;
             
-            tx_plready    : out std_logic; -- payload ready AXIStream ready
-            tx_plvalid    : in std_logic;  --payload valid AXISTream valid
-            tx_pldata : in  std_logic_vector(7 downto 0);  -- 32-bit payload to be sent (doesn't matter if from state machine or external)
-            tx_pllast : in std_logic; -- payload last bit of axiStream
+            m_axis_tready    : out std_logic; -- payload ready AXIStream ready
+            m_axis_tvalid    : in std_logic;  --payload valid AXISTream valid
+            m_axis_tdata : in  std_logic_vector(7 downto 0);  -- 32-bit payload to be sent (doesn't matter if from state machine or external)
+            m_axis_tlast : in std_logic; -- payload last bit of axiStream
             
-            rx_plready    : in std_logic; -- rx_payload ready
-            rx_plvalid    : out std_logic;
-            rx_pldata     : out std_logic_vector(7 downto 0);
-            rx_pllast     : out std_logic;
+            m_axis_rready    : in std_logic; -- rx_payload ready
+            m_axis_rvalid    : out std_logic;
+            m_axis_rdata     : out std_logic_vector(7 downto 0);
+            m_axis_rlast     : out std_logic;
             
-            tready     : in  std_logic;                      -- FROM SPI Master (AXI Stream TREADY)
-            tvalid     : out std_logic;                      -- To SPI Master (AXI Stream TVALID)
-            tdata      : out std_logic_vector(7 downto 0);   -- To SPI Master (AXI Stream TDATA)
-            tlast      : out std_logic;
+            n_axis_tready     : in  std_logic;                      -- FROM SPI Master (AXI Stream TREADY)
+            n_axis_tvalid     : out std_logic;                      -- To SPI Master (AXI Stream TVALID)
+            n_axis_tdata      : out std_logic_vector(7 downto 0);   -- To SPI Master (AXI Stream TDATA)
+            n_axis_tlast      : out std_logic;
             
-            rready     : out std_logic;                      -- To SPI Master (AXI Stream RREADY)
-            rvalid     : in std_logic;                       -- From SPI Master (AXI Stream RVALID)
-            rdata      : in std_logic_vector(7 downto 0);    -- From SPI Master (AXI Stream RREADY)
-            rlast      : in std_logic                    
+            n_axis_rready     : out std_logic;                      -- To SPI Master (AXI Stream RREADY)
+            n_axis_rvalid     : in std_logic;                       -- From SPI Master (AXI Stream RVALID)
+            n_axis_rdata      : in std_logic_vector(7 downto 0);    -- From SPI Master (AXI Stream RREADY)
+            n_axis_rlast      : in std_logic                    
         );
     end component;
     
@@ -171,29 +171,29 @@ begin
         port map (
             clk          => clk,
             reset        => reset,
-            spi_header => spi_header,   -- the first 24 bits to transmit before continuing with the payload
-            spi_header_valid => spi_header_valid,
+            m_spi_header_data => spi_header,   -- the first 24 bits to transmit before continuing with the payload
+            m_spi_header_valid => spi_header_valid,
         
-            tx_plready    => payload_ready, -- payload ready AXIStream ready
-            tx_plvalid    => payload_valid,  --payload valid AXISTream valid
-            tx_pldata  => payload_data,  -- 8 bit payload data AXIS tdata
-            tx_pllast => payload_last, -- AXIStream last
+            m_axis_tready    => payload_ready, -- payload ready AXIStream ready
+            m_axis_tvalid    => payload_valid,  --payload valid AXISTream valid
+            m_axis_tdata  => payload_data,  -- 8 bit payload data AXIS tdata
+            m_axis_tlast => payload_last, -- AXIStream last
         
-            rx_plready => rx_payload_ready,
-            rx_plvalid => rx_payload_valid,
-            rx_pldata => rx_payload_data,
-            rx_pllast => rx_payload_last,
+            m_axis_rready => rx_payload_ready,
+            m_axis_rvalid => rx_payload_valid,
+            m_axis_rdata => rx_payload_data,
+            m_axis_rlast => rx_payload_last,
         
             -- AXIS for communication with the SPI Master:
-            tready     => tready,                      
-            tvalid     => tvalid,                      
-            tdata      => tdata,                       
-            tlast      => tlast,
+            n_axis_tready     => tready,                      
+            n_axis_tvalid     => tvalid,                      
+            n_axis_tdata      => tdata,                       
+            n_axis_tlast      => tlast,
         
-            rready     => rready_int_buffer,             
-            rvalid     => rvalid,                       
-            rdata      => rdata,                         
-            rlast      => rlast                        
+            n_axis_rready     => rready_int_buffer,             
+            n_axis_rvalid     => rvalid,                       
+            n_axis_rdata      => rdata,                         
+            n_axis_rlast      => rlast                        
         );
      
     rready <= rready_int_buffer;

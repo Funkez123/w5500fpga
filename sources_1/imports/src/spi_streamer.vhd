@@ -7,32 +7,32 @@ entity w5500_axi_data_streamer is
         clk              : in  std_logic;
         reset            : in  std_logic := '0';
         -- from w5500 state machine
-        spi_header       : in  std_logic_vector(23 downto 0);
-        spi_header_valid : in  std_logic;
+        m_spi_header_data  : in  std_logic_vector(23 downto 0);
+        m_spi_header_valid : in  std_logic;
         
         -- TX AXI-Stream from state machine
-        tx_plready       : out std_logic;
-        tx_plvalid       : in  std_logic;
-        tx_pldata        : in  std_logic_vector(7 downto 0);
-        tx_pllast        : in  std_logic;
+        m_axis_tready       : out std_logic;
+        m_axis_tvalid       : in  std_logic;
+        m_axis_tdata        : in  std_logic_vector(7 downto 0);
+        m_axis_tlast        : in  std_logic;
         
         -- RX AXI-Stream to state machine
-        rx_plready       : in  std_logic;
-        rx_plvalid       : out std_logic;
-        rx_pldata        : out std_logic_vector(7 downto 0);
-        rx_pllast        : out std_logic;
+        m_axis_rready       : in  std_logic;
+        m_axis_rvalid       : out std_logic;
+        m_axis_rdata        : out std_logic_vector(7 downto 0);
+        m_axis_rlast        : out std_logic;
         
         -- TX AXI-Stream to SPI Master
-        tready           : in  std_logic;
-        tvalid           : out std_logic; -- Cannot be read internally
-        tdata            : out std_logic_vector(7 downto 0);
-        tlast            : out std_logic;
+        n_axis_tready           : in  std_logic;
+        n_axis_tvalid           : out std_logic; -- Cannot be read internally
+        n_axis_tdata            : out std_logic_vector(7 downto 0);
+        n_axis_tlast            : out std_logic;
         
         -- RX AXI-Stream from SPI Master
-        rready           : out std_logic;
-        rvalid           : in  std_logic;
-        rdata            : in  std_logic_vector(7 downto 0);
-        rlast            : in  std_logic := '0'
+        n_axis_rready           : out std_logic;
+        n_axis_rvalid           : in  std_logic;
+        n_axis_rdata            : in  std_logic_vector(7 downto 0);
+        n_axis_rlast            : in  std_logic := '0'
     );
 end w5500_axi_data_streamer;
 
@@ -79,19 +79,17 @@ architecture Behavioral of w5500_axi_data_streamer is
 begin
 
     -- Assign output ports from internal signals
-    tx_plready <= tx_plready_buffer;
-    rready     <= rready_internal;
-    
-    -- **** CONNECT: Connect internal signals to the output ports ****
-    tvalid     <= tvalid_internal;
-    tlast      <= tlast_internal;
+    m_axis_tready     <= tx_plready_buffer;
+    n_axis_rready     <= rready_internal;
+    n_axis_tvalid     <= tvalid_internal;
+    n_axis_tlast      <= tlast_internal;
     
     -- FIFO Instantiations (unchanged)
     u_payload_fifo : custom_fifo
         port map (
             i_clk         => clk, i_rst_sync    => reset,
-            s_axis_tdata  => tx_pldata, s_axis_tvalid => tx_plvalid,
-            s_axis_tlast  => tx_pllast, s_axis_tready => tx_plready_buffer,
+            s_axis_tdata  => m_axis_tdata, s_axis_tvalid => m_axis_tvalid,
+            s_axis_tlast  => m_axis_tlast, s_axis_tready => tx_plready_buffer,
             m_axis_tdata  => payload_fifo_output_buffer, m_axis_tvalid => payload_fifo_valid,
             m_axis_tlast  => payload_fifo_tlast_buffer, m_axis_tready => payload_fifo_ready
         );
@@ -100,8 +98,8 @@ begin
             i_clk         => clk, i_rst_sync    => reset,
             s_axis_tdata  => rdata_to_fifo, s_axis_tvalid => rvalid_to_fifo,
             s_axis_tlast  => rlast_to_fifo, s_axis_tready => rready_to_fifo,
-            m_axis_tdata  => rx_pldata, m_axis_tvalid => rx_plvalid,
-            m_axis_tlast  => rx_pllast, m_axis_tready => rx_plready
+            m_axis_tdata  => m_axis_rdata, m_axis_tvalid => m_axis_rvalid,
+            m_axis_tlast  => m_axis_rlast, m_axis_tready => m_axis_rready
         );
 
     -- Main TX State Machine Process
@@ -117,23 +115,23 @@ begin
                     end if;
             
                 when IDLE =>
-                    if spi_header_valid = '1' and tx_plvalid = '1' and tx_plready_buffer = '1' then
+                    if m_spi_header_valid = '1' and m_axis_tvalid = '1' and tx_plready_buffer = '1' then
                         state <= SPI_HEADER_BYTE_0;
                     end if;
 
                 -- **** CHANGED: Now reads from the internal signal 'tvalid_internal' ****
                 when SPI_HEADER_BYTE_0 =>
-                    if tvalid_internal = '1' and tready = '1' then
+                    if tvalid_internal = '1' and n_axis_tready = '1' then
                         state <= SPI_HEADER_BYTE_1;
                     end if;
 
                 when SPI_HEADER_BYTE_1 =>
-                    if tvalid_internal = '1' and tready = '1' then
+                    if tvalid_internal = '1' and n_axis_tready = '1' then
                         state <= SPI_HEADER_BYTE_2;
                     end if;
 
                 when SPI_HEADER_BYTE_2 =>
-                    if tvalid_internal = '1' and tready = '1' then
+                    if tvalid_internal = '1' and n_axis_tready = '1' then
                         state <= PAYLOAD_STREAM;
                     end if;
                     
@@ -152,30 +150,30 @@ begin
     end process;
     
     -- Combinatorial process to drive TX outputs based on state
-    -- **** CHANGED: Now drives internal signals tvalid_internal and tlast_internal ****
-    process(state, spi_header, payload_fifo_output_buffer, payload_fifo_valid, payload_fifo_tlast_buffer, tready)
+    
+    process(state, m_spi_header_data, payload_fifo_output_buffer, payload_fifo_valid, payload_fifo_tlast_buffer, n_axis_tready)
     begin
         -- Default assignments
-        tdata             <= (others => '0');
+        n_axis_tdata             <= (others => '0');
         tvalid_internal   <= '0';
         tlast_internal    <= '0';
         payload_fifo_ready<= '0';
         
         case state is
             when SPI_HEADER_BYTE_0 =>
-                tdata             <= spi_header(23 downto 16);
+                n_axis_tdata             <= m_spi_header_data(23 downto 16);
                 tvalid_internal   <= '1';
             when SPI_HEADER_BYTE_1 =>
-                tdata             <= spi_header(15 downto 8);
+                n_axis_tdata             <= m_spi_header_data(15 downto 8);
                 tvalid_internal   <= '1';
             when SPI_HEADER_BYTE_2 =>
-                tdata             <= spi_header(7 downto 0);
+                n_axis_tdata             <= m_spi_header_data(7 downto 0);
                 tvalid_internal   <= '1';
             when PAYLOAD_STREAM =>
-                tdata             <= payload_fifo_output_buffer;
+                n_axis_tdata             <= payload_fifo_output_buffer;
                 tvalid_internal   <= payload_fifo_valid;
                 tlast_internal    <= payload_fifo_tlast_buffer;
-                payload_fifo_ready<= tready;
+                payload_fifo_ready<= n_axis_tready;
             when others =>
                 -- Keep default values for IDLE, FIFO_INIT, DONE
         end case;
@@ -192,13 +190,13 @@ begin
             rdata_to_fifo   <= (others => '0');
             rready_internal <= '0';
         elsif rising_edge(clk) then
-            rdata_to_fifo <= rdata;
+            rdata_to_fifo <= n_axis_rdata;
             
-            if rvalid = '1' and rready_internal = '1' then
-                if spi_header(2) = '1' then
+            if n_axis_rvalid = '1' and rready_internal = '1' then
+                if m_spi_header_data(2) = '1' then
                     bytes_received <= 0;
                 else
-                    if rlast = '1' then
+                    if n_axis_rlast = '1' then
                         bytes_received <= 0;
                     elsif bytes_received < 3 then
                         bytes_received <= bytes_received + 1;
@@ -206,20 +204,20 @@ begin
                 end if;
             end if;
 
-            if spi_header(2) = '1' then
+            if m_spi_header_data(2) = '1' then
                 rvalid_to_fifo <= '0';
                 rlast_to_fifo  <= '0';
             else
-                if (bytes_received >= 3) and (rvalid = '1') then
+                if (bytes_received >= 3) and (n_axis_rvalid = '1') then
                     rvalid_to_fifo <= '1';
-                    rlast_to_fifo  <= rlast;
+                    rlast_to_fifo  <= n_axis_rlast;
                 else
                     rvalid_to_fifo <= '0';
                     rlast_to_fifo  <= '0';
                 end if;
             end if;
 
-            if (spi_header(2) = '1') or (bytes_received < 3) then
+            if (m_spi_header_data(2) = '1') or (bytes_received < 3) then
                 rready_internal <= '1';
             else
                 rready_internal <= rready_to_fifo;
