@@ -37,7 +37,8 @@ entity top is
 		mosi: out std_logic;
 		miso: in  std_logic := '0';
 		sclk: out std_logic;
-		cs:   out std_logic
+		cs:   out std_logic;
+		led : out std_logic
 	);
 end top;
 
@@ -93,7 +94,8 @@ architecture Behavioral of top is
 		ext_pl_rdata:  out std_logic_vector (7 downto 0); -- payload data that has been received from the w5500 provided for external source
         ext_pl_rready : in std_logic := '1';
 		ext_pl_rvalid : out std_logic;
-		ext_pl_rlast : out std_logic
+		ext_pl_rlast : out std_logic;
+		led : out std_logic
         );                       
     end component;
     
@@ -177,7 +179,8 @@ begin
             ext_pl_rdata => ext_pl_rdata,
             ext_pl_rready => ext_pl_rready,
             ext_pl_rvalid => ext_pl_rvalid,
-            ext_pl_rlast => ext_pl_rlast
+            ext_pl_rlast => ext_pl_rlast,
+            led => led
 		);
         
     -- Instantiate the transceive_unit
