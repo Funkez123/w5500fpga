@@ -60,7 +60,7 @@ signal tx_shift_payload_buffer : std_logic_vector(31 downto 0) := (others => '0'
 signal pl_byte_length_buffer : integer range 0 to 4 := 0;
 
 signal ext_pl_tlast_was_received : std_logic := '0';
-
+signal prev_ext_pl_tlast : std_logic := '0';
 begin
 
 received_payload_buffer <= rx_shift_payload_buffer; -- whatever has been received (pointers, free buffer size, ...) should be passed to the FSM
@@ -99,30 +99,42 @@ begin
         ext_pl_tlast_was_received <= '0';
         ptm_data_being_written_to_w5500 <= '0';
 
+        
     elsif streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
         
-        tx_payload_data <= ext_pl_tdata;
-        tx_payload_valid <= ext_pl_tvalid;
-        ext_pl_tready <= tx_payload_ready;
-        tx_payload_last <= ext_pl_tlast;
+        if(prev_ext_pl_tlast = '1' or ext_pl_tlast_was_received = '1') then
+            tx_payload_data <= x"00";
+            tx_payload_last <= '1';
+            tx_payload_valid <= '0';
+            ext_pl_tready <= '0';
+            ext_pl_tlast_was_received <= '1';
+        else
+            tx_payload_data <= ext_pl_tdata;
+            tx_payload_last <= ext_pl_tlast;
+            tx_payload_valid <= ext_pl_tvalid;
+            ext_pl_tready <= tx_payload_ready;
+        end if;
         
-        if(ext_pl_tvalid = '1' and tx_payload_ready = '1') then
+        
+        if(ext_pl_tvalid = '1' and tx_payload_ready = '1' and ext_pl_tlast_was_received = '0') then
             ptm_data_being_written_to_w5500 <= '1';
         else
             ptm_data_being_written_to_w5500 <= '0';
         end if;
             
-        ext_pl_rvalid <= '0';
-    
-        if(ext_pl_tlast = '1') then
-            ext_pl_tlast_was_received <= '1';
-        end if;
-        
-        if ext_pl_tvalid = '1' then
+        if ext_pl_tvalid = '1' and ext_pl_tlast = '0' then
             spi_header_valid <= '1';
         else
             spi_header_valid <= '0';
         end if;
+        
+        if(clk'event and clk = '1') then
+            prev_ext_pl_tlast <= ext_pl_tlast;
+        end if;
+        
+        ext_pl_rvalid <= '0';
+        ext_pl_rlast <= '0';
+        ext_pl_rdata <= x"00";
 
     elsif rising_edge(clk) then
         case streammanager_state is
@@ -159,7 +171,6 @@ begin
                 ext_pl_rvalid <= '0';
                 ext_pl_tlast_was_received <= '0';
                 ptm_data_being_written_to_w5500 <= '0';
-
 
             when RX_FIFO_PASSTHROUGH_MODE =>
                 if (pl_byte_length_buffer > 0) then

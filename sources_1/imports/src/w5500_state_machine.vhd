@@ -655,7 +655,6 @@ begin
                     requested_streammanager_state <= "01"; --this means TX_FIFO_PASSTHROUGH_MODE to the stream manager
                 end if;
             
-            -- now we need to set the spi_header and write into the 
             
             when WRITE_TX_DATA_TO_BUFFER =>   
             -- we let the external source write data into the Socket 0's TX Buffer, this state only set's the spi header and the PASSTHROUGH MODE      

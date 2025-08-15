@@ -457,3 +457,21 @@ connect_debug_port u_ila_0/probe7 [get_nets [list ext_pl_tlast]]
 
 connect_debug_port u_ila_0/probe1 [get_nets [list {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][0]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][1]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][2]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][3]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][4]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[0][5]}]]
 
+
+
+connect_debug_port u_ila_0/probe4 [get_nets [list spi_m/ext_pl_tlast_was_received]]
+connect_debug_port u_ila_0/probe5 [get_nets [list spi_m/ext_pl_tready_reg_P]]
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {spi_m/u_w5500_axi_data_streamer/w5500state_reg[0][0]} {spi_m/u_w5500_axi_data_streamer/w5500state_reg[0][1]} {spi_m/u_w5500_axi_data_streamer/w5500state_reg[0][2]}]]
+connect_debug_port u_ila_0/probe11 [get_nets [list {spi_m/requested_streammanager_state[1]_i_4_n_0}]]
+connect_debug_port u_ila_0/probe17 [get_nets [list spi_m_n_3]]
+connect_debug_port u_ila_0/probe19 [get_nets [list u_w5500_stream_manager/ext_pl_tlast_was_received__0]]
+
+
+connect_debug_port u_ila_0/probe0 [get_nets [list {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][0]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][1]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][2]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][3]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][4]} {spi_m/u_w5500_stream_manager/ptm_transmitted_byte_counter_reg[3][5]}]]
+
+
+connect_debug_port u_ila_0/probe9 [get_nets [list spi_m_n_5]]
+
+
