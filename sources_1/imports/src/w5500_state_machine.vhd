@@ -195,7 +195,7 @@ architecture behavioral of w5500_state_machine is
             spi_header_valid : out std_logic;
 
             spi_data_buffer : in std_logic_vector(31 downto 0); -- raw spi payload data from FSM
-            spi_data_length : in integer range 0 to 4; -- amount of payload bytes to be transmitted
+            spi_data_length : in integer range 0 to 2048; -- amount of payload bytes to be transmitted
             payload_data_has_been_set : in std_logic;
 
             ptm_data_being_written_to_w5500 : out std_logic);

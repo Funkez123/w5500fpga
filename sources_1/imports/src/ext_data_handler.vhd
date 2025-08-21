@@ -32,7 +32,7 @@ use IEEE.numeric_std.all;
 
 entity ext_data_handler is
     generic (
-        TEST_MODE : integer := 1  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
+        TEST_MODE : integer := 0  -- 0 Tests package transmission, 1 is the loopback test, 2 for large packet transmission
     );
     port (
         clk         : in  STD_LOGIC;
@@ -91,7 +91,7 @@ architecture Behavioral of ext_data_handler is
     signal byte_index   : integer := 0;
     signal packet_count : integer := 0;  -- Track the number of packets sent
     signal sending      : boolean := false;
-    constant INTERVAL   : integer := 50; -- Interval between transmissions
+    constant INTERVAL   : integer := 187500; -- Interval between transmissions
     constant DATA_SIZE : integer := 255;
 
 
