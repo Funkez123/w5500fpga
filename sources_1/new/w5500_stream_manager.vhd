@@ -69,15 +69,18 @@ begin
 received_payload_buffer <= rx_shift_payload_buffer; -- whatever has been received (pointers, free buffer size, ...) should be passed to the FSM
 ext_pl_tready <= int_ext_pl_tready;
 
-process(clk, requested_streammanager_state) -- W5500 FSM requests the streammanager state
+process(clk) -- W5500 FSM requests the streammanager state
 begin
-    if(rising_edge(clk))then
-    case requested_streammanager_state is
-        when "00" => streammanager_state <= CONTROLLER_PHASE;
-        when "01" => streammanager_state <= TX_FIFO_PASSTHROUGH_MODE;
-        when others => streammanager_state <= RX_FIFO_PASSTHROUGH_MODE;
-    end case;
-
+    if(reset = '1') then
+        streammanager_state <= CONTROLLER_PHASE;
+    else
+        if(rising_edge(clk))then
+            case requested_streammanager_state is
+                when "00" => streammanager_state <= CONTROLLER_PHASE;
+                when "01" => streammanager_state <= TX_FIFO_PASSTHROUGH_MODE;
+                when others => streammanager_state <= RX_FIFO_PASSTHROUGH_MODE;
+            end case;
+        end if;
     end if;
 end process;
 
@@ -85,13 +88,18 @@ end process;
 
 process(streammanager_state, ptm_packet_done, ext_pl_tvalid, tx_payload_ready)
 begin
-    if streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
+    --defaults
+    ptm_data_being_written_to_w5500 <= '0';
+    int_ext_pl_tready <= '0';
+
+    case streammanager_state is
+    when TX_FIFO_PASSTHROUGH_MODE =>
         if ptm_packet_done = '1' then
             -- Stream is cut off after tlast
             ptm_data_being_written_to_w5500 <= '0';
             int_ext_pl_tready <= '0';
         else
-            -- Normal passthrough operation
+            -- Normal passthrough 
             int_ext_pl_tready <= tx_payload_ready;
             if ext_pl_tvalid = '1' and tx_payload_ready = '1' then
                 ptm_data_being_written_to_w5500 <= '1';
@@ -99,10 +107,10 @@ begin
                 ptm_data_being_written_to_w5500 <= '0';
             end if;
         end if;
-    else
+    when others =>
         ptm_data_being_written_to_w5500 <= '0';
         int_ext_pl_tready <= '0';
-    end if;
+    end case;
 end process;
 
 --detect last packet from ext_pl_tdata axi stream
@@ -119,7 +127,7 @@ begin
                         ptm_packet_done <= '1';
                     end if;
                 when others => 
-                    ptm_packet_done <= '0'; -- Reset when not in TX mode
+                    ptm_packet_done <= '0'; -- Reset when not in tx passthrough mode
             end case;
         end if;
     end if;
@@ -128,22 +136,20 @@ end process;
 
 process (clk, reset)
 begin
-    if(rising_edge(clk)) then
-        if(reset = '1') then
-            --streammanager_state <= CONTROLLER_PHASE;
-            tx_payload_valid       <= '0';
-            tx_payload_last        <= '0';
-            ext_pl_rvalid       <= '0';
-            ext_pl_rdata <= x"00";
-            ext_pl_rlast <= '0';
-            tx_payload_data <= x"00";
-            rx_shift_payload_buffer <= x"00000000";
-            tx_shift_payload_buffer <= x"00000000";
-            prev_payload_data_has_been_set <= '0';
-            rx_payload_ready    <= '0';
-            spi_header_valid <= '0';
-
-        else
+    if(reset = '1') then
+        tx_payload_valid       <= '0';
+        tx_payload_last        <= '0';
+        ext_pl_rvalid       <= '0';
+        ext_pl_rdata <= x"00";
+        ext_pl_rlast <= '0';
+        tx_payload_data <= x"00";
+        rx_shift_payload_buffer <= x"00000000";
+        tx_shift_payload_buffer <= x"00000000";
+        prev_payload_data_has_been_set <= '0';
+        rx_payload_ready    <= '0';
+        spi_header_valid <= '0';
+        
+    elsif rising_edge(clk) then
             prev_payload_data_has_been_set <= payload_data_has_been_set;
             prev_ext_pl_tlast <= ext_pl_tlast;
             
@@ -237,7 +243,6 @@ begin
                 ext_pl_rvalid <= '0';
         end if;
     end if;
-end if;
 end process;
 
 

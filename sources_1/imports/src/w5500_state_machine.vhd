@@ -653,6 +653,7 @@ begin
                     w5500state_next <= WRITE_TX_DATA_TO_BUFFER; -- if no data is received, then check again
                     tx_write_pointer <= received_payload_buffer(15 downto 0);
                     requested_streammanager_state <= "01"; --this means TX_FIFO_PASSTHROUGH_MODE to the stream manager
+                    ptm_transmitted_byte_counter <= 0;
                 end if;
             
             
