@@ -511,3 +511,14 @@ connect_debug_port u_ila_0/probe10 [get_nets [list ext_pl_rready]]
 connect_debug_port u_ila_0/probe11 [get_nets [list ext_pl_rvalid]]
 connect_debug_port u_ila_0/probe14 [get_nets [list extdatahandler/GEN_TEST_1.rvalid_buffer_reg_n_0]]
 
+
+connect_debug_port u_ila_0/probe6 [get_nets [list spi_m/u_w5500_stream_manager/ext_pl_tlast_was_received_i_1_n_0]]
+
+connect_debug_port u_ila_0/probe3 [get_nets [list {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[0]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[1]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[2]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[3]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[4]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[5]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[6]} {spi_m/u_w5500_stream_manager/tx_payload_data_reg[7]_0[7]}]]
+connect_debug_port u_ila_0/probe13 [get_nets [list spi_m/u_w5500_stream_manager/tx_payload_last_i_5_n_0]]
+connect_debug_port u_ila_0/probe14 [get_nets [list spi_m/u_w5500_stream_manager/tx_payload_valid0__10]]
+
+connect_debug_port u_ila_0/probe9 [get_nets [list spi_m_n_5]]
+
+connect_debug_port u_ila_0/probe5 [get_nets [list spi_m/u_w5500_stream_manager/ext_pl_tlast_was_received]]
+

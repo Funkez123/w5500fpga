@@ -59,11 +59,15 @@ signal tx_shift_payload_buffer : std_logic_vector(31 downto 0) := (others => '0'
 
 signal pl_byte_length_buffer : integer range 0 to 2048 := 0;
 
-signal ext_pl_tlast_was_received : std_logic := '0';
+signal ptm_packet_done : std_logic := '0';
 signal prev_ext_pl_tlast : std_logic := '0';
+
+signal int_ext_pl_tready : std_logic := '0';
+
 begin
 
 received_payload_buffer <= rx_shift_payload_buffer; -- whatever has been received (pointers, free buffer size, ...) should be passed to the FSM
+ext_pl_tready <= int_ext_pl_tready;
 
 process(clk, requested_streammanager_state) -- W5500 FSM requests the streammanager state
 begin
@@ -79,25 +83,45 @@ end process;
 
 -- TX_PASSTHROUGH_MODE combinatorical process
 
-process(streammanager_state)
+process(streammanager_state, ptm_packet_done, ext_pl_tvalid, tx_payload_ready)
 begin
-    if(streammanager_state = TX_FIFO_PASSTHROUGH_MODE) then
-        
-        if(ext_pl_tlast_was_received = '1') then
-            ext_pl_tready <= '0';
+    if streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
+        if ptm_packet_done = '1' then
+            -- Stream is cut off after tlast
             ptm_data_being_written_to_w5500 <= '0';
+            int_ext_pl_tready <= '0';
         else
-            ext_pl_tready <= tx_payload_ready;
-
-            if(ext_pl_tvalid = '1' and tx_payload_ready = '1') then
+            -- Normal passthrough operation
+            int_ext_pl_tready <= tx_payload_ready;
+            if ext_pl_tvalid = '1' and tx_payload_ready = '1' then
                 ptm_data_being_written_to_w5500 <= '1';
             else
                 ptm_data_being_written_to_w5500 <= '0';
             end if;
         end if;
     else
-        ext_pl_tready <= '0';
         ptm_data_being_written_to_w5500 <= '0';
+        int_ext_pl_tready <= '0';
+    end if;
+end process;
+
+--detect last packet from ext_pl_tdata axi stream
+process(clk)
+begin
+    if rising_edge(clk) then
+        if reset = '1' then
+            ptm_packet_done <= '0';
+        else
+            case streammanager_state is
+                when TX_FIFO_PASSTHROUGH_MODE =>
+                    -- Detect when last data is successfully transferred
+                    if ext_pl_tvalid = '1' and int_ext_pl_tready = '1' and ext_pl_tlast = '1' then
+                        ptm_packet_done <= '1';
+                    end if;
+                when others => 
+                    ptm_packet_done <= '0'; -- Reset when not in TX mode
+            end case;
+        end if;
     end if;
 end process;
 
@@ -121,26 +145,24 @@ begin
 
         else
             prev_payload_data_has_been_set <= payload_data_has_been_set;
+            prev_ext_pl_tlast <= ext_pl_tlast;
             
             if streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
-                if(ext_pl_tlast_was_received = '1') then
+                if(ptm_packet_done = '1') then
                     tx_payload_data <= x"00";
-                    tx_payload_last <= '1';
+                    tx_payload_last <= '0';
                     tx_payload_valid <= '0';
+                    spi_header_valid <= '0';
                 else
                     tx_payload_data <= ext_pl_tdata;
                     tx_payload_last <= ext_pl_tlast;
                     tx_payload_valid <= ext_pl_tvalid;
                 end if;
 
-                if ext_pl_tvalid = '1' and ext_pl_tlast = '0' then
+                if ext_pl_tvalid = '1' then
                     spi_header_valid <= '1';
                 else
                     spi_header_valid <= '0';
-                end if;
-
-                if(ext_pl_tlast = '1') then
-                    ext_pl_tlast_was_received <= '1';
                 end if;
 
                 ext_pl_rvalid <= '0';
@@ -148,7 +170,6 @@ begin
                 ext_pl_rdata <= x"00";
         
             elsif streammanager_state = CONTROLLER_PHASE then
-                ext_pl_tlast_was_received <= '0';
                 if (pl_byte_length_buffer > 0) then
                     tx_payload_data  <= tx_shift_payload_buffer(31 downto 24);
                     tx_shift_payload_buffer <= tx_shift_payload_buffer(23 downto 0) & "00000000";
@@ -180,9 +201,6 @@ begin
                 ext_pl_rvalid <= '0';
 
             elsif streammanager_state = RX_FIFO_PASSTHROUGH_MODE then
-
-                ext_pl_tlast_was_received <= '0';
-
                 if (pl_byte_length_buffer > 0) then
                     pl_byte_length_buffer <= pl_byte_length_buffer - 1;
                     tx_payload_valid <= '1';
