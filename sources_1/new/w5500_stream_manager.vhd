@@ -60,7 +60,6 @@ signal tx_shift_payload_buffer : std_logic_vector(31 downto 0) := (others => '0'
 signal pl_byte_length_buffer : integer range 0 to 2048 := 0;
 
 signal ptm_packet_done : std_logic := '0';
-signal prev_ext_pl_tlast : std_logic := '0';
 
 signal int_ext_pl_tready : std_logic := '0';
 
@@ -151,7 +150,6 @@ begin
         
     elsif rising_edge(clk) then
             prev_payload_data_has_been_set <= payload_data_has_been_set;
-            prev_ext_pl_tlast <= ext_pl_tlast;
             
             if streammanager_state = TX_FIFO_PASSTHROUGH_MODE then
                 if(ptm_packet_done = '1') then
