@@ -1,0 +1,75 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Wed Oct  2 09:02:48 2024
+# Process ID: 14852
+# Current directory: C:/Users/student/Documents/w5500StateMachine
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent2744 C:\Users\student\Documents\w5500StateMachine\w5500StateMachine.xpr
+# Log file: C:/Users/student/Documents/w5500StateMachine/vivado.log
+# Journal file: C:/Users/student/Documents/w5500StateMachine\vivado.jou
+# Running On: HTI20, OS: Windows, CPU Frequency: 3192 MHz, CPU Physical cores: 4, Host memory: 17060 MB
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.xpr
+launch_simulation
+launch_simulation
+source transceive_unit.tcl
+create_ip -name axis_data_fifo -vendor xilinx.com -library ip -version 2.0 -module_name axis_data_fifo_0
+set_property -dict [list \
+  CONFIG.FIFO_DEPTH {16} \
+  CONFIG.HAS_PROG_EMPTY {0} \
+  CONFIG.HAS_PROG_FULL {0} \
+  CONFIG.TDATA_NUM_BYTES {4} \
+] [get_ips axis_data_fifo_0]
+generate_target {instantiation_template} [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_0/axis_data_fifo_0.xci]
+generate_target all [get_files  c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_0/axis_data_fifo_0.xci]
+catch { config_ip_cache -export [get_ips -all axis_data_fifo_0] }
+export_ip_user_files -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_0/axis_data_fifo_0.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_0/axis_data_fifo_0.xci]
+launch_runs axis_data_fifo_0_synth_1 -jobs 4
+wait_on_run axis_data_fifo_0_synth_1
+export_simulation -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_data_fifo_0/axis_data_fifo_0.xci] -directory C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/sim_scripts -ip_user_files_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files -ipstatic_source_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/modelsim} {questa=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/questa} {riviera=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/riviera} {activehdl=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+add_force {/transceive_unit/clk} -radix hex {0 0ns} {1 50000ps} -repeat_every 100000ps
+add_force {/transceive_unit/TVALID} -radix hex {1 0ns}
+add_force {/transceive_unit/tx_data} -radix hex {AB 0ns}
+run 100 us
+create_ip -name axis_dwidth_converter -vendor xilinx.com -library ip -version 1.1 -module_name axis_dwidth_converter_0
+set_property -dict [list \
+  CONFIG.HAS_TLAST {1} \
+  CONFIG.M_TDATA_NUM_BYTES {1} \
+  CONFIG.S_TDATA_NUM_BYTES {4} \
+] [get_ips axis_dwidth_converter_0]
+generate_target {instantiation_template} [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_dwidth_converter_0/axis_dwidth_converter_0.xci]
+generate_target all [get_files  c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_dwidth_converter_0/axis_dwidth_converter_0.xci]
+catch { config_ip_cache -export [get_ips -all axis_dwidth_converter_0] }
+export_ip_user_files -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_dwidth_converter_0/axis_dwidth_converter_0.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_dwidth_converter_0/axis_dwidth_converter_0.xci]
+launch_runs axis_dwidth_converter_0_synth_1 -jobs 4
+wait_on_run axis_dwidth_converter_0_synth_1
+export_simulation -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_dwidth_converter_0/axis_dwidth_converter_0.xci] -directory C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/sim_scripts -ip_user_files_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files -ipstatic_source_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/modelsim} {questa=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/questa} {riviera=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/riviera} {activehdl=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+create_ip -name axis_combiner -vendor xilinx.com -library ip -version 1.1 -module_name axis_combiner_0
+generate_target {instantiation_template} [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci]
+generate_target all [get_files  c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci]
+catch { config_ip_cache -export [get_ips -all axis_combiner_0] }
+export_ip_user_files -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci]
+launch_runs axis_combiner_0_synth_1 -jobs 4
+wait_on_run axis_combiner_0_synth_1
+export_simulation -of_objects [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci] -directory C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/sim_scripts -ip_user_files_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files -ipstatic_source_dir C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/modelsim} {questa=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/questa} {riviera=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/riviera} {activehdl=C:/Users/student/Documents/w5500StateMachine/w5500StateMachine.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+export_ip_user_files -of_objects  [get_files c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci] -no_script -reset -force -quiet
+remove_files  -fileset axis_combiner_0 c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0/axis_combiner_0.xci
+file delete -force c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.srcs/sources_1/ip/axis_combiner_0
+file delete -force c:/Users/student/Documents/w5500StateMachine/w5500StateMachine.gen/sources_1/ip/axis_combiner_0
+close_sim
+launch_simulation
+source transceive_unit.tcl
+add_force {/transceive_unit/clk} -radix hex {0 0ns} {1 50000ps} -repeat_every 100000ps
+add_force {/transceive_unit/tx_data} -radix hex {AB 0ns}
+run 100 us
+run 100 us
+add_force {/transceive_unit/TVALID} -radix hex {1 0ns}
+run 100 us
+run 100 us
+close_sim
